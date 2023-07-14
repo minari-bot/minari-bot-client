@@ -1,0 +1,10 @@
+version: '3'
+services:
+
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "3000:3000"
+    image: poodly/mianri-dockerhub:dev_0.0.3_client
