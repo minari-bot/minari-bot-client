@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for minari-client-prod on 2023-07-13T19:54:58+09:00
+# fly.toml app configuration file generated for minari-client-prod on 2023-07-14T21:35:48+09:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -13,11 +13,3 @@ primary_region = "nrt"
   auto_start_machines = true
   min_machines_running = 0
   processes = ["app"]
-
-# [http]
-#   [http.reverse_proxy]
-#     to = "http://minari-api-prod.fly.dev:5000"   # 백엔드 서버의 주소와 포트
-#     pass_host_header = true                      # 원본 호스트 헤더 전달 여부
-
-#     [[http.reverse_proxy.routes]]
-#       match = "/api/*"
