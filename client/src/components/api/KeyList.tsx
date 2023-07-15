@@ -1,44 +1,55 @@
 import styled from "styled-components"
 import { apiKey } from "../../apis/apiKey";
-import { useMutation, useQuery } from "react-query";
-import { AxiosError } from "axios";
-import { apiKeyInfoList } from "./apiType";
 import { EXCHANGE } from "../../global/type";
 import { TfiClose } from "react-icons/tfi";
 import { useState } from "react";
 import { IoAddSharp } from "react-icons/io5";
+import useKeyList from "./hooks/useKeyList";
+import { useMutation } from "@tanstack/react-query";
+import { rightSideUIState } from "../../screens/Api";
+import { useSetRecoilState } from "recoil";
+import { toastState } from "../../atoms/toast";
+import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
+
 interface Props{
     exchange : EXCHANGE,
-    setSelectedKeyId : React.Dispatch<React.SetStateAction<string | null>>,
-    setKeyAddMode : React.Dispatch<React.SetStateAction<boolean>>
+    setSelectedKeyId : React.Dispatch<React.SetStateAction<string>>,
+    setRightSideUIMode : React.Dispatch<React.SetStateAction<string>>,
+    setLabel: React.Dispatch<React.SetStateAction<string>>,
+
 }
-export default function KeyList({exchange, setSelectedKeyId, setKeyAddMode} : Props){
+export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode, setLabel} : Props){
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const setToast = useSetRecoilState(toastState);
     const onClickKey = (e : React.MouseEvent<HTMLDivElement>) => {
-        setKeyAddMode(false); 
+        setRightSideUIMode(rightSideUIState.keyInfo); 
         setSelectedIndex(Number(e.currentTarget.dataset.index));
         setSelectedKeyId(e.currentTarget.id);
+        setLabel(String(e.currentTarget.dataset.label));
+    }
+    const onDelete = async (id : string) => {
+        await mutateAsync(id);
+        setToast(prev => ({
+            ...prev,
+            text: MUTATE_SUCCESS_MESSAGE.DELETE_API_KEY,
+            state: 'success',
+            isOpen: true,
+        }))
+        refetch();
     }
     const onClickAdd = () => {
         setSelectedIndex(null);
-        setKeyAddMode(true);
+        setRightSideUIMode(rightSideUIState.keyAdd);
     }
-    const { data, isLoading, isError, error } = useQuery<apiKeyInfoList>("apikey", apiKey.getAllApiKeys,{
-        onError: (err) => {
-          const error = err as AxiosError;
-          console.log(error);
-        },
-        onSuccess: (recevied) => {
-        }
-      });
+    const { data : keyList, refetch} = useKeyList();
     const { mutateAsync } = useMutation((apiKey.deleteApiKey));
 
     return <Container>
             <Title>API Keys</Title>
             {
-                data?.map((info, key) => 
+                keyList.map((info, key) => 
                 exchange === info.exchange?
-                <InfoBox key={info._id} isSelect={key === selectedIndex} onClick={onClickKey} data-index={key} id={info._id}>
+                <InfoBox key={info._id} isSelect={key === selectedIndex} onClick={onClickKey} data-index={key} data-label={info.label} id={info._id}>
                     <Dot/>
                     <TitleLabel>{info.label}</TitleLabel>
                     <Contents>
@@ -50,10 +61,8 @@ export default function KeyList({exchange, setSelectedKeyId, setKeyAddMode} : Pr
                             <div>{info.apikey}</div>
                             <div>{"*".repeat(50)}</div>
                         </Info> 
-                        <DeleteButton onClick={() => {
-                            mutateAsync(info._id);
-                            console.log(info._id);
-                        }}><TfiClose/></DeleteButton>
+                        <DeleteButton onClick={() => onDelete(info._id)}><TfiClose/>
+                        </DeleteButton>
                     </Contents>
                 </InfoBox>
                 :
@@ -82,6 +91,7 @@ const InfoBox = styled.div<{isSelect : boolean}>`
     justify-content: center;
     align-items: start;
     gap: 1rem;
+    width: 100%;
     padding: 2rem 2.5rem;
     background-color: ${props => props.theme.light.white};
     border-radius: 15px;
@@ -131,7 +141,7 @@ const Info = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     font-size: 0.9rem;
 `
 const DeleteButton = styled.button`

@@ -1,28 +1,28 @@
 import styled from "styled-components"
-import ReverageMag from "./ReverageMag"
+import ReverageMag from "../common/ReverageMag"
 import Symbol from "../common/Symbol"
-interface Props {
-    symbolName : string,
-    title : string,
-    magnitude: number,
-    profit : number,
-    winRate : number,
-    trasanctions: number
+interface Props{
+    symbol: string,
+    leverage: number,
+    strategyName: string,
+    winRate: number,
+    profitPercent: number,
+    strategyUrl: string,
 }
-export default function StrategyBox({symbolName, title, magnitude, profit, winRate, trasanctions} : Props){
+export default function StrategyBox({symbol, leverage, strategyName, winRate, profitPercent, strategyUrl} : Props){
     return <Container>
         <Column>
             <SymbolItems>
-                <Symbol name={symbolName.split('/')[0].toLowerCase()}/>
-                <SymbolName>{symbolName}</SymbolName>
-                <ReverageMag value={magnitude}/>
+                <Symbol name={symbol?.split('/')[0].toLowerCase()}/>
+                <SymbolName>{symbol || ""}</SymbolName>
+                <ReverageMag value={leverage || 0}/>
             </SymbolItems>
-            <Title>{title}</Title>
+            <Title>{strategyName || ""}</Title>
         </Column>
         <InfoWrapper>
             <Info>
                 <Label>수익률</Label>
-                <Value>{profit}%</Value>
+                <Value>{profitPercent}%</Value>
             </Info>
             <Info>
                 <Label>승률</Label>
@@ -30,7 +30,7 @@ export default function StrategyBox({symbolName, title, magnitude, profit, winRa
             </Info>
             <Info>
                 <Label>거래량</Label>
-                <Value>{trasanctions}</Value>
+                <Value>{}</Value>
             </Info>
         </InfoWrapper>
     </Container>
@@ -40,12 +40,12 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* width: 37rem; */
+    width: 35rem;
     gap: 5rem;
     font-size: 1.2rem;
     background-color: ${props => props.theme.light.white};
     border-radius: 1.5rem;
-    padding: 1.5rem 3rem;
+    padding: 1.5rem 2rem;
 
 `
 const SymbolItems = styled.div`
@@ -92,5 +92,5 @@ const SymbolName = styled.div`
 `
 const Title = styled.h3`
     font-weight: normal;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 `

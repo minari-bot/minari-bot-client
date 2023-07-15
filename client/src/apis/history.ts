@@ -1,48 +1,36 @@
+import { HISTORY_ERROR_MESSAGE } from "../react-query/constants";
 import axios, { AxiosError } from "axios";
-import { HISTORY_ERROR_MESSAGE } from "../constants/constants";
 
 export const histroy = {
-    getAllOrderHistory : async () => {
+    getBinanceOrderHistory : async () => {
         try{
-            const res = await axios.get(`/api/history/all`);
+            const res = await axios.get(`/api/history/all/BINANCE`);
             return res.data;    
         } catch(err){
             const error = err as AxiosError;
             switch(error.response?.status){
-                case 500:
-                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD};
+                case 403:   
+                    throw { code: 403 };
                 case 404:
-                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND};
+                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND };
+                case 500:
+                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD };
             }
         }
     },
-    getOrderHistory : async (label : string) => {
+    getUpbitOrderHistory : async () => {
         try{
-            const domain = label;
-            const res = await axios.post(`/api/history`, domain);
-            return res.data;    
-        } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 500:
-                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD};
-                case 404:
-                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND};
-            }
-        }
-    },
-    getOrderHistoryUpbit : async (label : string) => {
-        try{
-            const domain = { label };
-            const res = await axios.post(`/api/history/upbit`, domain);
+            const res = await axios.get(`/api/history/all/UPBIT`);
             return res.data;
         } catch(err){
             const error = err as AxiosError;
             switch(error.response?.status){
-                case 500:
-                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD};
+                case 403:
+                    throw { code: 403 };
                 case 404:
-                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND};
+                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND };
+                case 500:
+                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD };
             }
         }
     }

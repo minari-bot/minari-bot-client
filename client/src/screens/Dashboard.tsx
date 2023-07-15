@@ -3,16 +3,13 @@ import { useState } from "react";
 import styled from "styled-components"
 import SmallButton from "../components/common/SmallButton";
 import ImgButton from "../components/common/ImgButton";
-import BinanceHistory from "../components/dashboard/BinanceHistory";
 import binanceLogo from "../assets/img/binance_logo.svg.png"
 import upbitLogo from "../assets/img/upbit_logo.png"
-import UpbitHistory from "../components/dashboard/UpbitHistory";
-import { DAY_BUTTON, DAY_BUTTON_ENUM, EXCHANGE_BUTTON, EXCHANGE_BUTTON_ENUM } from "../components/dashboard/dashboardType";
-import OverallStatBoxes from "../components/dashboard/OverallStatBoxes";
+import { DAY_BUTTON, DAY_BUTTON_ENUM, EXCHANGE_BUTTON, EXCHANGE_BUTTON_ENUM } from "../components/dashboard/type";
+import OverallStatBoxes from "../components/dashboard/OverviewBoxes";
 import HistoryContainer from "../components/dashboard/HistoryContainer";
 import Header from "../components/common/Header";
-import StrategyBox from "../components/dashboard/StrategyBox";
-import Strategies from "../components/dashboard/Strategies";
+import StrategyContainer from "../components/dashboard/StrategyContainer";
 
 
 export default function Dashboard(){
@@ -34,20 +31,17 @@ export default function Dashboard(){
                 </DateButtons>
             </FlexRowBtwn>
             <FlexRowStart>
-            <OverallStatBoxes day={daySelect}/>
+            <OverallStatBoxes day={daySelect} exchangeSelect={exchangeSelect}/>
             </FlexRowStart>
             <FlexRowStart>
             </FlexRowStart>
             <SubLayout>
                 <Column>
                     <h1>거래 내역</h1>
-                    <HistoryContainer>
-                        { exchangeSelect === EXCHANGE_BUTTON_ENUM.binance && <BinanceHistory/>}
-                        { exchangeSelect === EXCHANGE_BUTTON_ENUM.upbit && <UpbitHistory/> }
-                    </HistoryContainer>
+                    <HistoryContainer exchange={exchangeSelect}/>
                 </Column>
                 <Column>
-                    <Strategies/>
+                    <StrategyContainer exchange={exchangeSelect}/>
                 </Column>
             </SubLayout>
         </Container>

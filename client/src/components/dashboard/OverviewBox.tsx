@@ -1,27 +1,35 @@
 import styled from "styled-components"
-import { makeCurrencyString } from "../../utils/makeCurrencyString"
-import { AiOutlineInfoCircle, AiOutlineArrowUp } from "react-icons/ai";
-interface OverallStatBoxProps{
+import {  makeRoundNumber } from "../../utils/makeCurrencyString"
+import { AiOutlineInfoCircle } from "react-icons/ai";
+
+export interface Props{
     title : string,
-    status : string,
+    status : number,
     value : number,
     symbol : string,
 }
-export default function OverallStatBox({title, status, value, symbol} : OverallStatBoxProps){
+export default function OverallStatBox({title, status, value, symbol} : Props){
     return <Container>
         <Header>
-            <Title>{title}</Title>
+            <Title>{title || ""}</Title>
             <AiOutlineInfoCircle/>
         </Header>
-        <Value>{makeCurrencyString(value, symbol, 3)}</Value>
-        <Trend isUptrend={Number(status) > 0}>
-            {status}%
-            {Number(status) > 0? 
-                "↑"
-                :
-                "↓"
-            }
-        </Trend>
+        <Value>
+        {makeRoundNumber(value || 0, 2) + symbol || ""}
+        </Value>
+        {
+            status === 0?
+            null
+            :
+            <Trend isUptrend={status > 0}>
+                {status}%
+                {status > 0? 
+                    "↑"
+                    :
+                    "↓"
+                }
+            </Trend>
+        }
     </Container>
 }
 

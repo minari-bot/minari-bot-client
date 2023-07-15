@@ -1,38 +1,42 @@
 import styled from "styled-components"
 import { SlCheck, SlBan} from "react-icons/sl";
 import theme from "../../styles/theme";
+import { useKeyInfo } from "./hooks/useKeyInfo";
+import { Suspense } from "react";
+
 interface Props{
-    labelName : string, 
-    balance : number, 
-    transanctions : number,
-    isConnect : boolean,
-
+    selectedKeyId : string, 
+    label : string,
 }
-export default function KeyInfo({labelName, balance, transanctions, isConnect} : Props){
+export default function KeyInfo({ selectedKeyId, label } : Props){
+    const info = useKeyInfo( selectedKeyId );
     return(
-    <Container>
-        <Title>{labelName}</Title>
-        <Wrapper>
-            <Labels>
-                <div>Balance</div>
-                <div>Transactions</div>
-                <div>Connection</div>
-            </Labels>
-            <Info>
-                <div>{balance}</div>
-                <div>{transanctions}</div>
-                <div>{isConnect? <SlCheck style={{
-                    color: theme.light.darkBlue
-                }}/> 
-                : <SlBan style= {{
-                    color: theme.light.red,
-                }}
-                />}</div>
-            </Info>
-            {!isConnect && <Error>error reason.</Error>}
-        </Wrapper>
+    <Suspense fallback={<div>loading..</div>}>
+        <Container>
+            <Title>{label}</Title>
+            <Wrapper>
+                <Labels>
+                    <div>Balance</div>
+                    <div>Transactions</div>
+                    <div>Connection</div>
+                </Labels>
+                <Info>
+                    <div>{info?.balance}</div>
+                    <div>{info?.transaction}</div>
+                    <div>{info?.connect? <SlCheck style={{
+                        color: theme.light.darkBlue
+                    }}/> 
+                    : <SlBan style= {{
+                        color: theme.light.red,
+                    }}
+                    />}</div>
+                </Info>
+                {/* {!info?.connect && <Error>error reason.</Error>} */}
+            </Wrapper>
+        </Container>
+    </Suspense>
 
-    </Container>)
+    )
 }
 
 const Container = styled.div`

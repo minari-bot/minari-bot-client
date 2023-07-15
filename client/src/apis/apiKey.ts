@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
-import { APIKEY_ERROR_MESSAGE } from "../constants/constants";
 import { apiKeyCheckValue, apiKeyFormValue } from "../components/api/apiType";
+import { APIKEY_ERROR_MESSAGE } from "../react-query/constants";
 
 export const apiKey = {
     getAllApiKeys: async () => {
@@ -10,17 +10,30 @@ export const apiKey = {
         } catch(err){
             const error = err as AxiosError;
             switch(error.response?.status){
-                case 500:
-                    throw { code: 500, message: APIKEY_ERROR_MESSAGE.CANNOT_GET };
                 case 403:
                     throw { code: 403, message: APIKEY_ERROR_MESSAGE.CANNOT_GET};
+                case 500:
+                    throw { code: 500, message: APIKEY_ERROR_MESSAGE.CANNOT_GET };
+            }
+        }
+    },
+    getApiKey: async(id : string) => {
+        try{
+            const res = await axios.get(`/api/apikey/overview/${id}`);
+            return res.data;
+        } catch(err){
+            const error = err as AxiosError;
+            switch(error.response?.status){
+                case 403:
+                    throw { code: 403, message: APIKEY_ERROR_MESSAGE.CANNOT_GET};
+                case 500:
+                    throw { code: 500, message: APIKEY_ERROR_MESSAGE.CANNOT_GET };
             }
         }
     },
     createApiKey: async (info : apiKeyFormValue) => {
         try{
             const res = await axios.post(`/api/apikey`, info);
-            console.log(info);
             return res.data;
         } catch(err){
             const error = err as AxiosError;
@@ -57,7 +70,10 @@ export const apiKey = {
             const error = err as AxiosError;
             switch(error.response?.status){
                 case 400:
-                    throw {code: 400, message: APIKEY_ERROR_MESSAGE.UNVALID_KEY};
+                    throw {
+                        code : error.response?.status as number,
+                        message: (error.response?.data as any)?.message
+                    };
                 case 403:
                     throw {code: 403, message: APIKEY_ERROR_MESSAGE.CANNOT_CREATE};
                 case 500:

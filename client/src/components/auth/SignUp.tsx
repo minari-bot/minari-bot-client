@@ -1,10 +1,9 @@
 import styled from "styled-components"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { SignUpFormValue } from "./authType";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { auth } from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";

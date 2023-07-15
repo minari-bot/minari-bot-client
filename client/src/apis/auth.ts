@@ -1,7 +1,7 @@
 /* eslint-disable no-throw-literal */
 import axios, { AxiosError } from "axios"
-import { AUTH_ERROR_MESSAGE } from "../constants/constants";
 import { SignInFormValue, SignUpFormValue } from "../components/auth/authType";
+import { AUTH_ERROR_MESSAGE } from "../react-query/constants";
 
 export const auth = {
     signUp: async (info : SignUpFormValue) => {
@@ -11,6 +11,8 @@ export const auth = {
         } catch(err){
             const error = err as AxiosError;
             switch(error.response?.status){
+                case 403:
+                    throw { code: 403 };
                 case 500:
                     throw { code: 500, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_UP };
             }
@@ -24,11 +26,13 @@ export const auth = {
             const error = err as AxiosError;
             console.log(error);
             switch(error.response?.status){
+                case 401:
+                    throw { code: 401, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
+                case 403:
+                    throw { code: 403 };
                 case 500:
                     throw { code: 500, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
 
-                case 401:
-                    throw { code: 401, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
             }
         }
     },
@@ -39,6 +43,8 @@ export const auth = {
         } catch(err){
             const error = err as AxiosError;
             switch(error.response?.status){
+                case 403:
+                    throw { code: 403 };
                 case 500:
                     throw { code: 500, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
             }
@@ -51,6 +57,10 @@ export const auth = {
         } catch(err){
             const error = err as AxiosError;
             switch(error.response?.status){
+                case 403:
+                    throw { code: 403 }; 
+                case 404:
+                    throw { code: 404 };
                 case 500:
                     throw { code: 500, message: AUTH_ERROR_MESSAGE.NEED_SIGN_IN };
             }

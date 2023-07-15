@@ -8,11 +8,18 @@ import KeyList from "../components/api/KeyList";
 import { EXCHANGE, EXCHANGE_ENUM } from "../global/type";
 import KeyRegisterForm from "../components/api/KeyRegisterForm";
 import KeyInfo from "../components/api/KeyInfo";
+import { useKeyInfo } from "../components/api/hooks/useKeyInfo";
 
+export const rightSideUIState ={
+    nothing : "nothing",
+    keyAdd : "keyAdd",
+    keyInfo : "keyInfo",
+}
 export default function Api(){
     const [exchangeSelect, setExchangeSelect] = useState<EXCHANGE>(EXCHANGE_ENUM.binance);
-    const [selectedKeyId, setSelectedKeyId] = useState<null | string>(null);
-    const [isKeyAddMode, setKeyAddMode] = useState(false);
+    const [selectedKeyId, setSelectedKeyId] = useState("");
+    const [label, setLabel] = useState("");
+    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.nothing);
     return <Container>
         <Header/>
         <Icons>
@@ -20,12 +27,16 @@ export default function Api(){
             <ImgButton onClick={() => setExchangeSelect(EXCHANGE_ENUM.upbit)} title={EXCHANGE_ENUM.upbit} isSelect={exchangeSelect === EXCHANGE_ENUM.upbit} img={upbitLogo}/>
         </Icons>
         <Main>
-            <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setKeyAddMode={setKeyAddMode}/>
+            <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
             <SideWrapper>
-                { isKeyAddMode ? 
+                { 
+                    rightSideUIMode === rightSideUIState.keyAdd? 
                     <KeyRegisterForm exchange={exchangeSelect}/>
                     :
-                    <KeyInfo labelName={"label"} transanctions={0} balance={0} isConnect={false}/>
+                    rightSideUIMode === rightSideUIState.keyInfo?
+                    <KeyInfo selectedKeyId={selectedKeyId} label={label}/>
+                    :
+                    null
                 }
             </SideWrapper>
         </Main>

@@ -1,15 +1,19 @@
 import styled from "styled-components"
-import { EXCHANGE, EXCHANGE_ENUM } from "../../global/type"
+import { CustomError, EXCHANGE, EXCHANGE_ENUM } from "../../global/type"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiKeyFormValue } from "./apiType";
 import { useState } from "react";
-import { useMutation } from "react-query";
 import { apiKey } from "../../apis/apiKey";
 import { AxiosError } from "axios";
-import { SlPlus, SlInfo } from "react-icons/sl"
+import { SlInfo } from "react-icons/sl"
 import binanceLogo from "../../assets/img/binance_logo.svg.png"
 import upbitLogo from "../../assets/img/upbit_logo.png"
 import { ErrorMessage } from "@hookform/error-message";
+import { useMutation } from "@tanstack/react-query";
+import useKeyList from "./hooks/useKeyList";
+import { useSetRecoilState } from "recoil";
+import { toastState } from "../../atoms/toast";
+import { APIKEY_ERROR_MESSAGE, MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 
 interface Props{
     exchange : EXCHANGE
@@ -20,26 +24,43 @@ export default function KeyRegisterForm({exchange} : Props){
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<apiKeyFormValue>({
         defaultValues:{ label: "", exchange, apikey: "", secretkey: "" }
     });
+    const setToast = useSetRecoilState(toastState);
+    const { refetch } = useKeyList();
     const [readyInfo, setReadyInfo] = useState({
         label : false,
         apikey : false,
         secretkey: false,
     });
-    const onSubmit : SubmitHandler<apiKeyFormValue> = async (formInfo) =>{
+    const onSubmit : SubmitHandler<apiKeyFormValue> = async (formInfo : apiKeyFormValue) =>{
         try{
+            const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
             formInfo = {...formInfo, exchange};
+            const check = await checkApiMutateAsync(checkInfo);
+            console.log(check);
             const info = await createApiMutateAsync(formInfo);
+            console.log(info);
+            refetch();
+            setToast(prev => ({
+                ...prev,
+                isOpen: true,
+                text: MUTATE_SUCCESS_MESSAGE.CREATE_API_KEY,
+                state: "success",
+            }))
         }catch(err){
-            const error = err as AxiosError;
+            const error = err as CustomError;
+            setToast(prev => ({
+                ...prev,
+                isOpen: true,
+                text: error.message,
+                state: "error",
+            }))
         }
      }
      const onCheckApi : SubmitHandler<apiKeyFormValue> = async (formInfo) => {
         try{
-            console.log(formInfo);  
             const data = await checkApiMutateAsync(formInfo);
         } catch(err){
             const error = err as AxiosError;
-            console.log(error);
         }
      }
     return <Container>
@@ -60,7 +81,7 @@ export default function KeyRegisterForm({exchange} : Props){
                     render={({ message }) => <Error>{message}</Error>}
                     />
                 </Label>
-                <Input 
+                <Input
                     maxLength={25}
                     {...register("label",{
                         required: "Label을 입력해주세요.",
@@ -84,7 +105,7 @@ export default function KeyRegisterForm({exchange} : Props){
                     render={({ message }) => <Error>{message}</Error>}
                     />
                 </Label>
-                <Input 
+                <Input
                     type="password" 
                     maxLength={100}
                     {...register("apikey",{
@@ -118,7 +139,6 @@ export default function KeyRegisterForm({exchange} : Props){
                     })}
                 />
             <Foot>
-                <Button onClick={handleSubmit(onCheckApi)}>Key 체크</Button>
                 <AddButton>추가</AddButton>
             </Foot>
         </Form>
@@ -176,7 +196,7 @@ const Label = styled.div`
     margin-top: 1rem;
     margin-bottom: 0.5rem;
 `
-const Input = styled.input`
+const Input = styled.input.attrs({ autocomplete: 'off',})`
     padding: 0.8rem 1.5rem;
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
@@ -205,7 +225,7 @@ const Foot = styled.div`
     display: flex;
     width: 100%;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 2rem 0;
 `

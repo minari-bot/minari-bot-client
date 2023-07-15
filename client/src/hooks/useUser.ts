@@ -1,11 +1,11 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userInfo } from "../global/type";
 import { auth } from "../apis/auth";
-import { LOCAL_STORAGE_KEYS } from "../constants/constants";
+import { LOCAL_STORAGE_KEYS, queryKeys } from "../react-query/constants";
 
 export const useUser = () =>  {
     const queryClient = useQueryClient();
-    const { data : user, isLoading, isError, error } = useQuery<userInfo>("user" , auth.userInfo, {
+    const { data : user = {} } = useQuery<userInfo>([queryKeys.user] , auth.userInfo, {
         onSuccess: (received: userInfo | null) => {
             if (!received) { // falsy의 값을 받을 경우
                 clearStoredUser();
@@ -16,10 +16,10 @@ export const useUser = () =>  {
         retry: false,
     });
     const updateUser = (newUser: userInfo) => {
-        queryClient.setQueryData("user", newUser);
+        queryClient.setQueryData([queryKeys.user], newUser);
     }
     const clearUser = () => {
-        queryClient.removeQueries("user");
+        queryClient.removeQueries([queryKeys.user]);
     }
     return { user, updateUser, clearUser };
 }

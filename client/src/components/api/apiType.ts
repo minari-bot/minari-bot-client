@@ -19,3 +19,11 @@ interface apiKeyInfo{
     userId: string,
 }
 export interface apiKeyInfoList extends Array<apiKeyInfo>{}
+
+export interface apiKeyOverview{
+	balance: number,
+	currency: string
+	transaction: number,
+	connect: false,
+	message: string,
+}

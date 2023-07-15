@@ -1,21 +1,29 @@
-import React from 'react';
 import {Outlet} from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import Footer from './components/common/Footer';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Navigation from './components/common/Navigation';
+import { createPortal } from 'react-dom';
+import { useRecoilState } from 'recoil';
+import { toastState } from './atoms/toast';
+import Toasts from './components/common/Toasts';
 
 function Root() {
-  const client = new QueryClient();
-
-  return <QueryClientProvider client={client}>
-      <div>
-        <GlobalStyles/>
-        <Navigation/>
-        <Container><Outlet/></Container>
-      </div>
+  const queryClient = new QueryClient();
+  const [ toast, setToast ] = useRecoilState(toastState);
+  return <QueryClientProvider client={queryClient}>
+    <div>
+      <GlobalStyles/>
+      <Navigation/>
+      <Container>
+        <Outlet/>
+        {toast.isOpen && createPortal(
+        <Toasts />,
+        document.body
+      )}
+      </Container>
       <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+    </div>
   </QueryClientProvider>
 
 }
@@ -32,7 +40,7 @@ const GlobalStyles = createGlobalStyle`
 
   body {
   box-sizing: border-box;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   background-color: ${props => props.theme.light.backgroundGray};
   color: ${props => props.theme.light.black};
   margin: 0;
