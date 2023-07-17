@@ -1,53 +1,44 @@
-/* eslint-disable no-throw-literal */
-import axios, { AxiosError } from "axios"
+import axios from "axios"
 import { SignInFormValue, SignUpFormValue } from "../components/auth/authType";
-import { AUTH_ERROR_MESSAGE } from "../react-query/constants";
+import { AUTH_ERROR_MESSAGE, COMMON_ERROR, USER_INFO } from "../react-query/constants";
+import { CustomErrorClass } from "../global/error";
 
 export const auth = {
     signUp: async (info : SignUpFormValue) => {
         try{
             const res = await axios.post(`/api/auth/register`, info);
             return res.data;
-        } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 403:
-                    throw { code: 403 };
-                case 500:
-                    throw { code: 500, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_UP };
-            }
+        } catch(err : unknown){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 403: throw new CustomErrorClass(AUTH_ERROR_MESSAGE.CANNOT_SIGN_UP, 403);
+                    case 500: throw new CustomErrorClass(AUTH_ERROR_MESSAGE.CANNOT_SIGN_UP, 500);
+                }
         }
     },
     signIn: async (info : SignInFormValue) => {
         try{
             const res = await axios.post(`/api/auth/login`, info);
             return res.data;
-        } catch(err){
-            const error = err as AxiosError;
-            console.log(error);
-            switch(error.response?.status){
-                case 401:
-                    throw { code: 401, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
-                case 403:
-                    throw { code: 403 };
-                case 500:
-                    throw { code: 500, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
-
-            }
+        } catch(err : unknown){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 401: throw new CustomErrorClass(AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN, 401);
+                    case 403: throw new CustomErrorClass(AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN, 403);
+                    case 500: throw new CustomErrorClass(AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN, 500);
+                }
         }
     },
     signOut: async() => {
         try{
             const res = await axios.get(`/api/auth/logout`);
             return res.data;
-        } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 403:
-                    throw { code: 403 };
-                case 500:
-                    throw { code: 500, message: AUTH_ERROR_MESSAGE.CANNOT_SIGN_IN };
-            }
+        } catch(err : unknown){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 404: throw new CustomErrorClass(COMMON_ERROR.SERVER_404, 404);
+                    case 500: throw new CustomErrorClass(COMMON_ERROR.SERVER_404, 500);
+                }
         }
     },
     userInfo: async() => {
@@ -55,15 +46,12 @@ export const auth = {
             const res = await axios.get(`/api/auth/userinfo`);
             return res.data;
         } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 403:
-                    throw { code: 403 }; 
-                case 404:
-                    throw { code: 404 };
-                case 500:
-                    throw { code: 500, message: AUTH_ERROR_MESSAGE.NEED_SIGN_IN };
-            }
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 403: throw new CustomErrorClass(USER_INFO.CANNOT_GET, 403); 
+                    case 404: throw new CustomErrorClass(COMMON_ERROR.SERVER_404, 404);
+                    case 500: throw new CustomErrorClass(USER_INFO.CANNOT_GET, 500);
+                }
         }
     }
 }

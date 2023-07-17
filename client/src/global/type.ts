@@ -7,8 +7,3 @@ export const EXCHANGE_ENUM = {
   upbit: 'UPBIT'
 } as const;
 export type EXCHANGE = typeof EXCHANGE_ENUM[keyof typeof EXCHANGE_ENUM];
-
-export interface CustomError {
-  code : number,
-  message: string
-}

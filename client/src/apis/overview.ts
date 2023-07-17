@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import { CustomErrorClass } from "../global/error";
 
 export const overview = {
     getBinanceOverview : async () => {
@@ -6,17 +7,13 @@ export const overview = {
             const res = await axios.get(`/api/overview/BINANCE`);
             return res.data;
         } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 400:
-                    throw { code: 400, message: "no transanctions"};
-                case 403:
-                    throw { code: 403 };
-                case 500:
-                    throw { code: 500};
-                case 404:
-                    throw { code: 404};
-            }
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass("",400)
+                    case 403: throw new CustomErrorClass("",403)
+                    case 404: throw new CustomErrorClass("",404)
+                    case 500: throw new CustomErrorClass("",500)
+                }
         }
     },
     getUpbitOverview : async () => {
@@ -24,17 +21,13 @@ export const overview = {
             const res = await axios.get(`/api/overview/UPBIT`);
             return res.data;
         } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 400:
-                    throw { code: 400, message: "no transanctions"}
-                case 403:
-                    throw { code: 403 };
-                case 404:
-                    throw { code: 404};
-                case 500:
-                    throw { code: 500};
-            }
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass("", 400)
+                    case 403: throw new CustomErrorClass("", 403)
+                    case 404: throw new CustomErrorClass("", 404)
+                    case 500: throw new CustomErrorClass("", 500)
+                }
         }
     }
     

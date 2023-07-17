@@ -1,10 +1,9 @@
 import styled from "styled-components"
-import { CustomError, EXCHANGE, EXCHANGE_ENUM } from "../../global/type"
+import { EXCHANGE, EXCHANGE_ENUM } from "../../global/type"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiKeyFormValue } from "./apiType";
 import { useState } from "react";
 import { apiKey } from "../../apis/apiKey";
-import { AxiosError } from "axios";
 import { SlInfo } from "react-icons/sl"
 import binanceLogo from "../../assets/img/binance_logo.svg.png"
 import upbitLogo from "../../assets/img/upbit_logo.png"
@@ -13,14 +12,15 @@ import { useMutation } from "@tanstack/react-query";
 import useKeyList from "./hooks/useKeyList";
 import { useSetRecoilState } from "recoil";
 import { toastState } from "../../atoms/toast";
-import { APIKEY_ERROR_MESSAGE, MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
+import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
+import { CustomErrorClass } from "../../global/error";
 
 interface Props{
     exchange : EXCHANGE
 }
 export default function KeyRegisterForm({exchange} : Props){
-    const { mutateAsync : createApiMutateAsync, isLoading : createApiLoading, isError : isCreateApiError, error : createApiError } = useMutation(apiKey.createApiKey);
-    const { mutateAsync : checkApiMutateAsync, isLoading : checkApiLoading, isError : isCheckApiError, error : checkApiError } = useMutation(apiKey.checkApiKey);
+    const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
+    const { mutateAsync : checkApiMutateAsync } = useMutation(apiKey.checkApiKey);
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<apiKeyFormValue>({
         defaultValues:{ label: "", exchange, apikey: "", secretkey: "" }
     });
@@ -36,31 +36,26 @@ export default function KeyRegisterForm({exchange} : Props){
             const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
             formInfo = {...formInfo, exchange};
             const check = await checkApiMutateAsync(checkInfo);
-            console.log(check);
             const info = await createApiMutateAsync(formInfo);
-            console.log(info);
-            refetch();
+            await refetch();
+            setToast(prev => ({
+                ...prev,
+                isOpen: false,
+            }))
             setToast(prev => ({
                 ...prev,
                 isOpen: true,
                 text: MUTATE_SUCCESS_MESSAGE.CREATE_API_KEY,
                 state: "success",
             }))
-        }catch(err){
-            const error = err as CustomError;
+        }catch(err : unknown){
+            const error = err as CustomErrorClass;
             setToast(prev => ({
                 ...prev,
                 isOpen: true,
                 text: error.message,
                 state: "error",
             }))
-        }
-     }
-     const onCheckApi : SubmitHandler<apiKeyFormValue> = async (formInfo) => {
-        try{
-            const data = await checkApiMutateAsync(formInfo);
-        } catch(err){
-            const error = err as AxiosError;
         }
      }
     return <Container>

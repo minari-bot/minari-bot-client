@@ -3,6 +3,7 @@ import { SlCheck, SlBan} from "react-icons/sl";
 import theme from "../../styles/theme";
 import { useKeyInfo } from "./hooks/useKeyInfo";
 import { Suspense } from "react";
+import { makeRoundNumber } from "../../utils/makeCurrencyString";
 
 interface Props{
     selectedKeyId : string, 
@@ -10,6 +11,11 @@ interface Props{
 }
 export default function KeyInfo({ selectedKeyId, label } : Props){
     const info = useKeyInfo( selectedKeyId );
+    /*
+        TODO:
+        checkApiKey가 key정보를 요구해서, 호출할 수가 없음
+        keyId만으로 호출 할 수 있도록, 수정 후 반영
+    */
     return(
     <Suspense fallback={<div>loading..</div>}>
         <Container>
@@ -21,8 +27,8 @@ export default function KeyInfo({ selectedKeyId, label } : Props){
                     <div>Connection</div>
                 </Labels>
                 <Info>
-                    <div>{info?.balance}</div>
-                    <div>{info?.transaction}</div>
+                    <div>{makeRoundNumber(info?.balance || 0, 2) + " USDT"}</div>
+                    <div>{`${info?.transaction || 0} 회`}</div>
                     <div>{info?.connect? <SlCheck style={{
                         color: theme.light.darkBlue
                     }}/> 
@@ -83,7 +89,8 @@ const Info = styled.div`
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
     svg{
         font-size: 2rem;
     }

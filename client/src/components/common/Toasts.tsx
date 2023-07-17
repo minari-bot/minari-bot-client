@@ -35,7 +35,7 @@ export default function Toasts(){
         return <ErrorContainer>
                     <SlClose/>
                     <Texts>
-                        {toast.text}
+                        Error: {toast.text}
                     </Texts>
                 </ErrorContainer>
         return null;
