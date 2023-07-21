@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { EXCHANGE, EXCHANGE_ENUM } from "../../global/type"
+import { EXCHANGE } from "../../global/type"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiKeyFormValue } from "./apiType";
 import { useState } from "react";
@@ -14,9 +14,10 @@ import { useSetRecoilState } from "recoil";
 import { toastState } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
+import SubmitButton from "../common/SubmitButton";
 
 interface Props{
-    exchange : EXCHANGE
+    exchange : string
 }
 export default function KeyRegisterForm({exchange} : Props){
     const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
@@ -35,7 +36,7 @@ export default function KeyRegisterForm({exchange} : Props){
         try{
             const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
             formInfo = {...formInfo, exchange};
-            const check = await checkApiMutateAsync(checkInfo);
+            // const check = await checkApiMutateAsync(checkInfo);
             const info = await createApiMutateAsync(formInfo);
             await refetch();
             setToast(prev => ({
@@ -60,8 +61,8 @@ export default function KeyRegisterForm({exchange} : Props){
      }
     return <Container>
         <Head>
-            {exchange === EXCHANGE_ENUM.binance && <img src={binanceLogo} alt="binance"/>}
-            {exchange === EXCHANGE_ENUM.upbit && <img src={upbitLogo} alt="upbit"/>}
+            {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
+            {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
             <Title>API Key 등록</Title> 
             <SlInfo/>
         </Head>
@@ -134,7 +135,7 @@ export default function KeyRegisterForm({exchange} : Props){
                     })}
                 />
             <Foot>
-                <AddButton>추가</AddButton>
+                <SubmitButton width={55} title="추가" onClick={()=> {}}/>
             </Foot>
         </Form>
     </Container>
@@ -196,25 +197,6 @@ const Input = styled.input.attrs({ autocomplete: 'off',})`
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
-`
-const Button = styled.button`
-    border: 1px solid ${props => props.theme.light.formGray};
-    border-radius: 8px;
-    box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
-    padding: 0.75rem;
-    font-size: 1.2rem;
-    &:hover{
-        background-color: ${props => props.theme.light.borderGray};
-    }
-`
-const AddButton = styled(Button)`
-    background-color: ${props => props.theme.light.lightBlue};
-    color: ${props => props.theme.light.white};
-    padding: 0.75rem;
-    width: 6.5rem;
-    &:hover{
-        background-color: ${props => props.theme.light.darkBlue};
-    }
 `
 const Foot = styled.div`
     display: flex;

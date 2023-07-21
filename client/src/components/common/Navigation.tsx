@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Link, useMatch, useNavigate} from "react-router-dom";
-import { SlHome, SlChart, SlKey, SlLock, SlMenu } from "react-icons/sl";
+import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer } from "react-icons/sl";
 import { useState } from "react";
 export default function Navigation() {
     const [isShut, setShut] = useState(false);
@@ -20,6 +20,9 @@ export default function Navigation() {
             </Link>
             <Link to='setting/api'>
                 <SlKey/>
+            </Link>
+            <Link to='strategy'>
+                <SlEqualizer/>
             </Link>
             <Link to='auth/signIn'>
                 <SlLock/>

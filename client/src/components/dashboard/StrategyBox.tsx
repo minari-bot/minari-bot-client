@@ -30,7 +30,7 @@ export default function StrategyBox({symbol, leverage, strategyName, winRate, pr
             </Info>
             <Info>
                 <Label>거래량</Label>
-                <Value>{}</Value>
+                <Value>{0}</Value>
             </Info>
         </InfoWrapper>
     </Container>
@@ -82,7 +82,7 @@ const Info = styled.div`
     padding: 0 1rem;
 `
 const Label = styled.div`
-    
+    font-weight: bold;
 `
 const Value = styled.div`
     font-size: 1.4rem;

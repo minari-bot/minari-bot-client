@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import {  makeRoundNumber } from "../../utils/makeCurrencyString"
+import {  makeRoundNumber } from "../../utils/makeString"
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
 export interface Props{

@@ -12,7 +12,7 @@ import { toastState } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 
 interface Props{
-    exchange : EXCHANGE,
+    exchange : string,
     setSelectedKeyId : React.Dispatch<React.SetStateAction<string>>,
     setRightSideUIMode : React.Dispatch<React.SetStateAction<string>>,
     setLabel: React.Dispatch<React.SetStateAction<string>>,
@@ -42,13 +42,13 @@ export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode,
         setRightSideUIMode(rightSideUIState.keyAdd);
     }
     const { data : keyList, refetch} = useKeyList();
-    const { mutateAsync } = useMutation((apiKey.deleteApiKey));
+    const { mutateAsync } = useMutation(apiKey.deleteApiKey);
     
     return <Container>
             <Title>API Keys</Title>
             {
                 keyList.map((info, key) => 
-                exchange === info.exchange?
+                exchange === info.exchange.toLowerCase()?
                 <InfoBox key={info._id} isSelect={key === selectedIndex} onClick={onClickKey} data-index={key} data-label={info.label} id={info._id}>
                     <Dot/>
                     <TitleLabel>{info.label}</TitleLabel>
@@ -61,8 +61,7 @@ export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode,
                             <div>{info.apikey}</div>
                             <div>{"*".repeat(50)}</div>
                         </Info> 
-                        <DeleteButton onClick={() => onDelete(info._id)}><TfiClose/>
-                        </DeleteButton>
+                        <DeleteButton onClick={() => onDelete(info._id)}><TfiClose/></DeleteButton>
                     </Contents>
                 </InfoBox>
                 :

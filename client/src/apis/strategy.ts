@@ -43,7 +43,33 @@ export const strategy = {
                     case 500: throw new CustomErrorClass("", 500);
                 }
         }
+    },
+    getAllAlertStrategy: async () => {
+        try{
+            const res = await axios.get(`/api/alertstrategy`);
+            return res.data;
+        } catch(err){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass("", 400);
+                    case 403: throw new CustomErrorClass("", 403);
+                    case 404: throw new CustomErrorClass("", 403);
+                    case 500: throw new CustomErrorClass("", 500);
+                }
+        }
+    },    
+    SubscribeStrategy: async({id, label} : {id : string, label: string}) => {
+        try{
+            const res = await axios.put(`/api/subscribe/${id}/add`,{label: label});
+            return res.data;
+        } catch(err){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass("", 400);
+                    case 403: throw new CustomErrorClass("", 403);
+                    case 404: throw new CustomErrorClass("", 403);
+                    case 500: throw new CustomErrorClass("", 500);
+                }
+        }
     }
-    
-    
 }

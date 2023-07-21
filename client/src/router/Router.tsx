@@ -5,6 +5,7 @@ import Dashboard from "../screens/Dashboard";
 import Home from "../screens/Home";
 import { ProtectedRoute } from "./ProtectedRoute";
 import Api from "../screens/Api";
+import Strategy from "../screens/Strategy";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
                     {
                         path: "setting/api",
                         element: <Api/>
+                    },
+                    {
+                        path: "strategy",
+                        element: <Strategy/>
                     }
                 ]
             },

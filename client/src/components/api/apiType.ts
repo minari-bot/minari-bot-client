@@ -13,7 +13,7 @@ export interface apiKeyCheckValue{
 }
 interface apiKeyInfo{
     _id: string,
-    exchange: EXCHANGE,
+    exchange: string,
     label: string,
     apikey: string,
     userId: string,
