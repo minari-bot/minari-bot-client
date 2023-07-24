@@ -36,7 +36,7 @@ export default function KeyRegisterForm({exchange} : Props){
         try{
             const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
             formInfo = {...formInfo, exchange};
-            // const check = await checkApiMutateAsync(checkInfo);
+            const check = await checkApiMutateAsync(checkInfo);
             const info = await createApiMutateAsync(formInfo);
             await refetch();
             setToast(prev => ({
