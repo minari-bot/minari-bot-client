@@ -1,10 +1,9 @@
 import styled from "styled-components"
-import { CustomError, EXCHANGE, EXCHANGE_ENUM } from "../../global/type"
+import { EXCHANGE } from "../../global/type"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiKeyFormValue } from "./apiType";
 import { useState } from "react";
 import { apiKey } from "../../apis/apiKey";
-import { AxiosError } from "axios";
 import { SlInfo } from "react-icons/sl"
 import binanceLogo from "../../assets/img/binance_logo.svg.png"
 import upbitLogo from "../../assets/img/upbit_logo.png"
@@ -13,14 +12,16 @@ import { useMutation } from "@tanstack/react-query";
 import useKeyList from "./hooks/useKeyList";
 import { useSetRecoilState } from "recoil";
 import { toastState } from "../../atoms/toast";
-import { APIKEY_ERROR_MESSAGE, MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
+import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
+import { CustomErrorClass } from "../../global/error";
+import SubmitButton from "../common/SubmitButton";
 
 interface Props{
-    exchange : EXCHANGE
+    exchange : string
 }
 export default function KeyRegisterForm({exchange} : Props){
-    const { mutateAsync : createApiMutateAsync, isLoading : createApiLoading, isError : isCreateApiError, error : createApiError } = useMutation(apiKey.createApiKey);
-    const { mutateAsync : checkApiMutateAsync, isLoading : checkApiLoading, isError : isCheckApiError, error : checkApiError } = useMutation(apiKey.checkApiKey);
+    const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
+    const { mutateAsync : checkApiMutateAsync } = useMutation(apiKey.checkApiKey);
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<apiKeyFormValue>({
         defaultValues:{ label: "", exchange, apikey: "", secretkey: "" }
     });
@@ -36,18 +37,20 @@ export default function KeyRegisterForm({exchange} : Props){
             const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
             formInfo = {...formInfo, exchange};
             const check = await checkApiMutateAsync(checkInfo);
-            console.log(check);
             const info = await createApiMutateAsync(formInfo);
-            console.log(info);
-            refetch();
+            await refetch();
+            setToast(prev => ({
+                ...prev,
+                isOpen: false,
+            }))
             setToast(prev => ({
                 ...prev,
                 isOpen: true,
                 text: MUTATE_SUCCESS_MESSAGE.CREATE_API_KEY,
                 state: "success",
             }))
-        }catch(err){
-            const error = err as CustomError;
+        }catch(err : unknown){
+            const error = err as CustomErrorClass;
             setToast(prev => ({
                 ...prev,
                 isOpen: true,
@@ -56,17 +59,10 @@ export default function KeyRegisterForm({exchange} : Props){
             }))
         }
      }
-     const onCheckApi : SubmitHandler<apiKeyFormValue> = async (formInfo) => {
-        try{
-            const data = await checkApiMutateAsync(formInfo);
-        } catch(err){
-            const error = err as AxiosError;
-        }
-     }
     return <Container>
         <Head>
-            {exchange === EXCHANGE_ENUM.binance && <img src={binanceLogo} alt="binance"/>}
-            {exchange === EXCHANGE_ENUM.upbit && <img src={upbitLogo} alt="upbit"/>}
+            {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
+            {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
             <Title>API Key 등록</Title> 
             <SlInfo/>
         </Head>
@@ -139,7 +135,7 @@ export default function KeyRegisterForm({exchange} : Props){
                     })}
                 />
             <Foot>
-                <AddButton>추가</AddButton>
+                <SubmitButton width={55} title="추가" onClick={()=> {}}/>
             </Foot>
         </Form>
     </Container>
@@ -201,25 +197,6 @@ const Input = styled.input.attrs({ autocomplete: 'off',})`
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
-`
-const Button = styled.button`
-    border: 1px solid ${props => props.theme.light.formGray};
-    border-radius: 8px;
-    box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
-    padding: 0.75rem;
-    font-size: 1.2rem;
-    &:hover{
-        background-color: ${props => props.theme.light.borderGray};
-    }
-`
-const AddButton = styled(Button)`
-    background-color: ${props => props.theme.light.lightBlue};
-    color: ${props => props.theme.light.white};
-    padding: 0.75rem;
-    width: 6.5rem;
-    &:hover{
-        background-color: ${props => props.theme.light.darkBlue};
-    }
 `
 const Foot = styled.div`
     display: flex;

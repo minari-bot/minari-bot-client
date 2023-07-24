@@ -5,10 +5,9 @@ import { useState } from "react";
 import upbitLogo from "../assets/img/upbit_logo.png"
 import binanceLogo from "../assets/img/binance_logo.svg.png"
 import KeyList from "../components/api/KeyList";
-import { EXCHANGE, EXCHANGE_ENUM } from "../global/type";
+import { EXCHANGE } from "../global/type";
 import KeyRegisterForm from "../components/api/KeyRegisterForm";
 import KeyInfo from "../components/api/KeyInfo";
-import { useKeyInfo } from "../components/api/hooks/useKeyInfo";
 
 export const rightSideUIState ={
     nothing : "nothing",
@@ -16,15 +15,15 @@ export const rightSideUIState ={
     keyInfo : "keyInfo",
 }
 export default function Api(){
-    const [exchangeSelect, setExchangeSelect] = useState<EXCHANGE>(EXCHANGE_ENUM.binance);
+    const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [selectedKeyId, setSelectedKeyId] = useState("");
     const [label, setLabel] = useState("");
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.nothing);
     return <Container>
         <Header/>
         <Icons>
-            <ImgButton onClick={() => setExchangeSelect(EXCHANGE_ENUM.binance)} title={EXCHANGE_ENUM.binance} isSelect={exchangeSelect === EXCHANGE_ENUM.binance} img={binanceLogo}/>
-            <ImgButton onClick={() => setExchangeSelect(EXCHANGE_ENUM.upbit)} title={EXCHANGE_ENUM.upbit} isSelect={exchangeSelect === EXCHANGE_ENUM.upbit} img={upbitLogo}/>
+            <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
+            <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
         </Icons>
         <Main>
             <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
@@ -34,7 +33,7 @@ export default function Api(){
                     <KeyRegisterForm exchange={exchangeSelect}/>
                     :
                     rightSideUIMode === rightSideUIState.keyInfo?
-                    <KeyInfo selectedKeyId={selectedKeyId} label={label}/>
+                    <KeyInfo selectedKeyId={selectedKeyId} label={label} />
                     :
                     null
                 }

@@ -19,6 +19,7 @@ const Container = styled.div`
     width: 35rem;
     display: flex;
     flex-direction: column;
+    gap: 1.25rem;
 `
 const Head = styled.div`
     display: flex;

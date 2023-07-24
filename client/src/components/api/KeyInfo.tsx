@@ -3,13 +3,15 @@ import { SlCheck, SlBan} from "react-icons/sl";
 import theme from "../../styles/theme";
 import { useKeyInfo } from "./hooks/useKeyInfo";
 import { Suspense } from "react";
+import { makeRoundNumber } from "../../utils/makeString";
+
 
 interface Props{
     selectedKeyId : string, 
     label : string,
 }
 export default function KeyInfo({ selectedKeyId, label } : Props){
-    const info = useKeyInfo( selectedKeyId );
+    const info = useKeyInfo(selectedKeyId);
     return(
     <Suspense fallback={<div>loading..</div>}>
         <Container>
@@ -21,8 +23,8 @@ export default function KeyInfo({ selectedKeyId, label } : Props){
                     <div>Connection</div>
                 </Labels>
                 <Info>
-                    <div>{info?.balance}</div>
-                    <div>{info?.transaction}</div>
+                    <div>{makeRoundNumber(info?.balance || 0, 2) + " USDT"}</div>
+                    <div>{`${info?.transaction || 0} 회`}</div>
                     <div>{info?.connect? <SlCheck style={{
                         color: theme.light.darkBlue
                     }}/> 
@@ -83,7 +85,8 @@ const Info = styled.div`
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
     svg{
         font-size: 2rem;
     }
