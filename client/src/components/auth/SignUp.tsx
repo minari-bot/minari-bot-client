@@ -27,11 +27,6 @@ export default function SignUp({signUpError, setSignUpError} : SignUpProps){
                 password : formInfo.password
             }
             await signInAsync(loginInfo);
-
-            user.updateUser({
-                email : info.email,
-                name : info.name,
-            })
             //error 메세지 초기화 후 redirect 
             setSignUpError("");
             navigate('/dashboard');

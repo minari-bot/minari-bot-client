@@ -39,5 +39,6 @@ export const LOCAL_STORAGE_KEYS = {
 export const MUTATE_SUCCESS_MESSAGE = {
   CREATE_API_KEY : 'API Key가 성공적으로 등록되었습니다',
   DELETE_API_KEY : '해당 API Key가 삭제되었습니다.',
-  ADD_SUBSCRIBE: '선택한 API Key로 전략을 구독하였습니다.'
+  ADD_SUBSCRIBE: '선택한 API Key로 전략을 구독하였습니다.',
+  SIGN_OUT : '로그아웃 되었습니다.',
 }

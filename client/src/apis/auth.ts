@@ -43,7 +43,7 @@ export const auth = {
     },
     userInfo: async() => {
         try{
-            const res = await axios.get(`/api/auth/userinfo`);
+            const res = await axios.get(`/api/auth/user`);
             return res.data;
         } catch(err){
             if(axios.isAxiosError(err))

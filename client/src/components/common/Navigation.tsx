@@ -1,11 +1,33 @@
 import styled from "styled-components"
 import { Link, useMatch, useNavigate} from "react-router-dom";
-import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer } from "react-icons/sl";
+import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer, SlLogout } from "react-icons/sl";
 import { useState } from "react";
+import { clearStoredUser, useUser } from "../../hooks/useUser";
+import { useMutation } from "@tanstack/react-query";
+import { auth } from "../../apis/auth";
+import { useRecoilState } from "recoil";
+import { toastState } from "../../atoms/toast";
+import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 export default function Navigation() {
+    const navigate = useNavigate();
     const [isShut, setShut] = useState(false);
+    const [toast, setToast] = useRecoilState(toastState);
+    const user = useUser();
+    const { mutateAsync } = useMutation(auth.signOut);
     const shutNavigation = () =>{
         setShut(prev => !prev);
+    }
+    const onSignOut = async () => {
+        await mutateAsync();
+        clearStoredUser();
+        user.clearUser();
+        navigate('/');
+        setToast(prev => ({
+            ...prev,
+            isOpen : true,
+            text: MUTATE_SUCCESS_MESSAGE.SIGN_OUT,
+            state : "success"
+        }));
     }
     return <Container isShut={isShut}>
         <ListIcon onClick={shutNavigation}>
@@ -24,14 +46,22 @@ export default function Navigation() {
             <Link to='strategy'>
                 <SlEqualizer/>
             </Link>
-            <Link to='auth/signIn'>
-                <SlLock/>
-            </Link>
+            {
+                Object.keys(user.user).length === 0 && user.user.constructor === Object?
+                <Link to='auth/signin'>
+                    <SlLock/>
+                </Link>
+                :
+                <Button onClick={onSignOut}>
+                    <SlLogout/>
+                </Button>
+            }
+           
         </Menu>
     </Container>
 }
 
-export const Container = styled.nav<{isShut : boolean}>`
+const Container = styled.nav<{isShut : boolean}>`
     display: flex;
     flex-direction: column;
     width: 7rem;
@@ -53,7 +83,7 @@ export const Container = styled.nav<{isShut : boolean}>`
     }
 `;
   
-export const Menu = styled.div<{isShut : boolean}>`
+const Menu = styled.div<{isShut : boolean}>`
     /* display: ${props => props.isShut? "none" : "flex"}; */
     display: flex;
     transform: ${props => props.isShut? "scaleY(0)" : "scaleY(1)"};
@@ -67,9 +97,12 @@ export const Menu = styled.div<{isShut : boolean}>`
     padding-top: 5rem;
 `;
 
-export const ListIcon = styled.div`
+const ListIcon = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 3rem 0;
 `;
+const Button = styled.button`
+    cursor: pointer;
+`

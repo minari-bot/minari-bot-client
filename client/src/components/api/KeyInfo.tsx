@@ -5,18 +5,13 @@ import { useKeyInfo } from "./hooks/useKeyInfo";
 import { Suspense } from "react";
 import { makeRoundNumber } from "../../utils/makeString";
 
+
 interface Props{
     selectedKeyId : string, 
     label : string,
 }
 export default function KeyInfo({ selectedKeyId, label } : Props){
-    const info = useKeyInfo( selectedKeyId );
-    /*
-        TODO:
-        checkApiKey가 key정보를 요구해서, 호출할 수가 없음
-        keyId만으로 호출 할 수 있도록, 수정 후 반영
-        
-    */
+    const info = useKeyInfo(selectedKeyId);
     return(
     <Suspense fallback={<div>loading..</div>}>
         <Container>

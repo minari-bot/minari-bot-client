@@ -31,7 +31,7 @@ export default function OverallStatBoxes({day, exchangeSelect} : Props){
     const upbitData = useUpbitOverview();
     useEffect(() => {
         setDiffDay(getDiffDay());
-        if(exchangeSelect === EXCHANGE_BUTTON_ENUM.binance)
+        if(exchangeSelect === EXCHANGE_BUTTON_ENUM.binance && binanceData?.overview)
         {
             setValues(prev => ({
                 ...prev,
@@ -42,7 +42,7 @@ export default function OverallStatBoxes({day, exchangeSelect} : Props){
                 currency: binanceData?.currency || "",
             }))
         }
-        if(exchangeSelect === EXCHANGE_BUTTON_ENUM.upbit)
+        if(exchangeSelect === EXCHANGE_BUTTON_ENUM.upbit && upbitData?.overview)
             setValues(prev => ({
                 ...prev,
                 totalMoney : upbitData?.overview[0]?.totalMoney || 0,

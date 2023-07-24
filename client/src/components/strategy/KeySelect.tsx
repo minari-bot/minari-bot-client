@@ -8,13 +8,14 @@ import { useSetRecoilState } from "recoil";
 import { toastState } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
+import KeyCheckDot from "../common/ApiCheckDot";
 
 interface Props{
     exchange : string,
     setKeySelectUI: React.Dispatch<React.SetStateAction<boolean>>
 }
 export default function KeySelect({exchange, setKeySelectUI} : Props){
-    const {data } = useKeyList();
+    const { data } = useKeyList();
     const { mutateAsync } = useMutation(strategy.SubscribeStrategy);
     const setToast = useSetRecoilState(toastState);
     const onClick = async (id : string, label : string) => {
@@ -49,7 +50,7 @@ export default function KeySelect({exchange, setKeySelectUI} : Props){
                         <Symbol name={exchange?.toLowerCase()}/>
                         <Label>{info.label}</Label>
                     </KeyTitle>
-                    <Dot/>
+                    <KeyCheckDot id={info._id}/>
                 </Wrapper>
                 )
             }
@@ -122,17 +123,19 @@ const KeyTitle = styled.div`
     align-items: center;
     gap: 0.5rem;
 `
-
-const Dot = styled.div`
-    width: 1rem;
-    height: 1rem;
-    border-radius: 1rem;
-    background: ${props => props.theme.light.linearGreen};
-`
 const ExitButton = styled.button`
     position: absolute;
     right: 1.0rem;
     top: 1.5rem;
     font-size: 1.5rem;
     cursor: pointer;
+`
+const GreenDot = styled.div`
+    width: 1rem;
+    height: 1rem;
+    border-radius: 1rem;
+    background: ${props => props.theme.light.linearGreen};
+`
+const RedDot = styled(GreenDot)`
+    background: ${props => props.theme.light.pink};
 `

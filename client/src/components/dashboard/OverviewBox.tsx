@@ -23,11 +23,7 @@ export default function OverallStatBox({title, status, value, symbol} : Props){
             :
             <Trend isUptrend={status > 0}>
                 {status}%
-                {status > 0? 
-                    "↑"
-                    :
-                    "↓"
-                }
+                {status > 0? "↑" : "↓"}
             </Trend>
         }
     </Container>

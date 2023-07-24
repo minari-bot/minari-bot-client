@@ -6,8 +6,9 @@ import { SignInFormValue } from "./authType";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "../../apis/auth";
 import { AxiosError } from "axios";
-import { useUser } from "../../hooks/useUser";
+import { getStoredUser, setStoredUser, useUser } from "../../hooks/useUser";
 import theme from "../../styles/theme";
+import { useEffect } from "react";
 
 
 function SignIn({signInError, setSignInError} : SignInProps){
@@ -17,14 +18,13 @@ function SignIn({signInError, setSignInError} : SignInProps){
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignInFormValue>({
         defaultValues:{ email: "", password: "" }
     });
-    
+    useEffect(() => {
+        if(getStoredUser()) navigate('/dashboard');
+    },[navigate])
     const onSubmit : SubmitHandler<SignInFormValue> = async (formInfo) =>{
         try{
             const info = await mutateAsync(formInfo);
-            user.updateUser({
-                email : info.email,
-                name : info.name,
-            })
+            user.updateUser(info);
             setSignInError("");
             navigate('/dashboard');
         }catch(err){

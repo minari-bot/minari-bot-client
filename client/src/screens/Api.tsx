@@ -8,7 +8,6 @@ import KeyList from "../components/api/KeyList";
 import { EXCHANGE } from "../global/type";
 import KeyRegisterForm from "../components/api/KeyRegisterForm";
 import KeyInfo from "../components/api/KeyInfo";
-import { useKeyInfo } from "../components/api/hooks/useKeyInfo";
 
 export const rightSideUIState ={
     nothing : "nothing",
@@ -34,7 +33,7 @@ export default function Api(){
                     <KeyRegisterForm exchange={exchangeSelect}/>
                     :
                     rightSideUIMode === rightSideUIState.keyInfo?
-                    <KeyInfo selectedKeyId={selectedKeyId} label={label}/>
+                    <KeyInfo selectedKeyId={selectedKeyId} label={label} />
                     :
                     null
                 }

@@ -11,7 +11,7 @@ export interface apiKeyCheckValue{
     apikey: string,
     secretkey: string,
 }
-interface apiKeyInfo{
+export interface apiKeyInfo{
     _id: string,
     exchange: string,
     label: string,
