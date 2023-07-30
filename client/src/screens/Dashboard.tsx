@@ -19,7 +19,7 @@ export default function Dashboard(){
     const [daySelect, setDaySelect] = useState<DAY_BUTTON>(DAY_BUTTON_ENUM.week);
     return <Container>
             <Header/>
-            {/* <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<></>}> */}
+            <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<></>}>
                 <>
                 <h1>대시보드</h1>
                 <FlexRowBtwn>
@@ -49,7 +49,7 @@ export default function Dashboard(){
                     </Column>
                 </SubLayout>
                 </>
-            {/* </AsyncWrapper> */}
+            </AsyncWrapper>
         </Container>
 }
 
