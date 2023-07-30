@@ -1,32 +1,23 @@
 import styled from "styled-components"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SignInFormValue } from "./authType";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../../apis/auth";
 import { AxiosError } from "axios";
-import { useUser } from "../../hooks/useUser";
 import theme from "../../styles/theme";
+import useSignIn from "./hooks/useSignIn";
+import LongSumbitButton from "../common/LongSubmitButton";
 
 
 function SignIn({signInError, setSignInError} : SignInProps){
-    const navigate = useNavigate();
-    const { mutateAsync, isLoading, isError, error } = useMutation(auth.signIn);
-    const user = useUser();
+    const signInMutate = useSignIn();
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignInFormValue>({
         defaultValues:{ email: "", password: "" }
     });
-    
     const onSubmit : SubmitHandler<SignInFormValue> = async (formInfo) =>{
         try{
-            const info = await mutateAsync(formInfo);
-            user.updateUser({
-                email : info.email,
-                name : info.name,
-            })
+            await signInMutate(formInfo);
             setSignInError("");
-            navigate('/dashboard');
         }catch(err){
             const error = err as AxiosError;
             setSignInError(error.message);
@@ -97,10 +88,10 @@ function SignIn({signInError, setSignInError} : SignInProps){
                         }
                     })
                 }id="password" type="password"></Input>
-            <Button type="submit">로그인</Button>
+            <LongSumbitButton title="로그인"/>
             <Info>
-                <span>아이디 찾기</span>
-                <span>비밀번호 찾기</span>
+                {/* <span>아이디 찾기</span> */}
+                {/* <span>비밀번호 찾기</span> */}
             </Info>
         </Form>
     </Wrapper>
@@ -158,18 +149,6 @@ const Text = styled.div`
 const Error = styled.span`
     color: ${props => props.theme.light.red};
     font-size: 1.1rem;
-`
-const Button = styled.button`
-    background-color: ${props => props.theme.light.lightBlue};
-    color: ${props => props.theme.light.white};
-    padding: 1rem 5rem;
-    font-size: 1.2rem;
-    margin-top: 2rem;
-    border-radius: 0.5rem;
-    width: 100%;
-    &:hover{
-        background-color: ${props => props.theme.light.darkBlue};
-    }
 `
 const Info = styled.div`
     display: flex;

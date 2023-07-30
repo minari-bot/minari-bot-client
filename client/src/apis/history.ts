@@ -1,37 +1,34 @@
+import { CustomErrorClass } from "../global/error";
 import { HISTORY_ERROR_MESSAGE } from "../react-query/constants";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 export const histroy = {
     getBinanceOrderHistory : async () => {
         try{
             const res = await axios.get(`/api/history/all/BINANCE`);
             return res.data;    
-        } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 403:   
-                    throw { code: 403 };
-                case 404:
-                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND };
-                case 500:
-                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD };
+        } catch(err : unknown){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_FOUND, 400); //empty
+                    case 403: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 403);
+                    case 404: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_FOUND, 404);
+                    case 500: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 500);
+                }
             }
-        }
     },
     getUpbitOrderHistory : async () => {
         try{
             const res = await axios.get(`/api/history/all/UPBIT`);
             return res.data;
         } catch(err){
-            const error = err as AxiosError;
-            switch(error.response?.status){
-                case 403:
-                    throw { code: 403 };
-                case 404:
-                    throw { code: 400, message: HISTORY_ERROR_MESSAGE.CANNOT_FOUND };
-                case 500:
-                    throw { code: 500, message: HISTORY_ERROR_MESSAGE.CANNOT_LOAD };
-            }
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 400);
+                    case 403: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 403);
+                    case 404: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_FOUND, 404);
+                    case 500: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 500);
+                }
         }
     }
     

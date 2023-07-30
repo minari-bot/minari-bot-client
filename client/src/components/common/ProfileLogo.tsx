@@ -4,16 +4,10 @@ interface Props{
     img : string
 }
 export default function ProfileLogo({img} : Props){
-    return <Wrapper>
-        <img src={img === ""? defaultUserImg : img} alt="profile-img"/>
-    </Wrapper>
+    return <Img src={img === ""? defaultUserImg : img} alt="profile-img"/>
 }
-const Wrapper = styled.div`
+const Img = styled.img`
     width: 3.75rem;
     height: 3.75rem;
     border-radius: 9999px;
-    img{
-        width: 3.75rem;
-        height: 3.75rem;
-    }
 `

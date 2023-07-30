@@ -25,7 +25,7 @@ const Container = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 3rem 0;
+    padding: 3rem 0rem;
     box-sizing: border-box;
 `
 const Profile = styled.div`

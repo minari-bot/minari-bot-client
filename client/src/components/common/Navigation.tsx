@@ -1,11 +1,18 @@
 import styled from "styled-components"
-import { Link, useMatch, useNavigate} from "react-router-dom";
-import { SlHome, SlChart, SlKey, SlLock, SlMenu } from "react-icons/sl";
+import { Link } from "react-router-dom";
+import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer, SlLogout } from "react-icons/sl";
 import { useState } from "react";
+import { useUser } from "../../hooks/useUser";
+import useSignOut from "../auth/hooks/useSignOut";
 export default function Navigation() {
     const [isShut, setShut] = useState(false);
+    const signOutAsync = useSignOut();
+    const user = useUser();
     const shutNavigation = () =>{
         setShut(prev => !prev);
+    }
+    const onClick = async () => {
+        await signOutAsync();
     }
     return <Container isShut={isShut}>
         <ListIcon onClick={shutNavigation}>
@@ -21,14 +28,25 @@ export default function Navigation() {
             <Link to='setting/api'>
                 <SlKey/>
             </Link>
-            <Link to='auth/signIn'>
-                <SlLock/>
+            <Link to='strategy'>
+                <SlEqualizer/>
             </Link>
+            {
+                !user.user?
+                <Link to='auth/signin'>
+                    <SlLock/>
+                </Link>
+                :
+                <Button onClick={onClick}>
+                    <SlLogout/>
+                </Button>
+            }
+           
         </Menu>
     </Container>
 }
 
-export const Container = styled.nav<{isShut : boolean}>`
+const Container = styled.nav<{isShut : boolean}>`
     display: flex;
     flex-direction: column;
     width: 7rem;
@@ -50,7 +68,7 @@ export const Container = styled.nav<{isShut : boolean}>`
     }
 `;
   
-export const Menu = styled.div<{isShut : boolean}>`
+const Menu = styled.div<{isShut : boolean}>`
     /* display: ${props => props.isShut? "none" : "flex"}; */
     display: flex;
     transform: ${props => props.isShut? "scaleY(0)" : "scaleY(1)"};
@@ -64,9 +82,12 @@ export const Menu = styled.div<{isShut : boolean}>`
     padding-top: 5rem;
 `;
 
-export const ListIcon = styled.div`
+const ListIcon = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 3rem 0;
 `;
+const Button = styled.button`
+    cursor: pointer;
+`

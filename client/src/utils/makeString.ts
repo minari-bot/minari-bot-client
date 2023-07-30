@@ -9,3 +9,6 @@ export function makeQuantityString(quantity : number, symbol : string, fixedNumb
     const words = symbol.split('/');
     return `${makeRoundNumber(quantity, fixedNumber)} ${words[0]}`;
 }
+export function makeSymbolWithoutCurrency(symbol : string){
+    return symbol.split('/')[0];
+}

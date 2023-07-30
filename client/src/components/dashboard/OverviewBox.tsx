@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import {  makeRoundNumber } from "../../utils/makeCurrencyString"
+import {  makeRoundNumber } from "../../utils/makeString"
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
 export interface Props{
@@ -23,11 +23,7 @@ export default function OverallStatBox({title, status, value, symbol} : Props){
             :
             <Trend isUptrend={status > 0}>
                 {status}%
-                {status > 0? 
-                    "↑"
-                    :
-                    "↓"
-                }
+                {status > 0? "↑" : "↓"}
             </Trend>
         }
     </Container>
