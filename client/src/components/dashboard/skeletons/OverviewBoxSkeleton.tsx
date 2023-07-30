@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { loadingAnimation } from "./loadingAnimation"
 
-export const OverallStatBoxSkeleton = () => (
+export const OverviewBoxSkeleton = () => (
     <Container>
         <Header>
             <Title/>

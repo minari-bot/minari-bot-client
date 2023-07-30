@@ -3,7 +3,7 @@ import { overview } from "../../../apis/overview";
 import { OverviewData } from "../type";
 import { queryKeys } from "../../../react-query/constants";
 
-const fallback : OverviewData = {
+export const fallback : OverviewData = {
     startTransaction: 0,
 	_id: "",
 	userId: "",
@@ -17,10 +17,12 @@ const fallback : OverviewData = {
 	currency: ""
 }
 export function useBinanceOverview(){
-    const { data = fallback } = useQuery<OverviewData>([queryKeys.overview, queryKeys.binance] , () => overview.getBinanceOverview());
+    const { data = fallback } = useQuery<OverviewData>([queryKeys.overview, queryKeys.binance] , () => overview.getBinanceOverview(),{
+	});
     return data;
 }
 export function useUpbitOverview(){
-    const { data = fallback } = useQuery<OverviewData>([queryKeys.overview, queryKeys.upbit] , () => overview.getUpbitOverview());
+    const { data = fallback } = useQuery<OverviewData>([queryKeys.overview, queryKeys.upbit] , () => overview.getUpbitOverview(),{
+	});
     return data;
 }

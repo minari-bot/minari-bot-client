@@ -1,22 +1,21 @@
 import styled from "styled-components";
-import StrategyBox from "../components/strategy/StrategyBox";
 import Header from "../components/common/Header";
-import { useAllAlertStrategy } from "../components/strategy/hooks/useAllAlertStrategy";
 import { StrategyBoxSkeleton } from "../components/strategy/skeletons/StrategyBoxSkeleton";
-import { Suspense } from "react";
+import StrategyContainer from "../components/strategy/StrategyContainer";
+import AsyncWrapper from "../components/error/AsyncWrapper";
+import ErrorPage from "../components/error/ErrorPage";
 
 export default function Strategy(){
-    const data = useAllAlertStrategy();
     return <Container>
-        {/* <Header/> */}
-        <Wrapper>
-        {
-            data.map(( item ) => <Suspense key={item._id} fallback={<StrategyBoxSkeleton/>} >
-                <StrategyBox info={item} />
-            </Suspense>)
-        }
-        </Wrapper>
-    </Container>
+                <Header/>
+                <Center>
+                    <Wrapper>
+                    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<>{Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
+                        <StrategyContainer/>
+                    </AsyncWrapper>
+                    </Wrapper>
+                </Center>
+            </Container>
 }
 
 const Container = styled.div`
@@ -25,13 +24,20 @@ const Container = styled.div`
     color: ${props => props.theme.light.black};
     font-size: 1.3rem;
     margin-bottom: 2rem;
+    margin-left: 7.5rem;
     gap: 1.0rem;
+`
+const Center = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 5rem 15rem;
-    gap: 2rem;
+    padding: 5rem 10rem;
+    gap: 3.5rem;
 
 `

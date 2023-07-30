@@ -3,33 +3,27 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { Link } from "react-router-dom";
 import { SignUpFormValue } from "./authType";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../../apis/auth";
-import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import { useUser } from "../../hooks/useUser";
 import theme from "../../styles/theme";
+import useSignIn from "./hooks/useSignIn";
+import useSignUp from "./hooks/useSignUp";
+import LongSumbitButton from "../common/LongSubmitButton";
 export default function SignUp({signUpError, setSignUpError} : SignUpProps){
-    const navigate = useNavigate();
-    // const [, setUser] = useRecoilState(userState);
-    const {mutateAsync : signUpAsync, isLoading : signUpLoading} = useMutation(auth.signUp);
-    const {mutateAsync : signInAsync, isLoading : signInLoading} = useMutation(auth.signIn);
-    const user = useUser();
+    const signInAsync = useSignIn();
+    const signUpAsync = useSignUp();
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignUpFormValue>({
         defaultValues:{ email: "", password: "", name:""}
     });
     const onSubmit : SubmitHandler<SignUpFormValue> = async (formInfo) =>{
        try{
             //signUp 및 signIn api 호출
-            const info = await signUpAsync(formInfo);
+            await signUpAsync(formInfo);
             const loginInfo = {
                 email : formInfo.email,
                 password : formInfo.password
             }
             await signInAsync(loginInfo);
-            //error 메세지 초기화 후 redirect 
             setSignUpError("");
-            navigate('/dashboard');
        }
        catch(err){
             const error = err as AxiosError;
@@ -132,7 +126,7 @@ export default function SignUp({signUpError, setSignUpError} : SignUpProps){
                         }
                     })
                 }id="password" type="password"></Input>
-            <Button type="submit">회원 가입</Button>
+            <LongSumbitButton title="회원가입"/>
         </Form>
     </Wrapper>
 
@@ -189,16 +183,4 @@ const Label = styled.div`
 const Error = styled.span`
     color: ${props => props.theme.light.red};
     font-size: 11px;
-`
-const Button = styled.button`
-    background-color: ${props => props.theme.light.lightBlue};
-    color: white;
-    padding: 1rem 5rem;
-    font-size: 1.2rem;
-    margin-top: 20px;
-    border-radius: 5px;
-    width: 100%;
-    &:hover{
-        background-color: ${props => props.theme.light.darkBlue};
-    }
 `

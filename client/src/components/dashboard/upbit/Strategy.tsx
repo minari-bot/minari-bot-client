@@ -1,14 +1,13 @@
 import StrategyBox from "../StrategyBox";
 import { StrategyBoxSkeleton } from "../skeletons/StrategyBoxSkeleton";
 import { useUpbitStrategy } from "../hooks/useStrategy";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 export default function UpbitStrategy({setCount} : {setCount : React.Dispatch<React.SetStateAction<number>>}){
     const { data, length } = useUpbitStrategy();
     useEffect(() => {
         setCount(length);
       }, [length, setCount]);
-    return data? <>{data.map((item, i) => <StrategyBox key={item.strategyId + i} symbol={item.symbol} leverage={item.leverage} strategyName={item.strategyName} strategyUrl={item.strategyUrl} winRate={item.winRate} profitPercent={item.profitPercent}/>)}</>
-            :
-            <>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>
+    return <>{data.map((item, i) => <StrategyBox key={item.strategyId + i} symbol={item.symbol} leverage={item.leverage} strategyName={item.strategyName} strategyUrl={item.strategyUrl} winRate={item.winRate} profitPercent={item.profitPercent}/>)}</>
+      
 }

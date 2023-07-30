@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { EXCHANGE } from "../../global/type"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiKeyFormValue } from "./apiType";
-import { useState } from "react";
 import { apiKey } from "../../apis/apiKey";
 import { SlInfo } from "react-icons/sl"
 import binanceLogo from "../../assets/img/binance_logo.svg.png"
@@ -14,7 +13,7 @@ import { useSetRecoilState } from "recoil";
 import { toastState } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
-import SubmitButton from "../common/SubmitButton";
+import LongSumbitButton from "../common/LongSubmitButton";
 
 interface Props{
     exchange : string
@@ -22,27 +21,22 @@ interface Props{
 export default function KeyRegisterForm({exchange} : Props){
     const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
     const { mutateAsync : checkApiMutateAsync } = useMutation(apiKey.checkApiKey);
-    const { register, handleSubmit, formState: { errors }, trigger} = useForm<apiKeyFormValue>({
+    const { register, handleSubmit, formState: { errors } } = useForm<apiKeyFormValue>({
         defaultValues:{ label: "", exchange, apikey: "", secretkey: "" }
     });
     const setToast = useSetRecoilState(toastState);
     const { refetch } = useKeyList();
-    const [readyInfo, setReadyInfo] = useState({
-        label : false,
-        apikey : false,
-        secretkey: false,
-    });
     const onSubmit : SubmitHandler<apiKeyFormValue> = async (formInfo : apiKeyFormValue) =>{
         try{
             const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
             formInfo = {...formInfo, exchange};
-            // const check = await checkApiMutateAsync(checkInfo);
-            const info = await createApiMutateAsync(formInfo);
+            await checkApiMutateAsync(checkInfo);
+            await createApiMutateAsync(formInfo);
             await refetch();
-            setToast(prev => ({
-                ...prev,
-                isOpen: false,
-            }))
+            // setToast(prev => ({
+            //     ...prev,
+            //     isOpen: false,
+            // }))
             setToast(prev => ({
                 ...prev,
                 isOpen: true,
@@ -134,16 +128,14 @@ export default function KeyRegisterForm({exchange} : Props){
                         }
                     })}
                 />
-            <Foot>
-                <SubmitButton width={55} title="추가" onClick={()=> {}}/>
-            </Foot>
+            <LongSumbitButton title="추가"/>
         </Form>
     </Container>
 }
 const Container = styled.div`
     display: grid;
     grid-template-rows: 1fr 6fr;
-    border-radius: 25px;
+    border-radius: 1.5rem;
     background-color: ${props => props.theme.light.white};
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
     padding: 1.5rem 2rem;
@@ -173,9 +165,7 @@ const Title = styled.h2`
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    margin-top: 3rem;
-    
+    justify-content: center;    
 `
 
 const Error = styled.span`
@@ -193,16 +183,8 @@ const Label = styled.div`
     margin-bottom: 0.5rem;
 `
 const Input = styled.input.attrs({ autocomplete: 'off',})`
-    padding: 0.8rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
-`
-const Foot = styled.div`
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
 `

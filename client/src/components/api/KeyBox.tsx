@@ -94,6 +94,7 @@ const DeleteButton = styled.button`
     right: 1.0rem;
     top: 1.0rem;
     font-size: 1.0rem;
+    cursor: pointer;
 `
 const GreenDot = styled.div`
     position: absolute;

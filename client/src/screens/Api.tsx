@@ -8,6 +8,9 @@ import KeyList from "../components/api/KeyList";
 import { EXCHANGE } from "../global/type";
 import KeyRegisterForm from "../components/api/KeyRegisterForm";
 import KeyInfo from "../components/api/KeyInfo";
+import ErrorPage from "../components/error/ErrorPage";
+import AsyncWrapper from "../components/error/AsyncWrapper";
+import Spinner from "../components/error/Spinner";
 
 export const rightSideUIState ={
     nothing : "nothing",
@@ -21,24 +24,28 @@ export default function Api(){
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.nothing);
     return <Container>
         <Header/>
-        <Icons>
-            <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
-            <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
-        </Icons>
-        <Main>
-            <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
-            <SideWrapper>
-                { 
-                    rightSideUIMode === rightSideUIState.keyAdd? 
-                    <KeyRegisterForm exchange={exchangeSelect}/>
-                    :
-                    rightSideUIMode === rightSideUIState.keyInfo?
-                    <KeyInfo selectedKeyId={selectedKeyId} label={label} />
-                    :
-                    null
-                }
-            </SideWrapper>
-        </Main>
+        <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<></>}>
+            <>
+                <Icons>
+                    <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
+                    <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
+                </Icons>
+                <Main>
+                    <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
+                    <SideWrapper>
+                        { 
+                            rightSideUIMode === rightSideUIState.keyAdd? 
+                            <KeyRegisterForm exchange={exchangeSelect}/>
+                            :
+                            rightSideUIMode === rightSideUIState.keyInfo?
+                            <KeyInfo selectedKeyId={selectedKeyId} label={label} />
+                            :
+                            null
+                        }
+                    </SideWrapper>
+                </Main>
+            </>
+        </AsyncWrapper>
     </Container>
 }
 const Container = styled.div`

@@ -3,8 +3,14 @@ import { queryKeys } from "../../../react-query/constants";
 import { apiKey } from "../../../apis/apiKey";
 import { apiKeyOverview } from "../apiType";
 
-
+const fallback= {
+    balance: 0,
+	currency: "",
+	transaction: 0,
+	connect: false,
+	message: "string",
+}
 export function useKeyInfo(id : string){
-    const { data } = useQuery<apiKeyOverview>([queryKeys.keyInfo, id], () => apiKey.getApiKey(id));
+    const { data = fallback } = useQuery<apiKeyOverview>([queryKeys.keyInfo, id], () => apiKey.getApiKey(id));
     return data;
 }

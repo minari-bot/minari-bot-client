@@ -61,6 +61,7 @@ const Container = styled.div`
         font-size: 2.5rem;
 
     }
+    z-index: 9999;
 `;
 const ErrorContainer = styled(Container)`
         border-left-color: ${props => props.theme.light.pink};
