@@ -2,7 +2,7 @@ import styled from "styled-components"
 import ProfileLogo from "../common/ProfileLogo"
 import Symbol from "../common/Symbol"
 import ReverageMag from "../common/ReverageMag"
-import SubmitButton from "../common/SubmitButton"
+import SubmitButton from "../common/SmallSubmitButton"
 import { AlertStrategyData } from "./type"
 import { makeSymbolWithoutCurrency } from "../../utils/makeString"
 import { useState } from "react"
@@ -63,7 +63,7 @@ export default function StrategyBox({info} : Props){
                         <span>팔로워</span>
                         <SmallValue>{info.subscribers.length}</SmallValue>
                     </Follower>
-                    <SubmitButton title="구독" width={55} onClick={onClick}/>
+                    <SubmitButton width={55} title="구독"  onClick={onClick}/>
                 </Footer>
             </Container>
 }

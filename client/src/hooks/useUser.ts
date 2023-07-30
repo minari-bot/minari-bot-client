@@ -2,31 +2,38 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userInfo } from "../global/type";
 import { auth } from "../apis/auth";
 import { LOCAL_STORAGE_KEYS, queryKeys } from "../react-query/constants";
+import { useEffect } from "react";
 
 export const useUser = () =>  {
     const queryClient = useQueryClient();
-    const { data : user = {}, isFetching } = useQuery<userInfo>([queryKeys.user], auth.userInfo, {
-        onSuccess: (received: userInfo | null) => {
-            if (!received) { // falsy의 값을 받을 경우
-                clearStoredUser();
-            } else { // truthy의 값을 받을 경우
-                setStoredUser(received);
-                updateUser(received);
-            }
-        },
-        retry: 0,
+    const { data : user, isError, refetch } = useQuery<userInfo>([queryKeys.user], auth.userInfo, {
+        initialData: getStoredUser,
+        retry: false,
+        useErrorBoundary: false,
+        // staleTime: 5000
     });
-    const updateUser = (newUser: userInfo) => {
-        queryClient.setQueryData([queryKeys.user], newUser);
-    }
-    const clearUser = () => {
-        queryClient.removeQueries([queryKeys.user]);
-    }
-    return { user, isFetching, updateUser, clearUser };
+    useEffect(()=> {
+        if(!user) clearStoredUser();
+        else setStoredUser(user);
+    }, [user]);
+    useEffect(() => {
+        if(isError) {
+            queryClient.setQueryData([queryKeys.user], null);
+            clearStoredUser();
+        }
+    }, [isError, queryClient]);
+
+    // const updateUser = (newUser: userInfo) => {
+    //     queryClient.setQueryData([queryKeys.user], newUser);
+    // }
+    // const clearUser = () => {
+    //     queryClient.removeQueries([queryKeys.user]);
+    // }
+    return { user: user ?? null, refetch };
 }
-export const getStoredUser = (): userInfo | null => {
+export const getStoredUser = (): userInfo | undefined => {
     const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.USER_STORAGE_KEY);
-    return storedUser? JSON.parse(storedUser) : null;
+    return storedUser? JSON.parse(storedUser) : undefined;
 }
 export const clearStoredUser = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.USER_STORAGE_KEY);

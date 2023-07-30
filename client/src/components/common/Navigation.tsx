@@ -1,33 +1,18 @@
 import styled from "styled-components"
-import { Link, useMatch, useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer, SlLogout } from "react-icons/sl";
 import { useState } from "react";
-import { clearStoredUser, useUser } from "../../hooks/useUser";
-import { useMutation } from "@tanstack/react-query";
-import { auth } from "../../apis/auth";
-import { useRecoilState } from "recoil";
-import { toastState } from "../../atoms/toast";
-import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
+import { useUser } from "../../hooks/useUser";
+import useSignOut from "../auth/hooks/useSignOut";
 export default function Navigation() {
-    const navigate = useNavigate();
     const [isShut, setShut] = useState(false);
-    const [toast, setToast] = useRecoilState(toastState);
+    const signOutAsync = useSignOut();
     const user = useUser();
-    const { mutateAsync } = useMutation(auth.signOut);
     const shutNavigation = () =>{
         setShut(prev => !prev);
     }
-    const onSignOut = async () => {
-        await mutateAsync();
-        clearStoredUser();
-        user.clearUser();
-        navigate('/');
-        setToast(prev => ({
-            ...prev,
-            isOpen : true,
-            text: MUTATE_SUCCESS_MESSAGE.SIGN_OUT,
-            state : "success"
-        }));
+    const onClick = async () => {
+        await signOutAsync();
     }
     return <Container isShut={isShut}>
         <ListIcon onClick={shutNavigation}>
@@ -47,12 +32,12 @@ export default function Navigation() {
                 <SlEqualizer/>
             </Link>
             {
-                Object.keys(user.user).length === 0 && user.user.constructor === Object?
+                !user.user?
                 <Link to='auth/signin'>
                     <SlLock/>
                 </Link>
                 :
-                <Button onClick={onSignOut}>
+                <Button onClick={onClick}>
                     <SlLogout/>
                 </Button>
             }

@@ -65,6 +65,7 @@ const Container = styled.div`
     align-items: center;
     position: relative;
     width: 40rem;
+    height: 100%;
     border-radius: 15px;
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
     padding: 1rem  2rem;
@@ -129,13 +130,4 @@ const ExitButton = styled.button`
     top: 1.5rem;
     font-size: 1.5rem;
     cursor: pointer;
-`
-const GreenDot = styled.div`
-    width: 1rem;
-    height: 1rem;
-    border-radius: 1rem;
-    background: ${props => props.theme.light.linearGreen};
-`
-const RedDot = styled(GreenDot)`
-    background: ${props => props.theme.light.pink};
 `

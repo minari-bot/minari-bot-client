@@ -1,15 +1,15 @@
 import {Outlet} from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Navigation from './components/common/Navigation';
 import { createPortal } from 'react-dom';
 import { useRecoilState } from 'recoil';
 import { toastState } from './atoms/toast';
 import Toasts from './components/common/Toasts';
+import { queryClient } from './react-query/queryClient';
 
 function Root() {
-  const queryClient = new QueryClient();
   const [ toast, setToast ] = useRecoilState(toastState);
   return <QueryClientProvider client={queryClient}>
     <div>

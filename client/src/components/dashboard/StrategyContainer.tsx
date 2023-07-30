@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { EXCHANGE_BUTTON, EXCHANGE_BUTTON_ENUM} from "./type";
 import BinanceStrategy from "./binance/Strategy";
 import UpbitStrategy from "./upbit/Strategy";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { StrategyBoxSkeleton } from "./skeletons/StrategyBoxSkeleton";
 
 export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTTON}){
     const [count, setCount] = useState(0);
@@ -11,8 +12,10 @@ export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTT
                 <h1>구독 전략</h1>
                 <StrategyCount>{count}</StrategyCount>
             </Head>
-            {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
-            {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
+            <Suspense fallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
+                {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
+                {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
+            </Suspense>
         </Container>
 }
 const Container = styled.div`
