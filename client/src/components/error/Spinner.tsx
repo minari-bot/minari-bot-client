@@ -1,12 +1,12 @@
 import styled, { keyframes } from "styled-components";
 
 export default function Spinner(){
-    return <Wrapper><Spinner/></Wrapper>
+    return <Wrapper><Ring><div></div><div></div><div></div><div></div></Ring></Wrapper>
 }
 const Wrapper = styled.div`
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 40%;
+    left: 47.5%;
 `
 const Keyframe = keyframes`
     0% {
@@ -28,10 +28,10 @@ const Ring = styled.div`
         width: 64px;
         height: 64px;
         margin: 8px;
-        border: 8px solid ${props => props.theme.light.green};
+        border: 8px solid ${props => props.theme.light.lightBlue};
         border-radius: 50%;
         animation: ${Keyframe} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        border-color: ${props => props.theme.light.green} transparent transparent transparent;
+        border-color: ${props => props.theme.light.lightBlue} transparent transparent transparent;
     }
     div:nth-child(1){
         animation-delay: -0.45s;

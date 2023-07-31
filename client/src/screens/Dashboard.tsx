@@ -12,6 +12,7 @@ import Header from "../components/common/Header";
 import StrategyContainer from "../components/dashboard/StrategyContainer";
 import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
+import Spinner from "../components/error/Spinner";
 
 
 export default function Dashboard(){
@@ -19,7 +20,7 @@ export default function Dashboard(){
     const [daySelect, setDaySelect] = useState<DAY_BUTTON>(DAY_BUTTON_ENUM.week);
     return <Container>
             <Header/>
-            <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<></>}>
+            <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
                 <>
                 <h1>대시보드</h1>
                 <FlexRowBtwn>

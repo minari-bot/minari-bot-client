@@ -1,9 +1,11 @@
 import axios from "axios";
 import { CustomErrorClass } from "../global/error";
+import { userInfo } from "../global/type";
 
 export const overview = {
-    getBinanceOverview : async () => {
+    getBinanceOverview : async (user : userInfo | null) => {
         try{
+            if(!user) return null;
             const res = await axios.get(`/api/overview/BINANCE`);
             return res.data;
         } catch(err){
@@ -16,8 +18,9 @@ export const overview = {
                 }
         }
     },
-    getUpbitOverview : async () => {
+    getUpbitOverview : async (user: userInfo | null) => {
         try{
+            if(!user) return null;
             const res = await axios.get(`/api/overview/UPBIT`);
             return res.data;
         } catch(err){

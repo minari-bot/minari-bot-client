@@ -9,6 +9,7 @@ import { toastState } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import KeyCheckDot from "../common/ApiCheckDot";
+import { useUser } from "../../hooks/useUser";
 
 interface Props{
     exchange : string,
@@ -16,11 +17,12 @@ interface Props{
 }
 export default function KeySelect({exchange, setKeySelectUI} : Props){
     const { data } = useKeyList();
+    const {user} = useUser();
     const { mutateAsync } = useMutation(strategy.SubscribeStrategy);
     const setToast = useSetRecoilState(toastState);
     const onClick = async (id : string, label : string) => {
         try{
-            await mutateAsync({id, label});
+            await mutateAsync({id, label, user});
             setToast(prev => ({
                 ...prev,
                 text: MUTATE_SUCCESS_MESSAGE.ADD_SUBSCRIBE,

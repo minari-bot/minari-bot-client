@@ -2,6 +2,7 @@ import axios from "axios"
 import { SignInFormValue, SignUpFormValue } from "../components/auth/authType";
 import { AUTH_ERROR_MESSAGE, COMMON_ERROR, USER_INFO } from "../react-query/constants";
 import { CustomErrorClass } from "../global/error";
+import { userInfo } from "../global/type";
 
 export const auth = {
     signUp: async (info : SignUpFormValue) => {
@@ -41,8 +42,9 @@ export const auth = {
                 }
         }
     },
-    userInfo: async() => {
+    userInfo: async(user: userInfo | null) : Promise<userInfo | null> => {
         try{
+            if(!user) return null;
             const res = await axios.get(`/api/auth/user`);
             return res.data;
         } catch(err){
@@ -52,6 +54,7 @@ export const auth = {
                     case 404: throw new CustomErrorClass(COMMON_ERROR.SERVER_404, 404);
                     case 500: throw new CustomErrorClass(USER_INFO.CANNOT_GET, 500);
                 }
+            return null;
         }
     }
 }

@@ -4,6 +4,8 @@ import BinanceStrategy from "./binance/Strategy";
 import UpbitStrategy from "./upbit/Strategy";
 import { Suspense, useState } from "react";
 import { StrategyBoxSkeleton } from "./skeletons/StrategyBoxSkeleton";
+import AsyncWrapper from "../error/AsyncWrapper";
+import Spinner from "../error/Spinner";
 
 export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTTON}){
     const [count, setCount] = useState(0);
@@ -16,6 +18,7 @@ export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTT
                 {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
                 {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
             </Suspense>
+
         </Container>
 }
 const Container = styled.div`
