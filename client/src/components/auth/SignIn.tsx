@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SignInFormValue } from "./authType";
 import { AxiosError } from "axios";
 import theme from "../../styles/theme";
@@ -11,13 +11,15 @@ import LongSumbitButton from "../common/LongSubmitButton";
 
 function SignIn({signInError, setSignInError} : SignInProps){
     const signInMutate = useSignIn();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignInFormValue>({
         defaultValues:{ email: "", password: "" }
     });
     const onSubmit : SubmitHandler<SignInFormValue> = async (formInfo) =>{
         try{
             await signInMutate(formInfo);
-            setSignInError("");
+            setSignInError(""); 
+            navigate('/');
         }catch(err){
             const error = err as AxiosError;
             setSignInError(error.message);

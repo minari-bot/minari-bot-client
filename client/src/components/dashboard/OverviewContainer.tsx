@@ -3,6 +3,8 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { OverviewBoxSkeleton } from "./skeletons/OverviewBoxSkeleton";
 import Overview from "./Overview";
+import Spinner from "../error/Spinner";
+import AsyncWrapper from "../error/AsyncWrapper";
 
 interface Props{
     day: DAY_BUTTON,
@@ -28,7 +30,7 @@ export default function OverviewContainer({day, exchangeSelect} : Props){
         setDiffDay(getDiffDay());
     }, [day, getDiffDay]);
 
-    return <Suspense fallback={Array(4).fill(0).map((t, i) => <OverviewBoxSkeleton key={i}/>)}>
+    return <Suspense fallback={<>{Array(4).fill(0).map((item, i) => <OverviewBoxSkeleton key={i}/>)}</>}>
             <Overview exchange={exchangeSelect} diffDay={diffDay}/>
         </Suspense>
 }

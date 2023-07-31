@@ -4,6 +4,8 @@ import BinanceHistory from "./binance/History"
 import UpbitHistory from "./upbit/History"
 import { Suspense } from "react"
 import { OrderInfoSkeleton } from "./skeletons/OrderInfoSkeleton"
+import AsyncWrapper from "../error/AsyncWrapper"
+import Spinner from "../error/Spinner"
 
 export default function HistoryContainer({exchange} : {exchange : EXCHANGE_BUTTON}){
     return <Container>
@@ -15,7 +17,8 @@ export default function HistoryContainer({exchange} : {exchange : EXCHANGE_BUTTO
       <li>실현 수익</li>
       <li>거래 시간</li>
     </Labels>
-    <Suspense fallback={Array(8).fill(0).map((item, i) => <OrderInfoSkeleton key={i}/>)}>
+
+    <Suspense fallback={<>{Array(8).fill(0).map((item, i) => <OrderInfoSkeleton key={i}/>)}</>}>
       { exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceHistory/>}
       { exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitHistory/> }
     </Suspense>

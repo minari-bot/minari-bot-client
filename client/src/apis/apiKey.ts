@@ -2,9 +2,11 @@ import axios from "axios";
 import { apiKeyCheckValue, apiKeyFormValue } from "../components/api/apiType";
 import { APIKEY_ERROR_MESSAGE } from "../react-query/constants";
 import { CustomErrorClass } from "../global/error";
+import { userInfo } from "../global/type";
 
 export const apiKey = {
-    getAllApiKeys: async () => {
+    getAllApiKeys: async (user: userInfo | null) => {
+        if(!user) return null;
         try{
             const res = await axios.get(`/api/apikey`);
             return res.data;

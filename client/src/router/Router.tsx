@@ -25,21 +25,19 @@ const router = createBrowserRouter([
                 element: <Auth/>
             },
             {
-                element: <ProtectedRoute/>,
-                children: [
-                    {
-                        path: "dashboard",
-                        element: <Dashboard/>,
-                    },
-                    {
-                        path: "setting/api",
-                        element: <Api/>
-                    },
-                    {
-                        path: "strategy",
-                        element: <Strategy/>
-                    },
-                ]
+                path: "dashboard",
+                element: <Dashboard/>,
+                loader: ProtectedRoute,
+            },
+            {
+                path: "setting/api",
+                element: <Api/>,
+                loader: ProtectedRoute,
+            },
+            {
+                path: "strategy",
+                element: <Strategy/>,
+                loader: ProtectedRoute,  
             },
         ]
     }

@@ -1,10 +1,12 @@
 import { CustomErrorClass } from "../global/error";
+import { userInfo } from "../global/type";
 import { HISTORY_ERROR_MESSAGE } from "../react-query/constants";
 import axios from "axios";
 
 export const histroy = {
-    getBinanceOrderHistory : async () => {
+    getBinanceOrderHistory : async (user : userInfo | null) => { 
         try{
+            if(!user) return null;
             const res = await axios.get(`/api/history/all/BINANCE`);
             return res.data;    
         } catch(err : unknown){
@@ -17,8 +19,9 @@ export const histroy = {
                 }
             }
     },
-    getUpbitOrderHistory : async () => {
+    getUpbitOrderHistory : async (user : userInfo | null) => {
         try{
+            if(!user) return null;
             const res = await axios.get(`/api/history/all/UPBIT`);
             return res.data;
         } catch(err){
