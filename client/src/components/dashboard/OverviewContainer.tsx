@@ -30,7 +30,7 @@ export default function OverviewContainer({day, exchangeSelect} : Props){
         setDiffDay(getDiffDay());
     }, [day, getDiffDay]);
 
-    return <Suspense fallback={<>{Array(4).fill(0).map((item, i) => <OverviewBoxSkeleton key={i}/>)}</>}>
-            <Overview exchange={exchangeSelect} diffDay={diffDay}/>
-        </Suspense>
+    return <AsyncWrapper suspenseFallback={<>{Array(4).fill(0).map((item, i) => <OverviewBoxSkeleton key={i}/>)}</>} errorFallback={<Spinner/>}>
+        <Overview exchange={exchangeSelect} diffDay={diffDay}/>
+    </AsyncWrapper>
 }

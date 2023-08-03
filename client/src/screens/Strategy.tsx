@@ -2,17 +2,16 @@ import styled from "styled-components";
 import Header from "../components/common/Header";
 import { StrategyBoxSkeleton } from "../components/strategy/skeletons/StrategyBoxSkeleton";
 import StrategyContainer from "../components/strategy/StrategyContainer";
-import AsyncWrapper from "../components/error/AsyncWrapper";
-import ErrorPage from "../components/error/ErrorPage";
+import { Suspense } from "react";
 
 export default function Strategy(){
     return <Container>
                 <Header/>
                 <Center>
                     <Wrapper>
-                    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<>{Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
+                    <Suspense fallback={<>{Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
                         <StrategyContainer/>
-                    </AsyncWrapper>
+                    </Suspense>
                     </Wrapper>
                 </Center>
             </Container>

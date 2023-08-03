@@ -14,11 +14,10 @@ export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTT
                 <h1>구독 전략</h1>
                 <StrategyCount>{count}</StrategyCount>
             </Head>
-            <Suspense fallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
+            <AsyncWrapper errorFallback={<Spinner/>} suspenseFallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
                 {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
                 {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
-            </Suspense>
-
+            </AsyncWrapper>
         </Container>
 }
 const Container = styled.div`

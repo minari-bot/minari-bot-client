@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { loadingAnimation } from "./loadingAnimation"
+import { Skeleton } from "../../common/Skeleton"
 
 export const OverviewBoxSkeleton = () => (
     <Container>
@@ -21,10 +21,6 @@ const Container = styled.div`
     border-radius: 15px;
     box-shadow: 4px 4px 60px 6px rgba(0, 0, 0, 0.05);
     gap: 1.0rem;
-`
-const Skeleton = styled.div`
-  background-color: ${props => props.theme.light.borderGray};
-  animation: ${loadingAnimation} 1s linear infinite alternate;
 `
 const Header = styled.div`
     display: flex;

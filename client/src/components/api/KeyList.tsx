@@ -26,7 +26,7 @@ export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode,
     }
     const { data : keyList, refetch} = useKeyList();
     
-    return <Container>
+    return <>
             <Title>API Keys</Title>
             {
                 keyList.map((info, i) => 
@@ -35,20 +35,13 @@ export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode,
                 :
                 null
                 )
+                
             }
             <AddBox onClick={onClickAdd}>
                 <IoAddSharp/>
             </AddBox>
-        </Container>
+            </>
 }
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: start;
-    gap: 15px;
-    width: 50rem;
-    `
 const Title = styled.h1``
 
 const AddBox = styled.div`

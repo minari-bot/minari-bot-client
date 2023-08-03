@@ -18,10 +18,10 @@ export default function HistoryContainer({exchange} : {exchange : EXCHANGE_BUTTO
       <li>거래 시간</li>
     </Labels>
 
-    <Suspense fallback={<>{Array(8).fill(0).map((item, i) => <OrderInfoSkeleton key={i}/>)}</>}>
+    <AsyncWrapper errorFallback={<Spinner/>} suspenseFallback={<>{Array(8).fill(0).map((item, i) => <OrderInfoSkeleton key={i}/>)}</>}>
       { exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceHistory/>}
       { exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitHistory/> }
-    </Suspense>
+    </AsyncWrapper>
   </Container>
 }
 const Container = styled.div`
