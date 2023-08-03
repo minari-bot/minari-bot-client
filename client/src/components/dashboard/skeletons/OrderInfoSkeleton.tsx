@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { loadingAnimation } from "./loadingAnimation"
+import { Skeleton } from "../../common/Skeleton"
 
 export const OrderInfoSkeleton = () => (
     <Container>
@@ -30,10 +30,6 @@ const FlexWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   height: 3rem;
-`
-const Skeleton = styled.div`
-  background-color: ${props => props.theme.light.borderGray};
-  animation: ${loadingAnimation} 1s linear infinite alternate;
 `
 const Price = styled(Skeleton)`
   width: 5rem;

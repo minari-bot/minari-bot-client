@@ -4,6 +4,7 @@ import theme from "../../styles/theme";
 import { useKeyInfo } from "./hooks/useKeyInfo";
 import { Suspense } from "react";
 import { makeRoundNumber } from "../../utils/makeString";
+import KeyInfoSkeleton from "./skeletons/KeyInfoSkeleton";
 
 
 interface Props{
@@ -13,7 +14,7 @@ interface Props{
 export default function KeyInfo({ selectedKeyId, label } : Props){
     const info = useKeyInfo(selectedKeyId);
     return(
-    <Suspense fallback={<div>loading..</div>}>
+    <Suspense fallback={<KeyInfoSkeleton/>}>
         <Container>
             <Title>{label}</Title>
             <Wrapper>
@@ -48,14 +49,6 @@ const Container = styled.div`
     align-items: start;
     gap:1.5rem;
     width: 100%;
-    
-`
-const Head = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width : 100%;
 `
 const Wrapper = styled.div`
     box-sizing: border-box;

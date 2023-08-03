@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components"
-import { loadingAnimation } from "./loadingAnimation"
+import { Skeleton } from "../../common/Skeleton"
 
 export const StrategyBoxSkeleton = () => (
     <Container>
@@ -40,20 +40,15 @@ const Container = styled.div`
     padding: 1.5rem 2rem;
 
 `
-const Symbol = styled.div`
+const Symbol = styled(Skeleton)`
     width: 1.8rem;
     height: 1.8rem;
     border-radius: 2rem;
-    background-color: ${props => props.theme.light.borderGray};
-    animation: ${loadingAnimation} 1s linear infinite alternate;
 
 `
-const ReverageMag = styled.div`
+const ReverageMag = styled(Skeleton)`
     width: 2rem;
     height: 1.5rem;
-    background-color: ${props => props.theme.light.borderGray};
-    animation: ${loadingAnimation} 1s linear infinite alternate;
-
 `
 const SymbolItems = styled.div`
     display: flex;
@@ -86,18 +81,12 @@ const Info = styled.div`
     padding: 0 1rem;
     
 `
-const Label = styled.div`
+const Label = styled(Skeleton)`
     width: 3rem;
     height: 1.5rem;
-    background-color: ${props => props.theme.light.borderGray};
-    animation: ${loadingAnimation} 1s linear infinite alternate;
-
 `
-const Title = styled.h3`
+const Title = styled(Skeleton)`
     width: 6rem;
     height: 1.5rem;
-    background-color: ${props => props.theme.light.borderGray};
-    animation: ${loadingAnimation} 1s linear infinite alternate;
-
 `
 
