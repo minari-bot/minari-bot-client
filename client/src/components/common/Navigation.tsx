@@ -1,13 +1,20 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom";
-import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer, SlLogout } from "react-icons/sl";
+import menuIcon from '../../assets/svg/menu.svg';
+import dashboardIcon from '../../assets/svg/dashboard.svg';
+import homeIcon from '../../assets/svg/home.svg';
+import keyIcon from '../../assets/svg/key.svg';
+import loginIcon from '../../assets/svg/login.svg';
+import logoutIcon from '../../assets/svg/logout.svg';
+import settingIcon from '../../assets/svg/settingFill.svg';
+import strategyIcon from '../../assets/svg/strategy.svg';
 import { useState } from "react";
-import { getStoredUser, useUser } from "../../hooks/useUser";
+import { useUser } from "../../hooks/useUser";
 import useSignOut from "../auth/hooks/useSignOut";
 export default function Navigation() {
     const [isShut, setShut] = useState(false);
     const signOutAsync = useSignOut();
-    const user = useUser();
+    const {user} = useUser();
     const shutNavigation = () =>{
         setShut(prev => !prev);
     }
@@ -16,34 +23,42 @@ export default function Navigation() {
     }
     return <Container isShut={isShut}>
         <ListIcon onClick={shutNavigation}>
-            <SlMenu/>
+            <Img src={menuIcon}/>
         </ListIcon>
         <Menu isShut={isShut}>
             <Link to='/'>
-                <SlHome/>
+                <Img src={homeIcon}/>
                 <Label>홈</Label>
             </Link>
             <Link to='dashboard'>
-                <SlChart/>
+                <Img src={dashboardIcon}/>
                 <Label>대시보드</Label>
             </Link>
             <Link to='setting/api'>
-                <SlKey/>
+                <Img src={keyIcon}/>
                 <Label>API Key</Label>
             </Link>
             <Link to='strategy'>
-                <SlEqualizer/>
+                <Img src={strategyIcon}/>
                 <Label>전략 구독</Label>
             </Link>
             {
-                !user.user?
+                user?.userType === 'ADMIN'
+                &&
+                <Link to='admin/strategy'>
+                    <Img src={settingIcon}/>
+                    <Label>전략 관리</Label>
+                </Link>
+            }
+            {
+                !user?
                 <Link to='auth/signin'>
-                    <SlLock/>
+                    <Img src={loginIcon}/>
                     <Label>로그인</Label>
                 </Link>
                 :
                 <Button onClick={onClick}>
-                    <SlLogout/>
+                    <Img src={logoutIcon}/>
                     <Label>로그아웃</Label>
                 </Button>
             }
@@ -84,9 +99,9 @@ const Menu = styled.div<{isShut : boolean}>`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 4rem;
+    gap: 3rem;
     padding-bottom: 3rem;
-    padding-top: 5rem;
+    padding-top: 3rem;
     a{
         display: flex;
         flex-direction: column;
@@ -111,4 +126,8 @@ const Label = styled.div`
 `
 const Button = styled.button`
     cursor: pointer;
+`
+const Img = styled.img`
+    width: 2.5rem;
+    height: 2.5rem;
 `

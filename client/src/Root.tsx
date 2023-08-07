@@ -17,7 +17,7 @@ function Root() {
       <Navigation/>
       <Container>
         <Outlet/>
-        {toast.isOpen && createPortal(
+        {toast.state !== "none" && createPortal(
         <Toasts />,
         document.body
       )}

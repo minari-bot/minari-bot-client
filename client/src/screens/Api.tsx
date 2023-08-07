@@ -15,7 +15,7 @@ import KeyInfoSkeleton from "../components/api/skeletons/KeyInfoSkeleton";
 import KeyBoxSkeleton from "../components/api/skeletons/KeyBoxSkeleton";
 
 export const rightSideUIState ={
-    nothing : "nothing",
+    none : "none",
     keyAdd : "keyAdd",
     keyInfo : "keyInfo",
 }
@@ -23,7 +23,7 @@ export default function Api(){
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [selectedKeyId, setSelectedKeyId] = useState("");
     const [label, setLabel] = useState("");
-    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.nothing);
+    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
     return <Container>
         <Header/>
             <>

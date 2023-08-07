@@ -31,7 +31,6 @@ export const APIKEY_ERROR_MESSAGE = {
   UNVALID_KEY : '유효하지 않은 API Key입니다',
   CANNOT_DELETE : '삭제할 API Key를 찾을 수 없습니다',
   CANNOT_PERMISSION : '해당 Key의 권한 / IP를 설정을 확인해주세요.'
-  
 }
 export const LOCAL_STORAGE_KEYS = {
   USER_STORAGE_KEY: 'loggedUser'
@@ -41,4 +40,8 @@ export const MUTATE_SUCCESS_MESSAGE = {
   DELETE_API_KEY : '해당 API Key가 삭제되었습니다.',
   ADD_SUBSCRIBE: '선택한 API Key로 전략을 구독하였습니다.',
   SIGN_OUT : '로그아웃 되었습니다.',
+  OPEN_STRATEGY: '선택한 전략이 공개 되었습니다.',
+  CLOSE_STRATEGY: '선택한 전략이 비공개 되었습니다',
+  EDIT_STRATEGY: '선택한 전략이 수정되었습니다.',
+  DELETE_STRATEGY: '선택한 전략이 삭제되었습니다.',
 }

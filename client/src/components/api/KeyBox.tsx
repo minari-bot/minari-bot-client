@@ -1,7 +1,6 @@
 import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useMutation } from "@tanstack/react-query";
 import { apiKey } from "../../apis/apiKey";
-import { toastState } from "../../atoms/toast";
-import { useSetRecoilState } from "recoil";
+import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import styled from "styled-components";
 import { apiKeyInfo, apiKeyInfoList } from "./apiType";
@@ -16,16 +15,11 @@ interface Props{
 }
 export default function KeyBox({keyInfo, refetch, selectedIndex, onClickKey, index} : Props){
     const { mutateAsync } = useMutation(apiKey.deleteApiKey);
-    const setToast = useSetRecoilState(toastState);
+    const setToast = useToast();
     const info = useKeyInfo(keyInfo._id);
     const onDelete = async (id : string) => {
         await mutateAsync(id);
-        setToast(prev => ({
-            ...prev,
-            text: MUTATE_SUCCESS_MESSAGE.DELETE_API_KEY,
-            state: 'success',
-            isOpen: true,
-        }))
+        setToast({state : 'success', text: MUTATE_SUCCESS_MESSAGE.DELETE_API_KEY })
         refetch();
     }
     return <InfoBox  isSelect={index === selectedIndex} onClick={onClickKey} data-index={index} data-label={keyInfo.label} id={keyInfo._id}>
