@@ -13,7 +13,7 @@ export default function Navigation() {
     const user = useUser();
 
     const removeSessionCookie = () => {
-        removeCookie('Minari_Session_Id', {domain: 'minari-client-prod.fly.dev'}); // 쿠키 삭제 로직 추가
+        removeCookie('Minari_Session_Id'); // 쿠키 삭제 로직 추가
     }
     const shutNavigation = () =>{
         setShut(prev => !prev);
