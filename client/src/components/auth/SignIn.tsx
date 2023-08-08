@@ -91,12 +91,12 @@ function SignIn({signInError, setSignInError} : SignInProps){
                     })
                 }id="password" type="password"></Input>
             <LongSumbitButton title="로그인"/>
-            <LongSumbitButton title="구글 로그인"/>
             <Info>
                 {/* <span>아이디 찾기</span> */}
                 {/* <span>비밀번호 찾기</span> */}
             </Info>
         </Form>
+            <button onClick={() => {window.location.href = 'http://localhost:5000/auth/google/'}}> 구글 로그인 </button>
     </Wrapper>
 
 }
