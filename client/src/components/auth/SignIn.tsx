@@ -96,7 +96,7 @@ function SignIn({signInError, setSignInError} : SignInProps){
                 {/* <span>비밀번호 찾기</span> */}
             </Info>
         </Form>
-            <button onClick={() => {window.location.href = 'http://localhost:5000/auth/google/'}}> 구글 로그인 </button>
+            <button onClick={() => {window.location.href = 'http://minari-api-prod.fly.dev/auth/google/'}}> 구글 로그인 </button>
     </Wrapper>
 
 }
