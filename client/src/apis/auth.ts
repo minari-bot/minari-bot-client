@@ -3,7 +3,6 @@ import { SignInFormValue, SignUpFormValue } from "../components/auth/authType";
 import { AUTH_ERROR_MESSAGE, COMMON_ERROR, USER_INFO } from "../react-query/constants";
 import { CustomErrorClass } from "../global/error";
 import { userInfo } from "../global/type";
-import { useCookies } from 'react-cookie';
 
 export const auth = {
     signUp: async (info : SignUpFormValue) => {
@@ -34,15 +33,6 @@ export const auth = {
     signOut: async() => {
         try{
             const res = await axios.get(`/api/auth/logout`);
-            // 쿠키 삭제 로직 추가
-            // const cookies = document.cookie.split("; ");
-            // for (const cookie of cookies) {
-            //     const [name, value] = cookie.split("=");
-            //     if (name === "Minari_Session_Id") {
-            //         document.cookie = `${name}=${value}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            //         break;
-            //     }
-            // }
             return res.data;
         } catch(err : unknown){
             if(axios.isAxiosError(err))

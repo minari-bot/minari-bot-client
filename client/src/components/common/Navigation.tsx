@@ -4,14 +4,22 @@ import { SlHome, SlChart, SlKey, SlLock, SlMenu, SlEqualizer, SlLogout } from "r
 import { useState } from "react";
 import { getStoredUser, useUser } from "../../hooks/useUser";
 import useSignOut from "../auth/hooks/useSignOut";
+import { useCookies } from 'react-cookie';
+
 export default function Navigation() {
+    const [, , removeCookie] = useCookies(['Minari_Session_Id']);
     const [isShut, setShut] = useState(false);
     const signOutAsync = useSignOut();
     const user = useUser();
+
+    const removeSessionCookie = () => {
+        removeCookie('Minari_Session_Id', {domain: 'minari-client-prod.fly.dev'}); // 쿠키 삭제 로직 추가
+    }
     const shutNavigation = () =>{
         setShut(prev => !prev);
     }
     const onClick = async () => {
+        removeSessionCookie()
         await signOutAsync();
     }
     return <Container isShut={isShut}>
