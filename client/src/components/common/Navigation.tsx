@@ -12,14 +12,14 @@ export default function Navigation() {
     const signOutAsync = useSignOut();
     const user = useUser();
 
-    const removeSessionCookie = () => {
-        removeCookie('Minari_Session_Id'); // 쿠키 삭제 로직 추가
-    }
+    // const removeSessionCookie = () => {
+    //     removeCookie('Minari_Session_Id'); // 쿠키 삭제 로직 추가
+    // }
     const shutNavigation = () =>{
         setShut(prev => !prev);
     }
     const onClick = async () => {
-        removeSessionCookie()
+        // removeSessionCookie()
         await signOutAsync();
     }
     return <Container isShut={isShut}>
