@@ -11,11 +11,10 @@ import KeyInfo from "../components/api/KeyInfo";
 import ErrorPage from "../components/error/ErrorPage";
 import AsyncWrapper from "../components/error/AsyncWrapper";
 import Spinner from "../components/error/Spinner";
-import KeyInfoSkeleton from "../components/api/skeletons/KeyInfoSkeleton";
 import KeyBoxSkeleton from "../components/api/skeletons/KeyBoxSkeleton";
 
 export const rightSideUIState ={
-    nothing : "nothing",
+    none : "none",
     keyAdd : "keyAdd",
     keyInfo : "keyInfo",
 }
@@ -23,34 +22,36 @@ export default function Api(){
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [selectedKeyId, setSelectedKeyId] = useState("");
     const [label, setLabel] = useState("");
-    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.nothing);
-    return <Container>
-        <Header/>
-            <>
-                <Icons>
-                    <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
-                    <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
-                </Icons>
-                <Main>
-                    <KeyListContainer>
-                        <Suspense fallback={Array(6).fill(0).map((t, i) => <KeyBoxSkeleton key={i}/>)}>
-                            <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
-                        </Suspense>
-                    </KeyListContainer>
-                    <SideWrapper>
-                        { 
-                            rightSideUIMode === rightSideUIState.keyAdd? 
-                            <KeyRegisterForm exchange={exchangeSelect}/>
-                            :
-                            rightSideUIMode === rightSideUIState.keyInfo?
-                            <KeyInfo selectedKeyId={selectedKeyId} label={label} />
-                            :
-                            null
-                        }
-                    </SideWrapper>
-                </Main>
-            </>
-    </Container>
+    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
+    return <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
+        <Container>
+            <Header/>
+                <>
+                    <Icons>
+                        <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
+                        <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
+                    </Icons>
+                    <Main>
+                        <KeyListContainer>
+                            <Suspense fallback={Array(6).fill(0).map((t, i) => <KeyBoxSkeleton key={i}/>)}>
+                                <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
+                            </Suspense>
+                        </KeyListContainer>
+                        <SideWrapper>
+                            { 
+                                rightSideUIMode === rightSideUIState.keyAdd? 
+                                <KeyRegisterForm exchange={exchangeSelect}/>
+                                :
+                                rightSideUIMode === rightSideUIState.keyInfo?
+                                <KeyInfo selectedKeyId={selectedKeyId} label={label} />
+                                :
+                                null
+                            }
+                        </SideWrapper>
+                    </Main>
+                </>
+        </Container>
+    </AsyncWrapper>
 }
 const Container = styled.div`
     display: flex;

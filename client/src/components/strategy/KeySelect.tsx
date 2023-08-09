@@ -4,12 +4,12 @@ import Symbol from "../common/Symbol";
 import { TfiClose } from "react-icons/tfi";
 import { strategy } from "../../apis/strategy";
 import { useMutation } from "@tanstack/react-query";
-import { useSetRecoilState } from "recoil";
-import { toastState } from "../../atoms/toast";
+import { toastState, useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
-import KeyCheckDot from "../common/ApiCheckDot";
+import KeyCheckDot from "../common/KeyCheckDot";
 import { useUser } from "../../hooks/useUser";
+import { useEffect } from "react";
 
 interface Props{
     exchange : string,
@@ -19,27 +19,23 @@ export default function KeySelect({exchange, setKeySelectUI} : Props){
     const { data } = useKeyList();
     const {user} = useUser();
     const { mutateAsync } = useMutation(strategy.SubscribeStrategy);
-    const setToast = useSetRecoilState(toastState);
+    const setToast = useToast()
     const onClick = async (id : string, label : string) => {
         try{
             await mutateAsync({id, label, user});
-            setToast(prev => ({
-                ...prev,
-                text: MUTATE_SUCCESS_MESSAGE.ADD_SUBSCRIBE,
-                state: 'success',
-                isOpen: true,
-            }))
+            setToast({state: 'success', text: MUTATE_SUCCESS_MESSAGE.ADD_SUBSCRIBE});
         } 
         catch(err){
             const error = err as CustomErrorClass;
-            setToast(prev => ({
-                ...prev,
-                text: error.message,
-                state: 'error',
-                isOpen: true,
-            }))
+            setToast({state: 'error', text: error.message});
         }
     }
+    useEffect(() => {
+        if(data.filter((item) => item.exchange === exchange).length === 0){
+            setKeySelectUI(false);
+            setToast({state: 'error', text: '해당 거래소의 API Key를 등록하세요'});
+        }
+    },[data, setKeySelectUI, exchange])
     return <Container>
             <Header>
                 <Title>API Key 선택</Title>

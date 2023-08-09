@@ -11,7 +11,6 @@ export default function Toasts(){
     const onClose = () => {
         setToast( prev => ({
             ...prev,
-            isOpen : false,
             text : "",
             state : "none"
         }));
@@ -67,14 +66,9 @@ const ErrorContainer = styled(Container)`
         border-left-color: ${props => props.theme.light.pink};
 
 `
-const Close = styled.div`
-    position: relative;
-    bottom: 2rem;
-    right: 0.75rem;
-    font-size: 1.2rem;
-`
 const Texts = styled.div`
     position: relative;
+    word-wrap:break-word;
     margin: 0 auto;
     left: 0;
     right: 0;
