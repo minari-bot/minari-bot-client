@@ -11,7 +11,10 @@ import strategyIcon from '../../assets/svg/strategy.svg';
 import { useState } from "react";
 import { useUser } from "../../hooks/useUser";
 import useSignOut from "../auth/hooks/useSignOut";
+import { useCookies } from 'react-cookie';
+
 export default function Navigation() {
+    const [, , removeCookie] = useCookies(['Minari_Session_Id']);
     const [isShut, setShut] = useState(false);
     const signOutAsync = useSignOut();
     const {user} = useUser();
@@ -19,6 +22,7 @@ export default function Navigation() {
         setShut(prev => !prev);
     }
     const onClick = async () => {
+        // removeSessionCookie()
         await signOutAsync();
     }
     return <Container isShut={isShut}>
