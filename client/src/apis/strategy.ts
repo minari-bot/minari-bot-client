@@ -61,5 +61,19 @@ export const strategy = {
                     case 500: throw new CustomErrorClass("", 500);
                 }
         }
-    }
+    },
+    getOpenStrategy: async() => {
+        try{
+            const res = await axios.get(`/api/subscribe/all`);
+            return res.data;
+        } catch(err){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass("", 400);
+                    case 403: throw new CustomErrorClass("", 403);
+                    case 404: throw new CustomErrorClass("", 404);
+                    case 500: throw new CustomErrorClass("", 500);
+                }
+        }
+    },
 }

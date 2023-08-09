@@ -17,18 +17,12 @@ import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
 import { useRecoilState } from "recoil";
 import { selectedStrategy } from "../../atoms/adminStrategy";
 import { rightSideUIState } from "../../screens/AdminStrategy";
+import { AlertStrategyData } from "./type";
 interface Props{
-    symbol: string,
-    leverage: number,
-    strategyName: string,
-    winRate: number,
-    profitPercent: number,
-    strategyUrl: string,
-    exchange : string,
-    id: string,
+    info : AlertStrategyData,
     setRightSideUIMode : React.Dispatch<React.SetStateAction<string>>,
 }
-export default function StrategyBox({exchange, symbol, leverage, strategyName, winRate, profitPercent, strategyUrl, id, setRightSideUIMode} : Props){
+export default function StrategyBox({info, setRightSideUIMode} : Props){
     const [isHover, setHover] = useState(false);
     const [strategy, setStrategy] = useRecoilState(selectedStrategy)
     const {mutateAsync : mutateOpenStrategy} = useMutation(admin.openStrategy);
@@ -38,8 +32,12 @@ export default function StrategyBox({exchange, symbol, leverage, strategyName, w
     const {user} = useUser();
     const {data, refetch} = useAllAlertStrategy();
     const onClickAdd = async () => {
+        if(info.subscribers.length !== 0){
+            setToast({state: 'error', text: '이미 공개된 전략입니다.'});
+            return;
+        }
         try{
-            await mutateOpenStrategy({user, id});
+            await mutateOpenStrategy({user, id: info._id});
             refetch();
             setToast({state: 'success', text: MUTATE_SUCCESS_MESSAGE.OPEN_STRATEGY});
         } catch(err){
@@ -48,8 +46,12 @@ export default function StrategyBox({exchange, symbol, leverage, strategyName, w
         }
     }
     const onClickDisabled = async () => {
+        if(info.subscribers.length === 0){
+            setToast({state: 'error', text: '이미 비공개된 전략입니다.'});
+            return;
+        }
         try{
-            await mutateCloseStrategy({user, id});
+            await mutateCloseStrategy({user, id: info.subscribers[0]});
             refetch();
             setToast({state: 'success', text: MUTATE_SUCCESS_MESSAGE.CLOSE_STRATEGY});
         } catch(err){
@@ -59,9 +61,9 @@ export default function StrategyBox({exchange, symbol, leverage, strategyName, w
     }
     const onClickDelete = async () => {
         try{
-            await mutateDeleteStrategy({user, id});
+            await mutateDeleteStrategy({user, id: info._id});
             refetch();
-            setToast({state: 'success', text: `${strategyName} : ${MUTATE_SUCCESS_MESSAGE.DELETE_STRATEGY}`});
+            setToast({state: 'success', text: `${info.strategyName} : ${MUTATE_SUCCESS_MESSAGE.DELETE_STRATEGY}`});
             setRightSideUIMode(rightSideUIState.create);
         } catch(err){
             const error = err as CustomErrorClass;
@@ -69,18 +71,25 @@ export default function StrategyBox({exchange, symbol, leverage, strategyName, w
         }
     }
     const onClickEdit = () => {
-        setStrategy({label: strategyName, symbol,leverage, url: strategyUrl, id, exchange})
+        setStrategy({
+            label: info.strategyName, 
+            symbol: info.symbol,
+            leverage : info.leverage, 
+            url: info.strategyUrl, 
+            id: info._id, 
+            exchange: info.exchange
+        })
         setRightSideUIMode(rightSideUIState.edit);
     }
     return <Container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
         <Column>
             <SymbolItems>
-                <Link to={strategyUrl} target="_blank" rel="noopener noreferrer"><Symbol name={"tradingview"}/></Link>
-                <Symbol name={symbol?.split('/')[0].toLowerCase() || ""}/>
-                <SymbolName>{symbol || ""}</SymbolName>
-                <ReverageMag value={leverage || 0}/>
+                <Link to={info.strategyUrl} target="_blank" rel="noopener noreferrer"><Symbol name={"tradingview"}/></Link>
+                <Symbol name={info.symbol?.split('/')[0].toLowerCase() || ""}/>
+                <SymbolName>{info.symbol || ""}</SymbolName>
+                <ReverageMag value={info.leverage || 0}/>
             </SymbolItems>
-            <Title>{strategyName || ""}</Title>
+            <Title>{info.strategyName || ""}</Title>
         </Column>
         <InfoWrapper>
             {
@@ -107,11 +116,11 @@ export default function StrategyBox({exchange, symbol, leverage, strategyName, w
                 <>
                     <Info>
                         <Label>수익률</Label>
-                        <Value>{profitPercent}%</Value>
+                        <Value>{info.profitPercent}%</Value>
                     </Info>
                     <Info>
                         <Label>승률</Label>
-                        <Value>{winRate}%</Value>
+                        <Value>{info.winRate}%</Value>
                     </Info>
                     <Info>
                         <Label>거래량</Label>
@@ -120,10 +129,15 @@ export default function StrategyBox({exchange, symbol, leverage, strategyName, w
                 </>
             }
         </InfoWrapper>
+        {
+            info.subscribers.length === 0 ? <RedDot/>
+            : <GreenDot/>
+        }
     </Container>
 }
 
 const Container = styled.div`
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -205,5 +219,17 @@ const Title = styled.h3`
 const Img = styled.img`
     width: 2rem;
     height: 2rem;
-    cursor: pointer
+    cursor: pointer;
+`
+const GreenDot = styled.div`
+    position: absolute;
+    right: 1.0rem;
+    top: 1.0rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 1rem;
+    background: ${props => props.theme.light.linearGreen};
+`
+const RedDot = styled(GreenDot)`
+    background: ${props => props.theme.light.pink};
 `

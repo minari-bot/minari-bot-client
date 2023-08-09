@@ -11,7 +11,7 @@ import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import LongSumbitButton from "../common/LongSubmitButton";
 import { useUser } from "../../hooks/useUser";
-import { useAllAlertStrategy } from "../strategy/hooks/useAllAlertStrategy";
+import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
 import { StrategyformInfo, admin } from "../../apis/admin";
 
 interface Props{
@@ -27,7 +27,7 @@ export default function StrategyForm({exchange} : Props){
     const setToast = useToast();
     const onSubmit : SubmitHandler<StrategyformInfo> = async (formInfo : StrategyformInfo) =>{
         try{
-            formInfo.exchange = exchange;  
+            formInfo.exchange = exchange;
             await createStrategyMutateAsync({user, formInfo});
             await refetch();
             setToast({state : "success", text: MUTATE_SUCCESS_MESSAGE.CREATE_API_KEY})

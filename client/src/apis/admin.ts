@@ -11,6 +11,7 @@ export interface StrategyformInfo{
 export const admin = {
     getAllAlertStrategy: async (user : userInfo | null) => {
         try{
+            console.log(user);
             if(user?.userType !== "ADMIN") return [];
             const res = await axios.get(`/api/alertstrategy`);
             return res.data;

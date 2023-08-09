@@ -3,15 +3,18 @@ import Header from "../components/common/Header";
 import { StrategyBoxSkeleton } from "../components/strategy/skeletons/StrategyBoxSkeleton";
 import StrategyContainer from "../components/strategy/StrategyContainer";
 import { Suspense } from "react";
+import AsyncWrapper from "../components/error/AsyncWrapper";
+import ErrorPage from "../components/error/ErrorPage";
+import Spinner from "../components/error/Spinner";
 
 export default function Strategy(){
     return <Container>
                 <Header/>
                 <Center>
                     <Wrapper>
-                    <Suspense fallback={<>{Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
+                    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
                         <StrategyContainer/>
-                    </Suspense>
+                    </AsyncWrapper>
                     </Wrapper>
                 </Center>
             </Container>

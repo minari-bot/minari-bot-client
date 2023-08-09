@@ -14,9 +14,9 @@ export default function StrategyContainer({exchange, setRightSideUIMode} : Props
     {
         data.filter((item) => item?.exchange?.toLocaleLowerCase() === exchange)
         .map((item, k) => 
-            <StrategyBox key={k} exchange={exchange} symbol={item.symbol} leverage={item.leverage} strategyName={item.strategyName} winRate={item.winRate} profitPercent={item.profitPercent} strategyUrl={item.strategyUrl} id={item._id} setRightSideUIMode={setRightSideUIMode}/>
+            <StrategyBox key={k} info={item} setRightSideUIMode={setRightSideUIMode}/>
             )
-    }   
+    }
     <AddBox onClick={() => {setRightSideUIMode(rightSideUIState.create)}}>
         <IoAddSharp/>
     </AddBox>

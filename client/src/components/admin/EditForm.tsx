@@ -11,7 +11,7 @@ import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import LongSumbitButton from "../common/LongSubmitButton";
 import { useUser } from "../../hooks/useUser";
-import { useAllAlertStrategy } from "../strategy/hooks/useAllAlertStrategy";
+import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
 import { StrategyformInfo, admin } from "../../apis/admin";
 import { useRecoilState } from "recoil";
 import { selectedStrategy } from "../../atoms/adminStrategy";
@@ -33,7 +33,7 @@ export default function EditForm({exchange} : Props){
     const setToast = useToast();
     const onSubmit : SubmitHandler<StrategyformInfo> = async (formInfo : StrategyformInfo) =>{
         try{
-            formInfo.exchange = exchange;  
+            formInfo.exchange = exchange;
             await mutateEditStrategy({user, id: strategy.id ,formInfo});
             await refetch();
             setToast({state : "success", text: MUTATE_SUCCESS_MESSAGE.EDIT_STRATEGY})

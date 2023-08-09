@@ -5,10 +5,13 @@ import { EXCHANGE } from "../global/type";
 import { Suspense, useState } from "react";
 import upbitLogo from "../assets/img/upbit_logo.png"
 import binanceLogo from "../assets/img/binance_logo.svg.png"
-import { StrategyBoxSkeleton } from "../components/dashboard/skeletons/StrategyBoxSkeleton";
 import StrategyContainer from "../components/admin/StrategyContainer";
 import StrategyForm from "../components/admin/StrategyForm";
 import EditForm from "../components/admin/EditForm";
+import { StrategyBoxSkeleton } from "../components/admin/skeletons/StrategyBoxSkeleton";
+import AsyncWrapper from "../components/error/AsyncWrapper";
+import ErrorPage from "../components/error/ErrorPage";
+import Spinner from "../components/error/Spinner";
 export const rightSideUIState ={
     edit : "edit",
     create : "create",
@@ -16,30 +19,32 @@ export const rightSideUIState ={
 export default function AdminStrategy(){
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.create);
-    return <Container>
-        <Header/>
-        <Title>전략 등록</Title>
-        <Icons>
-            <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
-            <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
-        </Icons>
-        <Main>
-            <ListContainer>
-                <Suspense fallback={Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}>
-                    <StrategyContainer exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
-                </Suspense>
-            </ListContainer>
-            <SideWrapper>
-                {
-                    rightSideUIMode === rightSideUIState.create? 
-                    <StrategyForm exchange={exchangeSelect}/>
-                    :
-                    <EditForm exchange={exchangeSelect} />
-                }
-                
-            </SideWrapper>
-        </Main>
-    </Container>
+    return <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
+        <Container>
+            <Header/>
+            <Title>전략 등록</Title>
+            <Icons>
+                <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
+                <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
+            </Icons>
+            <Main>
+                <ListContainer>
+                    <Suspense fallback={Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}>
+                        <StrategyContainer exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
+                    </Suspense>
+                </ListContainer>
+                <SideWrapper>
+                    {
+                        rightSideUIMode === rightSideUIState.create? 
+                        <StrategyForm exchange={exchangeSelect}/>
+                        :
+                        <EditForm exchange={exchangeSelect} />
+                    }
+                    
+                </SideWrapper>
+            </Main>
+        </Container>
+    </AsyncWrapper>
 }
 const Container = styled.div`
     display: flex;

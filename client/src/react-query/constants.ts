@@ -5,6 +5,7 @@ export const queryKeys = {
   strategy : "strategy",
   overview : "overview",
   alertStrategy: "alertStrategy",
+  openStrategy: "openStrategy",
   user: "user",
   binance : "binance",
   upbit : "upbit",

@@ -3,7 +3,7 @@ import { queryKeys } from "../../../react-query/constants";
 import { strategy } from "../../../apis/strategy";
 import { useUser } from "../../../hooks/useUser";
 import { admin } from "../../../apis/admin";
-import { AlertStrategyData } from "../../strategy/type";
+import { AlertStrategyData } from "../type";
 
 export function useAllAlertStrategy(){
     const {user} = useUser();
