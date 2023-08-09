@@ -1,5 +1,6 @@
-export interface openStrategyData{
-    _id: string
+export interface AlertStrategyData{
+    _id: string,
+    userId: string,
     strategyName: string,
     exchange: string,
     symbol: string,
@@ -8,5 +9,7 @@ export interface openStrategyData{
     transaction: number,
     profitPercent: number,
     winRate: number,
-    followers: number,
+    subscribers: string[]
+    createdAt: string,
+    updatedAt: string,
 }

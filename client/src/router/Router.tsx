@@ -6,6 +6,7 @@ import Home from "../screens/Home";
 import { ProtectedRoute } from "./ProtectedRoute";
 import Api from "../screens/Api";
 import Strategy from "../screens/Strategy";
+import AdminStrategy from "../screens/AdminStrategy";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +40,17 @@ const router = createBrowserRouter([
                 element: <Strategy/>,
                 loader: ProtectedRoute,  
             },
+            {
+                path: "admin",
+                children: [
+                    {
+                        path: "strategy",
+                        element: <AdminStrategy/>,
+                        loader: ProtectedRoute
+                    }
+
+                ]
+            }
         ]
     }
 ]);

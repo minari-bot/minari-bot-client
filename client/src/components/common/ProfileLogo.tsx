@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import defaultUserImg from '../../assets/defaultUser.svg'
+import defaultUserImg from '../../assets/svg/default_user.svg'
 interface Props{
     img : string
 }

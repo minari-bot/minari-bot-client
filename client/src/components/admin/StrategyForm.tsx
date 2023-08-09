@@ -1,48 +1,46 @@
 import styled from "styled-components"
 import { EXCHANGE } from "../../global/type"
 import { SubmitHandler, useForm } from "react-hook-form";
-import { apiKeyFormValue } from "./apiType";
-import { apiKey } from "../../apis/apiKey";
 import { SlInfo } from "react-icons/sl"
 import binanceLogo from "../../assets/img/binance_logo.svg.png"
 import upbitLogo from "../../assets/img/upbit_logo.png"
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "@tanstack/react-query";
-import useKeyList from "./hooks/useKeyList";
 import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import LongSumbitButton from "../common/LongSubmitButton";
+import { useUser } from "../../hooks/useUser";
+import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
+import { StrategyformInfo, admin } from "../../apis/admin";
 
 interface Props{
     exchange : string
 }
-export default function KeyRegisterForm({exchange} : Props){
-    const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
-    const { mutateAsync : checkApiMutateAsync } = useMutation(apiKey.checkApiKey);
-    const { register, handleSubmit, formState: { errors } } = useForm<apiKeyFormValue>({
-        defaultValues:{ label: "", exchange, apikey: "", secretkey: "" }
+export default function StrategyForm({exchange} : Props){
+    const {user} = useUser();
+    const { mutateAsync : createStrategyMutateAsync } = useMutation(admin.createAlertStrategy);
+    const { register, handleSubmit, formState: { errors } } = useForm<StrategyformInfo>({
+        defaultValues:{ strategyName: "", exchange : exchange.toUpperCase(), symbol: "", strategyUrl: "", leverage: "" }
     });
+    const {refetch} = useAllAlertStrategy();
     const setToast = useToast();
-    const { refetch } = useKeyList();
-    const onSubmit : SubmitHandler<apiKeyFormValue> = async (formInfo : apiKeyFormValue) =>{
+    const onSubmit : SubmitHandler<StrategyformInfo> = async (formInfo : StrategyformInfo) =>{
         try{
-            const checkInfo = {exchange, apikey : formInfo.apikey, secretkey : formInfo.secretkey};
-            formInfo = {...formInfo, exchange};
-            await checkApiMutateAsync(checkInfo);
-            await createApiMutateAsync(formInfo);
+            formInfo.exchange = exchange;
+            await createStrategyMutateAsync({user, formInfo});
             await refetch();
-            setToast({state : 'success', text: MUTATE_SUCCESS_MESSAGE.CREATE_API_KEY })
+            setToast({state : "success", text: MUTATE_SUCCESS_MESSAGE.CREATE_API_KEY})
         }catch(err : unknown){
             const error = err as CustomErrorClass;
-            setToast({state : 'error', text: error.message})
+            setToast({state : "error", text: error.message})
         }
      }
     return <Container>
         <Head>
             {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
             {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
-            <Title>API Key 등록</Title> 
+            <Title>전략 등록</Title> 
             <SlInfo/>
         </Head>
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -52,64 +50,84 @@ export default function KeyRegisterForm({exchange} : Props){
                     </label>
                     <ErrorMessage
                     errors={errors}
-                    name={"label"}
+                    name={"strategyName"}
                     render={({ message }) => <Error>{message}</Error>}
                     />
                 </Label>
                 <Input
                     maxLength={25}
-                    {...register("label",{
-                        required: "Label을 입력해주세요.",
+                    {...register("strategyName",{
+                        required: "전략 이름을 입력해주세요.",
                         minLength: {
                             message: "최소 3글자 이상 입력해주세요.",
                             value: 3,
                         },
                         pattern: {
-                            message: "영문과 숫자만 허용됩니다.",
-                            value: /^[A-Za-z0-9]+$/
+                            message: "한글 / 영문 / 숫자만 입력 가능합니다.",
+                            value: /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/
                         }
                     })}
                 />
                 <Label>
-                    <label htmlFor="apikey">
-                        API Key*
+                    <label htmlFor="symbol">
+                        심볼*
                     </label>
                     <ErrorMessage
                     errors={errors}
-                    name={"apikey"}
+                    name={"symbol"}
                     render={({ message }) => <Error>{message}</Error>}
                     />
                 </Label>
                 <Input
-                    type="password" 
-                    maxLength={100}
-                    {...register("apikey",{
-                        required: "API Key를 입력해주세요.",
+                    maxLength={20}
+                    {...register("symbol",{
+                        required: "심볼을 입력해주세요.",
                         pattern: {
-                            message: "영문과 숫자만 허용됩니다.",
-                            value: /^[A-Za-z0-9]+$/
+                            message: "대문자 / 대문자 형식을 지켜주세요 (ex.ETH/USDT)",
+                            value: /[A-Z]\/[A-Z]/
                         }
                     })}
 
                 />
                 <Label>
-                    <label htmlFor="secretkey">
-                        Secret Key*
+                    <label htmlFor="leverage">
+                        레버리지*
                     </label>
                     <ErrorMessage
                     errors={errors}
-                    name={"secretkey"}
+                    name={"leverage"}
+                    render={({ message }) => <Error>{message}</Error>}
+                    />
+                </Label>
+                <Input
+                    type="number"
+                    maxLength={5}
+                    {...register("leverage",{
+                        required: "레버리지를 입력해주세요.",
+                        pattern: {
+                            message: "숫자만 입력 가능합니다.",
+                            value: /[0-9]/
+                        }
+                    })}
+
+                />
+                <Label>
+                    <label htmlFor="strategyUrl">
+                        트레이딩 뷰 URL*
+                    </label>
+                    <ErrorMessage
+                    errors={errors}
+                    name={"strategyUrl"}
                     render={({ message }) => <Error>{message}</Error>}
                     />
                 </Label>
                 <Input 
-                    type="password" 
                     maxLength={100}
-                    {...register("secretkey",{
-                        required: "Secret Key를 입력해주세요.",
+                    {...register("strategyUrl",{
+                        required: "트레이딩 뷰 URL을 입력해주세요.",
                         pattern: {
-                            message: "영문과 숫자만 허용됩니다.",
-                            value: /^[A-Za-z0-9]+$/
+                            message: "URL(https / http / www )형식을 지켜주세요",
+                            value: /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
                         }
                     })}
                 />
@@ -124,7 +142,6 @@ const Container = styled.div`
     background-color: ${props => props.theme.light.white};
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
     padding: 1.5rem 2rem;
-    margin-top: 4.5rem;
     width: 100%;
     box-sizing: border-box;
 `

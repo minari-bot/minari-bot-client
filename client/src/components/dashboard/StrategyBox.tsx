@@ -46,6 +46,7 @@ const Container = styled.div`
     background-color: ${props => props.theme.light.white};
     border-radius: 1.5rem;
     padding: 1.5rem 2rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px;
 
 `
 const SymbolItems = styled.div`

@@ -3,21 +3,25 @@ import ProfileLogo from "../common/ProfileLogo"
 import Symbol from "../common/Symbol"
 import ReverageMag from "../common/ReverageMag"
 import SubmitButton from "../common/SmallSubmitButton"
-import { AlertStrategyData } from "./type"
+import { openStrategyData } from "./type"
 import { makeSymbolWithoutCurrency } from "../../utils/makeString"
 import { useState } from "react"
 import KeySelect from "./KeySelect"
+import AsyncWrapper from "../error/AsyncWrapper"
+import { StrategyBoxSkeleton } from "./skeletons/StrategyBoxSkeleton"
 
 interface Props{
-    info : AlertStrategyData,
+    info : openStrategyData,
 }
 export default function StrategyBox({info} : Props){
     const [keySelectUI, setKeySelectUI] = useState(false);
     const onClick = () => {
         setKeySelectUI(true);
     }
-    return keySelectUI? 
-            <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} setKeySelectUI={setKeySelectUI}/>
+    return keySelectUI?
+            <AsyncWrapper suspenseFallback={<StrategyBoxSkeleton/>} errorFallback={<StrategyBoxSkeleton/>}>
+                <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} setKeySelectUI={setKeySelectUI}/>
+            </AsyncWrapper>
             :
             <Container>
                 <Header>
@@ -61,7 +65,7 @@ export default function StrategyBox({info} : Props){
                 <Footer>
                     <Follower>
                         <span>팔로워</span>
-                        <SmallValue>{info.subscribers.length}</SmallValue>
+                        <SmallValue>{info.followers}</SmallValue>
                     </Follower>
                     <SubmitButton width={55} title="구독"  onClick={onClick}/>
                 </Footer>
@@ -102,6 +106,10 @@ const Logos = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     gap: 0.75rem;
+    svg{
+        width: 2.7rem;
+        height: 2.7rem;
+    }
 `
 const Author = styled.h3`
     font-size: 1.4rem;
