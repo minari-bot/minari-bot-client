@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import theme from "../../styles/theme";
 import useSignIn from "./hooks/useSignIn";
 import LongSumbitButton from "../common/LongSubmitButton";
-
+import {ReactComponent as GoogleLogo } from '../../assets/svg/google_light_logo.svg';
 
 function SignIn({signInError, setSignInError} : SignInProps){
     const signInMutate = useSignIn();
@@ -25,10 +25,13 @@ function SignIn({signInError, setSignInError} : SignInProps){
             setSignInError(error.message);
         }
      }
+    const googleLoginHandler = () => {
+        window.open("http://localhost:5000/auth/google/callback", "_self");
+    }
     return <Wrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
             <h1>로그인 🤖</h1>
-            <span><Link to={'/auth/signup'}>계정 생성 하기</Link></span>
+            <Link to={'/auth/signup'}>계정 생성 하기</Link>
             <Text>
                 <label htmlFor="email">이메일</label>
                 <ErrorMessage
@@ -91,12 +94,15 @@ function SignIn({signInError, setSignInError} : SignInProps){
                     })
                 }id="password" type="password"></Input>
             <LongSumbitButton title="로그인"/>
+            <GoogleButton type="button" onClick={googleLoginHandler}>
+                <Logo><GoogleLogo/></Logo>
+                <Text>Google 계정으로 로그인</Text>
+            </GoogleButton>
             <Info>
                 {/* <span>아이디 찾기</span> */}
                 {/* <span>비밀번호 찾기</span> */}
             </Info>
         </Form>
-            <button onClick={() => {window.location.href = 'http://minari-api-prod.fly.dev/auth/google/'}}> 구글 로그인 </button>
     </Wrapper>
 
 }
@@ -119,7 +125,7 @@ const Form = styled.form`
     padding: 2rem 4rem;
     border-radius: 1rem;
     border: 1px solid ${props => props.theme.light.borderGray};
-    & a, > span{
+    a{
         color: ${props => props.theme.light.lightBlue};
         font-size: 1.3rem;
         text-align: right;
@@ -139,7 +145,7 @@ const Input = styled.input`
     padding: 0.8rem 1.5rem;
     border: 1px solid;
 `
-const Text = styled.div`
+const Text = styled.span`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -161,5 +167,38 @@ const Info = styled.div`
     color: ${props => props.theme.light.black};
     font-size: 1.3rem;
     padding-top: 1rem;
+`
+const Logo = styled.div`
+    margin-top: 3px;
+`
+const GoogleButton = styled.button`
+    position: relative;
+    width: 100%;
+    /* height: 3.3rem; */
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: ${props => props.theme.light.white};
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 1px, rgba(0, 0, 0, 0.23) 0px 0px 1px;
+    &:active{
+        background-color: #4285F4;
+        span{
+            color: ${props => props.theme.light.white};
+        }
+    }
+    svg{
+        width: 1.5rem;
+        height: 1.5rem;
+    }   
+    span{
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -10%);
+    }
+
 `
 export default SignIn;
