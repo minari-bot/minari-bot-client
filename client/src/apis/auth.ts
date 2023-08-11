@@ -44,7 +44,7 @@ export const auth = {
     },
     userInfo: async(user: userInfo | null) : Promise<userInfo | null> => {
         try{
-            if(!user) return null;
+            // if(!user) return null;
             const res = await axios.get(`/api/auth/user`);
             return res.data;
         } catch(err){

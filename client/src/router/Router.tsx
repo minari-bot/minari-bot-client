@@ -3,7 +3,7 @@ import Root from "../Root";
 import Auth from "../screens/Auth";
 import Dashboard from "../screens/Dashboard";
 import Home from "../screens/Home";
-import { ProtectedRoute } from "./ProtectedRoute";
+import { AdminProtectedRoute, ProtectedRoute } from "./ProtectedRoute";
 import Api from "../screens/Api";
 import Strategy from "../screens/Strategy";
 import AdminStrategy from "../screens/AdminStrategy";
@@ -26,27 +26,33 @@ const router = createBrowserRouter([
                 element: <Auth/>
             },
             {
-                path: "dashboard",
-                element: <Dashboard/>,
-                loader: ProtectedRoute,
-            },
-            {
-                path: "setting/api",
-                element: <Api/>,
-                loader: ProtectedRoute,
-            },
-            {
-                path: "strategy",
-                element: <Strategy/>,
-                loader: ProtectedRoute,  
+                path: "",
+                element: <ProtectedRoute/>,
+                children: [
+                    {
+                        path: "dashboard",
+                        element: <Dashboard/>,
+                        // loader: ProtectedRoute,
+                    },
+                    {
+                        path: "setting/api",
+                        element: <Api/>,
+                        // loader: ProtectedRoute,  
+                    },
+                    {
+                        path: "strategy",
+                        element: <Strategy/>,
+                        // loader: ProtectedRoute,  
+                    },
+                ]
             },
             {
                 path: "admin",
+                element: <AdminProtectedRoute/>,
                 children: [
                     {
                         path: "strategy",
                         element: <AdminStrategy/>,
-                        loader: ProtectedRoute
                     }
 
                 ]

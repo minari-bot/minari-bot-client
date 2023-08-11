@@ -29,7 +29,7 @@ export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode,
     return <>
             <Title>API Keys</Title>
             {
-                keyList.map((info, i) => 
+                keyList?.map((info, i) => 
                 exchange === info.exchange.toLowerCase()?
                 <KeyBox keyInfo={info} refetch={refetch} selectedIndex={selectedIndex} onClickKey={onClickKey} key={info._id} index={i}/>
                 :
