@@ -11,7 +11,7 @@ const Button = styled.button`
     background-color: ${props => props.theme.light.lightBlue};
     color: ${props => props.theme.light.white};
     padding: 0.8rem 5rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-top: 2rem;
     border-radius: 0.5rem;
     width: 100%;

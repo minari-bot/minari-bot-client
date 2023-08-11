@@ -10,8 +10,8 @@ interface UseUser {
   }
 export function useUser() : UseUser{
     const queryClient = useQueryClient();
-    //@ts-ignore
-    const { data : user  } = useQuery([queryKeys.user], () => auth.userInfo(user), {
+    // @ts-ignore
+    const { data : user } = useQuery([queryKeys.user], () => auth.userInfo(user), {
         initialData: getStoredUser,
         useErrorBoundary: false,
     });
@@ -26,7 +26,7 @@ export function useUser() : UseUser{
     //         clearStoredUser();
     //     }
     // }, [isError, queryClient]);
-
+    
     function updateUser(newUser: userInfo): void {
         queryClient.setQueryData([queryKeys.user], newUser);
     }
@@ -35,7 +35,6 @@ export function useUser() : UseUser{
         queryClient.setQueryData([queryKeys.user], null);
         if(!user) clearStoredUser();
         else setStoredUser(user);
-        // queryClient.removeQueries(['user-appointments']);
     }
     return { user, updateUser, clearUser };
 }
