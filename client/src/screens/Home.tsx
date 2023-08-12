@@ -1,34 +1,35 @@
 import styled from "styled-components";
 import mainImg from "../assets/img/mian.page.img.png";
 import { Link } from "react-router-dom";
-
+import { useMediaQueries } from "../hooks/useMediaQueries";
 
 export default function Home(){
-    return (
-        <Container>
-          <Wrapper>
-            <LeftSection>
-              <Title>🌱 Minari Bot</Title>
-              <Phrase>
-                <div>첫 시스템 트레이딩</div>
-                <div><ColorTitle>미나리봇</ColorTitle> 으로</div>
-                <div>시작하세요.</div>
-              </Phrase>
-              <Description>
-                <div>자동 거래 시스템으로 편안한 투자를 경험하세요</div>
-                <div>시간에 구애 받지 않는 트레이딩을 통해</div>
-                <div>투자를 안전하고 수익성 높은 방향으로 이끕니다.</div>
-              </Description>
-              <Buttons>
-                <Link to='auth/signin'><StartButton>지금 시작하기</StartButton></Link>
-                <a href="#"><DocsButton>메뉴얼</DocsButton></a>
-              </Buttons>
-            </LeftSection>
-            <MainImg src={mainImg} />
-          </Wrapper>
-        </Container>
-      );
-    };
+  const { isPc, isTablet, isMobile } = useMediaQueries();
+  return (
+      <Container>
+        <Wrapper>
+          <LeftSection>
+            <Title>🌱 Minari Bot</Title>
+            <Phrase>
+              <div>첫 시스템 트레이딩</div>
+              <div><ColorTitle>미나리봇</ColorTitle> 으로</div>
+              <div>시작하세요.</div>
+            </Phrase>
+            <Description>
+              <div>자동 거래 시스템으로 편안한 투자를 경험하세요</div>
+              <div>시간에 구애 받지 않는 트레이딩을 통해</div>
+              <div>투자를 안전하고 수익성 높은 방향으로 이끕니다.</div>
+            </Description>
+            <Buttons>
+              <Link to='auth/signin'><StartButton>지금 시작하기</StartButton></Link>
+              <a href="#"><DocsButton>메뉴얼</DocsButton></a>
+            </Buttons>
+          </LeftSection>
+          { isPc && <MainImg src={mainImg} />}
+        </Wrapper>
+      </Container>
+    );
+  };
   
  const Container = styled.div`
   height: 100vh;

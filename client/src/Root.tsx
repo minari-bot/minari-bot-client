@@ -8,7 +8,7 @@ import { useRecoilState } from 'recoil';
 import { toastState } from './atoms/toast';
 import Toasts from './components/common/Toasts';
 import { queryClient } from './react-query/queryClient';
-
+import './Root.css';
 function Root() {
   const [ toast, setToast ] = useRecoilState(toastState);
   return <QueryClientProvider client={queryClient}>
@@ -28,10 +28,6 @@ function Root() {
 
 }
 const GlobalStyles = createGlobalStyle`
-  @font-face {
-    font-family: "Noto Sans";
-    src: url();
-  }
   html{ 
     font-size: 62.5%;
   }
@@ -44,9 +40,7 @@ const GlobalStyles = createGlobalStyle`
   background-color: ${props => props.theme.light.backgroundGray};
   color: ${props => props.theme.light.black};
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   }
