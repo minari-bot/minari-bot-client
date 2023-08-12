@@ -26,7 +26,7 @@ function SignIn({signInError, setSignInError} : SignInProps){
         }
      }
     const googleLoginHandler = () => {
-        window.open("http://localhost:5000/auth/google/callback", "_self");
+        window.open("http://minari-api-prod.fly.dev/auth/google/callback", "_self");
     }
     return <Wrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
