@@ -32,19 +32,19 @@ export default function Home(){
   };
   
  const Container = styled.div`
-  height: 100vh;
   width: 100vw;
   background: linear-gradient(to right bottom, rgba(94, 244, 254, 1), rgba(62, 207, 68, 0.65));
   background-position: center;
 `;
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 15rem;
-    padding: 5rem 15rem;
-    padding-top: 10rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background: linear-gradient(to right bottom, rgba(94, 244, 254, 1), rgba(62, 207, 68, 0.65));
+  gap: 15rem;
+  padding: 0 10%;
+  padding-top: 10rem;
 `
 const LeftSection = styled.div`
   display: flex;
@@ -66,8 +66,10 @@ const Phrase = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  font-size: 6rem;
+  font-size: 5rem;
   font-weight: bold;
+  gap: 0rem;
+  line-height: 6.5rem;
 `
 const Description= styled.div`
   display: flex;
@@ -75,7 +77,7 @@ const Description= styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 300;
 `
  const Buttons = styled.div`
   display: flex;
