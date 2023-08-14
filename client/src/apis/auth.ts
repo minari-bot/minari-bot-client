@@ -59,7 +59,7 @@ export const auth = {
     },
     googleSignIn: async(credential : string) => {
         try{
-            const res = await axios.post(`/auth/google`, credential);
+            const res = await axios.post(`/api/auth/google`, credential);
         } catch(err){
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
