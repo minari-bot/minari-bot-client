@@ -56,5 +56,18 @@ export const auth = {
                 }
             return null;
         }
-    }
+    },
+    googleSignIn: async(credential : string) => {
+        try{
+            const res = await axios.post(`/api/auth/google`, credential);
+        } catch(err){
+            if(axios.isAxiosError(err))
+                switch(err.response?.status){
+                    case 400: throw new CustomErrorClass("", 400);
+                    case 403: throw new CustomErrorClass("", 403);
+                    case 404: throw new CustomErrorClass("", 404);
+                    case 500: throw new CustomErrorClass("", 500);
+                }
+        }
+    },  
 }
