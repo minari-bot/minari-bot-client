@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import theme from "../../styles/theme";
 import useSignIn from "./hooks/useSignIn";
 import LongSumbitButton from "../common/LongSubmitButton";
-import {ReactComponent as GoogleLogo } from '../../assets/svg/google_light_logo.svg';
+import GoogleAuth from "./GoogleAuth";
 
 function SignIn({signInError, setSignInError} : SignInProps){
     const signInMutate = useSignIn();
@@ -25,9 +25,6 @@ function SignIn({signInError, setSignInError} : SignInProps){
             setSignInError(error.message);
         }
      }
-    const googleLoginHandler = () => {
-        window.open("http://localhost:5000/auth/google/callback", "_self");
-    }
     return <Wrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
             <h1>로그인 🤖</h1>
@@ -94,10 +91,7 @@ function SignIn({signInError, setSignInError} : SignInProps){
                     })
                 }id="password" type="password"></Input>
             <LongSumbitButton title="로그인"/>
-            <GoogleButton type="button" onClick={googleLoginHandler}>
-                <Logo><GoogleLogo/></Logo>
-                <Text>Google 계정으로 로그인</Text>
-            </GoogleButton>
+            <GoogleAuth/>
             <Info>
                 {/* <span>아이디 찾기</span> */}
                 {/* <span>비밀번호 찾기</span> */}
