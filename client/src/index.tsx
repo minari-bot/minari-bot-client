@@ -12,12 +12,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID as string}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID as string}>
       <ThemeProvider theme={theme}>
         <RecoilRoot>
             <RouterProvider router={router}/>
         </RecoilRoot>
       </ThemeProvider>
-    </GoogleOAuthProvider> */}
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );
