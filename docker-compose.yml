@@ -5,6 +5,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+    env_file:
+      - ./client/.env
     ports:
       - "3000:3000"
     image: poodly/mianri-dockerhub:dev_0.0.3_client
