@@ -1,10 +1,12 @@
-# fly.toml app configuration file generated for minari-client-prod on 2023-07-14T21:35:48+09:00
+# fly.toml app configuration file generated for minari-client-stage on 2023-08-17T13:32:17+09:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "minari-client-prod"
+app = "minari-client-stage"
 primary_region = "nrt"
+
+[build]
 
 [http_service]
   internal_port = 3000
