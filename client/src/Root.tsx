@@ -52,6 +52,8 @@ const GlobalStyles = createGlobalStyle`
   button {
     background : none;
     border: 0;
+    font-family: 'Noto Sans', sans-serif;
+
   }
 `;
 const Container = styled.div`
@@ -59,7 +61,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 10rem;
+    /* padding: 0 10rem; */
 `
 export default Root;
   
