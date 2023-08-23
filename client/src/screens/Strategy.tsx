@@ -1,23 +1,25 @@
 import styled from "styled-components";
 import Header from "../components/common/Header";
-import { StrategyBoxSkeleton } from "../components/strategy/skeletons/StrategyBoxSkeleton";
 import StrategyContainer from "../components/strategy/StrategyContainer";
-import { Suspense } from "react";
 import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
 import Spinner from "../components/error/Spinner";
+import { Helmet } from "react-helmet-async";
 
 export default function Strategy(){
-    return <Container>
-                <Header/>
-                <Center>
-                    <Wrapper>
-                    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
-                        <StrategyContainer/>
-                    </AsyncWrapper>
-                    </Wrapper>
-                </Center>
-            </Container>
+    return <>
+        <Helmet><title>전략 구독</title></Helmet>
+        <Container>
+            <Header/>
+            <Center>
+                <Wrapper>
+                <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
+                    <StrategyContainer/>
+                </AsyncWrapper>
+                </Wrapper>
+            </Center>
+        </Container>
+    </>
 }
 
 const Container = styled.div`

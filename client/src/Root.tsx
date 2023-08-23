@@ -9,10 +9,12 @@ import { toastState } from './atoms/toast';
 import Toasts from './components/common/Toasts';
 import { queryClient } from './react-query/queryClient';
 import './Root.css';
+import { Helmet } from 'react-helmet-async';
 function Root() {
   const [ toast, setToast ] = useRecoilState(toastState);
   return <QueryClientProvider client={queryClient}>
-    <div>
+    <>
+      <Helmet><title>MINARI·BOT</title></Helmet>
       <GlobalStyles/>
       <Navigation/>
       <Container>
@@ -23,7 +25,7 @@ function Root() {
       )}
       </Container>
       <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
-    </div>
+    </>
   </QueryClientProvider>
 
 }

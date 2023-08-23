@@ -9,7 +9,7 @@ export default function Home(){
       <Container>
         <Wrapper>
           <LeftSection>
-            <Title>🌱MINARI BOT</Title>
+            <Title>🌱MINARI·BOT</Title>
             <Phrase>
               <div>첫 시스템 트레이딩</div>
               <div><ColorTitle>미나리봇</ColorTitle> 으로</div>

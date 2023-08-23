@@ -16,7 +16,6 @@ export default function Overview({exchange, diffDay} : Props){
         ((exchange === EXCHANGE.upbit) && upbitData)
         ||
         fallback
-    console.log(data);
     return <>
         <OverviewBox title="보유액" status={0} value={data.overview[0]?.totalMoney || 0} symbol={" " + data.currency}/>
         <OverviewBox title="이익" status={0} value={data?.overview?.filter(data => dayjs(data.datetime).isAfter(diffDay)).map(data =>Number(data.realizedPnl)).reduce((a, b) => a+b, 0) || 0} symbol={" " + data.currency}/>

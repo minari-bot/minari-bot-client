@@ -27,6 +27,7 @@ const Container = styled.div`
     align-items: center;
     padding: 3rem 0rem;
     box-sizing: border-box;
+    width: 100%;
 `
 const Profile = styled.div`
     display: flex;
@@ -39,11 +40,20 @@ const Setting = styled.div`
     flex-direction: row;
     justify-content: space-between;
 `
-const Title = styled.h1``;
+const Title = styled.h1`
+    font-size: 2.75rem;
+    @media screen and (max-width: 1460px){
+        font-size: 2.25rem;
+    }
+`;
 const Date = styled.h2`
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0.75rem;
     font-weight: 400;
+    font-size: 2.25rem;
+    @media screen and (max-width: 1460px){
+        font-size: 2rem;
+    }
 `

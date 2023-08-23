@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import menuIcon from '../../assets/svg/menu.svg';
 import dashboardIcon from '../../assets/svg/dashboard.svg';
 import homeIcon from '../../assets/svg/home.svg';
@@ -18,6 +18,7 @@ export default function Navigation() {
     const { isPc } = useMediaQueries();
     const [isShut, setShut] = useState(false);
     const signOutAsync = useSignOut();
+    const { pathname } = useLocation();
     const {user} = useUser();
     const shutNavigation = () =>{
         setShut(prev => !prev);
@@ -28,6 +29,9 @@ export default function Navigation() {
     useEffect(() => {
         setShut(prev => !prev);
     }, [isPc])
+    useEffect(() => {
+        if(!isPc) setShut(prev => !prev);
+    },[pathname])
     return <Container isShut={isShut}>
         <CloseButton isShut={isShut} onClick={shutNavigation}>
             <Close/>
@@ -80,7 +84,7 @@ const Container = styled.nav<{isShut : boolean}>`
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 7.5rem;
+    width: 9rem;
     background-color: ${props => props.isShut? "none" : props.theme.light.whiteTransparent};
     position: fixed;
     left: 0;
@@ -95,12 +99,15 @@ const Container = styled.nav<{isShut : boolean}>`
         width: 2.5rem;
         height: 2.5rem;
     }
+    @media screen and (max-width: 1460px){
+        width: 7rem;
+    }
     @media screen and (max-width: 1024px){
         width: calc(100% - 6rem);
         justify-content: flex-start;
         align-items: flex-start;
         backdrop-filter: ${props => props.isShut? '': 'blur(35px)'};
-        z-index: 0;
+        z-index: 10;
     }
 `;
   
@@ -109,7 +116,7 @@ const Menu = styled.div<{isShut : boolean}>`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 4.5rem;
+    gap: 6rem;
     padding-top: 5rem;
     a{
         display: flex;
@@ -117,11 +124,15 @@ const Menu = styled.div<{isShut : boolean}>`
         justify-content: center;
         align-items: center;
         gap: 0.75rem;
+        /* padding */
         :last-child{
             border-bottom-left-radius: 15px;
             border-bottom-right-radius: 15px;
-            padding-bottom: 4.5rem;
+            padding-bottom: 2.5rem;
         }
+    }
+    @media screen and (max-width: 1460px){
+        gap: 4.5rem;
     }
     @media screen and (max-width: 1024px){
         width: 100%;
@@ -148,31 +159,48 @@ const ListIcon = styled.div<{isShut: boolean}>`
     align-items: center;
     padding: 3rem 0;
     cursor: pointer;
-    @media screen and (max-width: 1024px){
-        display: ${props => props.isShut? "block" : "none"};
-        position: absolute;
-        top: 0;
-        left: 0;
+    @media screen and (max-width: 1460px){
         img{
             width: 4rem;
             height: 4rem;
         }
     }
+    @media screen and (max-width: 1024px){
+        display: ${props => props.isShut? "block" : "none"};
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        img{
+            width: 4rem;
+            height: 4rem;
+        }
+    }
+    @media screen and (max-width: 767px){
+        top: -40px;
+        left: -10px;
+    }
 `;
 const Label = styled.div`
-    font-size: 1.2rem;
-    font-weight: 400;
+    font-size: 1.5rem;
+    font-weight: 500;
     text-align: center;
+    @media screen and (max-width: 1460px){
+        font-size: 1.1rem;
+    }
     @media screen and (max-width: 1024px){
-        font-size: 2.5rem;
+        font-size: 2.25rem;
         font-weight: bold;
         width: 100%;
         padding-right: 3.5rem;
     }
 `
 const Img = styled.img`
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    @media screen and (max-width: 1460px){
+        width: 2.5rem;
+        height: 2.5rem;
+    }
     @media screen and (max-width: 1024px){
         width: 4rem;
         height: 4rem;
