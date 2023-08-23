@@ -1,5 +1,7 @@
 # build stage
 FROM node:18-alpine as builder
+RUN --mount=type=secret,id=CLIENT_SECRET \
+REACT_APP_GOOGLE_CLIENT_ID="$(cat /run/secrets/REACT_APP_GOOGLE_CLIENT_ID)"
 WORKDIR /app
 COPY . .
 WORKDIR /app/client/
