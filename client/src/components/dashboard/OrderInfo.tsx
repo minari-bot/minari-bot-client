@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Symbol from "../common/Symbol";
-import { makeCurrencyString, makeQuantityString } from "../../utils/makeString";
+import { makeCurrencyString, makeQuantityString, makeSymbolWithoutCurrency } from "../../utils/makeString";
 import ReverageMag from "../common/ReverageMag";
 import { useMediaQueries } from "../../hooks/useMediaQueries";
 import dayjs from "dayjs";
@@ -21,11 +21,11 @@ function OrderInfo({symbol, datetime, side, leverage, price, quoteQty, realizedP
   const quoteQtyString = makeQuantityString(quoteQty, symbol, 3);
   const sideString = side.toUpperCase();
   const realizedPnlString = makeCurrencyString(realizedPnl, symbol, 3);
-
+  const symbolString = makeSymbolWithoutCurrency(symbol).toLowerCase();
   if(!isMobile)
     return <Container>
       <SymbolWrapper>
-          <Symbol name="eth"/>
+          <Symbol name={symbolString}/>
           <Bold>{symbol}</Bold>
           <ReverageMag value={leverage}/>
       </SymbolWrapper>
@@ -80,6 +80,11 @@ const SymbolWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   height: 3rem;
+  gap: 0.5rem;
+  svg{
+    width: 2rem;
+    height: 2rem;
+  }
   @media screen and (max-width: 767px){
     /* height: inherit; */
   }
