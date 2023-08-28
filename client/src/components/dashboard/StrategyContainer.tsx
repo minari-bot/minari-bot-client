@@ -28,6 +28,9 @@ const Container = styled.div`
     gap: 1.25rem;
     min-width: 32rem;
     width: 100%;
+    @media screen and (max-width: 1279px){
+        min-width: 65.25rem;
+    }
 `
 const Head = styled.div`
     display: flex;

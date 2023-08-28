@@ -20,7 +20,7 @@ export default function StrategyBox({info} : Props){
     }
     return keySelectUI?
             <AsyncWrapper suspenseFallback={<StrategyBoxSkeleton/>} errorFallback={<StrategyBoxSkeleton/>}>
-                <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} setKeySelectUI={setKeySelectUI}/>
+                <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} subscribeFieldId={info._id} setKeySelectUI={setKeySelectUI}/>
             </AsyncWrapper>
             :
             <Container>
@@ -124,7 +124,7 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.75rem;
+    /* gap: 0.75rem; */
 `
 const SymbolInfo = styled.div`
     display: flex;
@@ -138,6 +138,7 @@ const SymbolName = styled.h3`
     font-size:1.2rem;
 ` 
 const Title = styled.h2`
+    font-size: 1.4rem;
 `
 const Footer = styled.div`
     display: flex;
@@ -150,7 +151,7 @@ const InfoWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     > div:not(:last-of-type){
-        border-right: 1px solid ${props => props.theme.light.borderGray};
+        /* border-right: 1px solid ${props => props.theme.light.borderGray}; */
     }
 `
 const Info = styled.div`
@@ -159,10 +160,12 @@ const Info = styled.div`
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    padding: 0 1.5rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
+
 `
 const Label = styled.div`
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: bold;
 `
 const Value = styled.div`

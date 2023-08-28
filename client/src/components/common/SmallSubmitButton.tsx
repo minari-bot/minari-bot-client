@@ -15,7 +15,6 @@ const Button = styled.button<{width: number}>`
     color: ${props => props.theme.light.white};
     font-weight: bold;
     font-size: 1.2rem;
-    padding: 0.5rem;
     width: ${props => props.width / 10}rem;
     height: ${props => props.width / 22.5}rem;
     border-radius: 50px;

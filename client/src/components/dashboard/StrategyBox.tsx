@@ -17,7 +17,10 @@ export default function StrategyBox({symbol, leverage, strategyName, winRate, pr
                 <SymbolName>{symbol || ""}</SymbolName>
                 <ReverageMag value={leverage || 0}/>
             </SymbolItems>
-            <Title>{strategyName || ""}</Title>
+            <Title>
+                <a target="_blank" rel="noreferrer" href={strategyUrl}><Symbol name="tradingview"/></a>
+                <span>{strategyName || ""}</span>
+            </Title>
         </Column>
         <InfoWrapper>
             <Info>
@@ -47,6 +50,9 @@ const Container = styled.div`
     border-radius: 1.5rem;
     padding: 1.2rem 1.4rem;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px;
+    @media screen and (max-width: 1249px){
+        min-width: 65rem;
+    }
 `
 const SymbolItems = styled.div`
     display: flex;
@@ -93,6 +99,11 @@ const SymbolName = styled.div`
 
 `
 const Title = styled.h3`
-    font-weight: normal;
+    font-weight: bold;
     font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.8rem;
+    width: 100%;
 `
