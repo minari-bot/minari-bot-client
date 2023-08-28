@@ -12,6 +12,7 @@ import { StrategyBoxSkeleton } from "../components/admin/skeletons/StrategyBoxSk
 import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
 import Spinner from "../components/error/Spinner";
+import { Helmet } from "react-helmet-async";
 export const rightSideUIState ={
     edit : "edit",
     create : "create",
@@ -19,10 +20,12 @@ export const rightSideUIState ={
 export default function AdminStrategy(){
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.create);
-    return <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
+    return <>
+    <Helmet><title>전략 관리</title></Helmet>
+    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
         <Container>
             <Header/>
-            <Title>전략 등록</Title>
+            <Title>전략 관리</Title>
             <Icons>
                 <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
                 <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
@@ -45,6 +48,7 @@ export default function AdminStrategy(){
             </Main>
         </Container>
     </AsyncWrapper>
+    </>
 }
 const Container = styled.div`
     display: flex;

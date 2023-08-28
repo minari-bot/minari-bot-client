@@ -5,6 +5,7 @@ import { OverviewBoxSkeleton } from "./skeletons/OverviewBoxSkeleton";
 import Overview from "./Overview";
 import Spinner from "../error/Spinner";
 import AsyncWrapper from "../error/AsyncWrapper";
+import styled from "styled-components";
 
 interface Props{
     day: DAY_BUTTON,
@@ -30,7 +31,20 @@ export default function OverviewContainer({day, exchangeSelect} : Props){
         setDiffDay(getDiffDay());
     }, [day, getDiffDay]);
 
-    return <AsyncWrapper suspenseFallback={<>{Array(4).fill(0).map((item, i) => <OverviewBoxSkeleton key={i}/>)}</>} errorFallback={<Spinner/>}>
-        <Overview exchange={exchangeSelect} diffDay={diffDay}/>
-    </AsyncWrapper>
+    return <Container>
+        <AsyncWrapper suspenseFallback={<>{Array(4).fill(0).map((item, i) => <OverviewBoxSkeleton key={i}/>)}</>} errorFallback={<Spinner/>}>
+            <Overview exchange={exchangeSelect} diffDay={diffDay}/>
+        </AsyncWrapper>
+    </Container>
 }
+const Container = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    @media screen and (max-width: 767px){
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+`

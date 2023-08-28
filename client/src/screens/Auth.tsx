@@ -4,13 +4,16 @@ import styled from "styled-components"
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 export default function Auth (){
     const signInRouteMatch = useMatch("/auth/signin");
     const signUpRouteMatch = useMatch("/auth/signup");
     const [signUpError, setSignUpError] = useState("");
     const [signInError, setSignInError] = useState("");
-    return <AnimatePresence>
+    return <>
+        <Helmet><title>로그인</title></Helmet>
+        <AnimatePresence>
             {signInRouteMatch && <Wrapper>
                     <Animate
                         initial={{x : 400}}
@@ -23,7 +26,7 @@ export default function Auth (){
                         transition={{type: "spring", duration: 1, }}
                         $isLeft={signInRouteMatch?  true : false}
                     >
-                         {signInError === ""? null : <ErrorBox>
+                        {signInError === ""? null : <ErrorBox>
                             {signInError}    
                         </ErrorBox>}
                     </Cover>
@@ -39,13 +42,14 @@ export default function Auth (){
                         </ErrorBox>}
                     </Cover>
                     <Animate
-                         initial={{x : -400}}
-                         animate={{x : 0}}
-                         exit={{x : 400}}
-                         transition={{type: "spring", duration: 1, }}
+                        initial={{x : -400}}
+                        animate={{x : 0}}
+                        exit={{x : 400}}
+                        transition={{type: "spring", duration: 1, }}
                     ><SignUp signUpError={signUpError} setSignUpError={setSignUpError}/></Animate>
                 </Wrapper>}
         </AnimatePresence>
+        </>
 }
 const Wrapper = styled.div`
     display: flex;

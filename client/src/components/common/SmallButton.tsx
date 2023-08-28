@@ -14,13 +14,14 @@ const ClickedWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 7rem;
+    min-width: 6rem;
     height: 4.5rem;
     font-size: 1.2rem;
     border-radius: 15px;
     font-weight: bold;
     box-shadow: 4px 4px 60px 6px rgba(0, 0, 0, 0.05);
     background: ${props => props.theme.light.green};
+    cursor: pointer;
 `
 const Wrapper = styled(ClickedWrapper)`
     background: ${props => props.theme.light.white};
