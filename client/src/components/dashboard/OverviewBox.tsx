@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import {  makeRoundNumber } from "../../utils/makeString"
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { useMediaQueries } from "../../hooks/useMediaQueries";
 
 export interface Props{
     title : string,
@@ -9,37 +10,39 @@ export interface Props{
     symbol : string,
 }
 export default function OverallStatBox({title, status, value, symbol} : Props){
+    const { isPc, isMobile } = useMediaQueries();
     return <Container>
         <Header>
             <Title>{title || ""}</Title>
-            <AiOutlineInfoCircle/>
+            {!isMobile && <AiOutlineInfoCircle/>}
         </Header>
-        <Value>
-        {makeRoundNumber(value || 0, 2) + symbol || ""}
-        </Value>
-        {
-            status === 0?
-            null
-            :
-            <Trend isUptrend={status > 0}>
-                {status}%
-                {status > 0? "↑" : "↓"}
-            </Trend>
-        }
+        <Value> {makeRoundNumber(value || 0, 2) + symbol || ""}</Value>
+        { status !== 0 &&
+        <Trend isUptrend={status > 0}>
+            {status}%
+            {status > 0? "↑" : "↓"}
+        </Trend> }
     </Container>
 }
 
 const Container = styled.div`
-    width: 16rem;
+    min-width: 13rem;
+    max-width: 16rem;
     height: 8rem;
     padding: 1.2rem 2rem;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1.5fr 1fr;
     font-size: 1.2rem;
     background: ${props => props.theme.light.white};
     border-radius: 15px;
     box-shadow: 4px 4px 60px 6px rgba(0, 0, 0, 0.05);
-    gap: 1.0rem;
+    gap: 0.2rem;
+    @media screen and (max-width: 767px){
+        padding: 1.2rem 2rem;
+        height: 7.5rem;
+        max-width: 14rem;
+
+    }
 
 `
 const Header = styled.div`
@@ -51,25 +54,24 @@ const Title = styled.div`
     font-weight: 400;
     
 `
-const Status = styled.div`
-`
 const Value = styled.div`
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-align: center;
+    @media screen and (max-width: 767px){ 
+        font-size: 1.2rem;
+    }
 `
 const Trend = styled.div<{isUptrend : boolean}>`
     border-radius: 1.5rem;
     color: ${props => props.isUptrend? props.theme.light.darkGreen : props.theme.light.red};
-    background-color: ${props => props.isUptrend? props.theme.light.green : props.theme.light.pink};
     font-weight: bold;
-    font-size: 1.1rem;
-    min-width: 3.5rem;
-    max-width: 4rem;
-    padding: 0.3rem 0.5rem;
-    text-align: center;
+    font-size: 1rem;
+    width: 100%;
+    text-align: right;
     letter-spacing: -0.5px;
-
-
+    @media screen and (max-width: 767px){
+        width: inherit;
+    }
     
 `

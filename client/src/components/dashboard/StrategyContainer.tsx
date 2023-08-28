@@ -12,19 +12,25 @@ export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTT
     return <Container>
             <Head>
                 <h1>구독 전략</h1>
-                <StrategyCount>{count}</StrategyCount>
+                <Count>{count}</Count>
             </Head>
             <AsyncWrapper errorFallback={<Spinner/>} suspenseFallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
-                {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
-                {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
+                <StrategyWrapper>
+                    {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
+                    {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
+                </StrategyWrapper>
             </AsyncWrapper>
         </Container>
 }
 const Container = styled.div`
-    width: 35rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    min-width: 32rem;
+    width: 100%;
+    @media screen and (max-width: 1279px){
+        min-width: 65.25rem;
+    }
 `
 const Head = styled.div`
     display: flex;
@@ -32,11 +38,28 @@ const Head = styled.div`
     justify-content: flex-start;
     align-items: center;
     gap: 1.5rem;
+    width: 100%;
 `
-const StrategyCount = styled.div`
-    font-weight: 700;
+const Count = styled.div`
+    font-weight: bold;
+    font-size: 1.2rem;
     border-radius: 5px;
     background-color: ${props => props.theme.light.borderGray};
     color: ${props => props.theme.light.darkGray};
     padding: 0.2rem 0.5rem;
+`
+const StrategyWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: flex-start;
+    gap: 1.25rem;
+    @media screen and (max-width: 1280px){
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    @media screen and (max-width: 767px){
+        display: flex;
+        flex-direction: column;
+    }
 `

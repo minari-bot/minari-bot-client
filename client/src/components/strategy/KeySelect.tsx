@@ -13,16 +13,17 @@ import { useEffect } from "react";
 
 interface Props{
     exchange : string,
+    subscribeFieldId: string,
     setKeySelectUI: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function KeySelect({exchange, setKeySelectUI} : Props){
+export default function KeySelect({exchange, subscribeFieldId, setKeySelectUI} : Props){
     const { data } = useKeyList();
     const {user} = useUser();
     const { mutateAsync } = useMutation(strategy.SubscribeStrategy);
-    const setToast = useToast()
-    const onClick = async (id : string, label : string) => {
+    const setToast = useToast();
+    const onClick = async (label : string) => {
         try{
-            await mutateAsync({id, label, user});
+            await mutateAsync({id : subscribeFieldId, label, user});
             setToast({state: 'success', text: MUTATE_SUCCESS_MESSAGE.ADD_SUBSCRIBE});
         } 
         catch(err){
@@ -43,7 +44,7 @@ export default function KeySelect({exchange, setKeySelectUI} : Props){
             <Contents>
             {
                 data.map((info) => info?.exchange?.toLowerCase() === exchange && 
-                <Wrapper key={info._id} onClick={() => onClick(info._id, info.label)}>
+                <Wrapper key={info._id} onClick={() => onClick(info.label)}>
                     <KeyTitle>
                         <Symbol name={exchange?.toLowerCase()}/>
                         <Label>{info.label}</Label>

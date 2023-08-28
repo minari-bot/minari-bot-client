@@ -26,6 +26,7 @@ const ClickedWrapper = styled.button`
         width: 3.5rem;
         height: 3.5rem;
     }
+    cursor: pointer;
 `
 const Wrapper = styled(ClickedWrapper)`
     background: ${props => props.theme.light.white};

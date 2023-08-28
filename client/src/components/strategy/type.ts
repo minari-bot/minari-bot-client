@@ -1,5 +1,6 @@
 export interface openStrategyData{
     _id: string
+    strategyId: string,
     strategyName: string,
     exchange: string,
     symbol: string,
@@ -9,4 +10,5 @@ export interface openStrategyData{
     profitPercent: number,
     winRate: number,
     followers: number,
+    subscribing: boolean,
 }

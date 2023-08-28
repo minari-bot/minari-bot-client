@@ -34,7 +34,7 @@ export default function Toasts(){
         return <ErrorContainer>
                     <SlClose/>
                     <Texts>
-                        Error: {toast.text}
+                        {toast.text}
                     </Texts>
                 </ErrorContainer>
         return null;
@@ -49,7 +49,8 @@ const Container = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    width : 25rem;
+    min-width : 25rem;
+    max-width: 35rem;
     height: 7.5rem;
     border-radius: 1.5rem;
     background: ${props => props.theme.light.white};
@@ -60,6 +61,7 @@ const Container = styled.div`
         font-size: 2.5rem;
 
     }
+    font-weight: 500;
     z-index: 9999;
 `;
 const ErrorContainer = styled(Container)`

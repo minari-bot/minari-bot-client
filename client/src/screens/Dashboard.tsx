@@ -13,45 +13,56 @@ import StrategyContainer from "../components/dashboard/StrategyContainer";
 import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
 import Spinner from "../components/error/Spinner";
+import { useMediaQueries } from "../hooks/useMediaQueries";
+import { Helmet } from "react-helmet-async";
 
-
+const mobileMode = {
+    history : 'history',
+    strategy : 'strategy',
+}
 export default function Dashboard(){
     const [exchangeSelect, setExchangeSelect] = useState<EXCHANGE_BUTTON>(EXCHANGE_BUTTON_ENUM.binance);
     const [daySelect, setDaySelect] = useState<DAY_BUTTON>(DAY_BUTTON_ENUM.week);
-    return <Container>
-            <Header/>
-            <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
-                <>
-                <h1>대시보드</h1>
-                <FlexRowBtwn>
-                    <FlexRowStart>
-                        <ImgButton onClick={() => setExchangeSelect(EXCHANGE_BUTTON_ENUM.binance)} title={EXCHANGE_BUTTON_ENUM.binance} isSelect={exchangeSelect === EXCHANGE_BUTTON_ENUM.binance} img={binanceLogo}/>
-                        <ImgButton onClick={() => setExchangeSelect(EXCHANGE_BUTTON_ENUM.upbit)} title={EXCHANGE_BUTTON_ENUM.upbit} isSelect={exchangeSelect === EXCHANGE_BUTTON_ENUM.upbit} img={upbitLogo}/>
-                    </FlexRowStart>
-                    <DateButtons>
-                        <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.week)} title="일주일" isSelect={daySelect === DAY_BUTTON_ENUM.week}/>
-                        <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.month)} title="이번 달" isSelect={daySelect === DAY_BUTTON_ENUM.month}/>
-                        <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.month3)} title="3개월" isSelect={daySelect === DAY_BUTTON_ENUM.month3}/>
-                        <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.month6)} title="6개월" isSelect={daySelect === DAY_BUTTON_ENUM.month6}/>
-                    </DateButtons>
-                </FlexRowBtwn>
-                <FlexRowStart>
+    const [modeSelect, setModeSelect] = useState(mobileMode.history);
+    const { isPc, isMobile } = useMediaQueries();
+    return <>
+        <Helmet><title>대시보드</title></Helmet>
+        <Container>
+                { isPc && <Header/> }
+                <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
+                    <>
+                    <h1>대시보드</h1>
+                    <SettingHeader>
+                        <Buttons>
+                            <ImgButton onClick={() => setExchangeSelect(EXCHANGE_BUTTON_ENUM.binance)} title={EXCHANGE_BUTTON_ENUM.binance} isSelect={exchangeSelect === EXCHANGE_BUTTON_ENUM.binance} img={binanceLogo}/>
+                            <ImgButton onClick={() => setExchangeSelect(EXCHANGE_BUTTON_ENUM.upbit)} title={EXCHANGE_BUTTON_ENUM.upbit} isSelect={exchangeSelect === EXCHANGE_BUTTON_ENUM.upbit} img={upbitLogo}/>
+                        </Buttons>
+                        <Buttons>
+                            <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.week)} title="일주일" isSelect={daySelect === DAY_BUTTON_ENUM.week}/>
+                            <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.month)} title="이번 달" isSelect={daySelect === DAY_BUTTON_ENUM.month}/>
+                            <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.month3)} title="3개월" isSelect={daySelect === DAY_BUTTON_ENUM.month3}/>
+                            <SmallButton onClick={() => setDaySelect(DAY_BUTTON_ENUM.month6)} title="6개월" isSelect={daySelect === DAY_BUTTON_ENUM.month6}/>
+                        </Buttons>
+                    </SettingHeader>
                     <OverviewContainer day={daySelect} exchangeSelect={exchangeSelect}/>
-                </FlexRowStart>
-                <FlexRowStart>
-                </FlexRowStart>
-                <SubLayout>
-                    <Column>
-                        <h1>거래 내역</h1>
-                        <HistoryContainer exchange={exchangeSelect}/>
-                    </Column>
-                    <Column>
-                        <StrategyContainer exchange={exchangeSelect}/>
-                    </Column>
-                </SubLayout>
-                </>
-            </AsyncWrapper>
-        </Container>
+                    { !isPc &&  
+                    <Buttons>
+                        <SmallButton onClick={()=> setModeSelect(mobileMode.history)} title="내역" isSelect={modeSelect === mobileMode.history}/>
+                        <SmallButton onClick={()=> setModeSelect(mobileMode.strategy)} title="구독 전략" isSelect={modeSelect === mobileMode.strategy}/>
+                    </Buttons>}
+                    <SubLayout>
+                        { !isPc && modeSelect === mobileMode.history && <HistoryContainer exchange={exchangeSelect}/> }
+                        { !isPc && modeSelect === mobileMode.strategy && <StrategyContainer exchange={exchangeSelect}/> }
+                        {  isPc && <>
+                            <HistoryContainer exchange={exchangeSelect}/>
+                            <StrategyContainer exchange={exchangeSelect}/>
+                            </>
+                        }
+                    </SubLayout>
+                    </>
+                </AsyncWrapper>
+            </Container>
+        </>
 }
 
 const Container = styled(motion.div)`
@@ -61,38 +72,33 @@ const Container = styled(motion.div)`
     font-size: 1.3rem;
     margin-bottom: 2rem;
     gap: 1.0rem;
+    @media screen and (max-width: 1279px){
+        padding-top: 5rem;
+    }
 `
 const SubLayout = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 5rem;
-
 `
-const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1.0rem;
-`
-const FlexRowBtwn = styled.div`
+const SettingHeader = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    /* align-items: center; */
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    @media screen and (max-width: 767px){
+        flex-direction: column;
+    }
 `
-const FlexRowStart = styled.div`
+const Buttons = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     gap: 1.5rem;
     margin-bottom: 2rem;
-`
-const DateButtons = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 1.5rem;
 `
 const ChartWrapper = styled.div`
     height: 40rem;
