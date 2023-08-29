@@ -73,7 +73,7 @@ const Container = styled(motion.div)`
     margin-bottom: 2rem;
     gap: 1.0rem;
     @media screen and (max-width: 1279px){
-        padding-top: 5rem;
+        padding-top: 7.5rem;
     }
 `
 const SubLayout = styled.div`

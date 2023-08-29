@@ -5,18 +5,30 @@ import { useKeyInfo } from "./hooks/useKeyInfo";
 import { Suspense } from "react";
 import { makeRoundNumber } from "../../utils/makeString";
 import KeyInfoSkeleton from "./skeletons/KeyInfoSkeleton";
+import { ReactComponent as ArrowBack } from "../../assets/svg/arrow_back.svg";
+import { rightSideUIState } from "../../screens/Api";
 
 
 interface Props{
     selectedKeyId : string, 
     label : string,
+    setRightSideUIMode: React.Dispatch<React.SetStateAction<string>>
+
 }
-export default function KeyInfo({ selectedKeyId, label } : Props){
+export default function KeyInfo({ selectedKeyId, label, setRightSideUIMode } : Props){
     const info = useKeyInfo(selectedKeyId);
+    const onClose = () => {
+        setRightSideUIMode(rightSideUIState.none);
+    }
     return(
     <Suspense fallback={<KeyInfoSkeleton/>}>
         <Container>
-            <Title>{label}</Title>
+            <Header>
+                <Title>{label}</Title>
+                <CloseButton onClick={onClose}>
+                    <ArrowBack/>
+                </CloseButton>
+            </Header>
             <Wrapper>
                 <Labels>
                     <div>Balance</div>
@@ -48,6 +60,13 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: start;
     gap:1.5rem;
+    width: 100%;
+`
+const Header = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
 `
 const Wrapper = styled.div`
@@ -87,4 +106,12 @@ const Info = styled.div`
 const Error = styled.div`
     color: ${props => props.theme.light.red};
     width: 100%;
+`
+const CloseButton = styled.button`
+    cursor: pointer;
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    padding-top: 0.3rem;
 `

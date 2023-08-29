@@ -13,6 +13,7 @@ import AsyncWrapper from "../components/error/AsyncWrapper";
 import Spinner from "../components/error/Spinner";
 import KeyBoxSkeleton from "../components/api/skeletons/KeyBoxSkeleton";
 import { Helmet } from "react-helmet-async";
+import { useMediaQueries } from "../hooks/useMediaQueries";
 
 export const rightSideUIState ={
     none : "none",
@@ -24,33 +25,45 @@ export default function Api(){
     const [selectedKeyId, setSelectedKeyId] = useState("");
     const [label, setLabel] = useState("");
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
+    const { isPc, isTablet } = useMediaQueries();
+
     return <>
         <Helmet><title>API Keys</title></Helmet>
         <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
             <Container>
-                <Header/>
+                { isPc && <Header/> }
                     <>
                         <Icons>
                             <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
                             <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
                         </Icons>
                         <Main>
-                            <KeyListContainer>
-                                <Suspense fallback={Array(6).fill(0).map((t, i) => <KeyBoxSkeleton key={i}/>)}>
-                                    <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
-                                </Suspense>
-                            </KeyListContainer>
-                            <SideWrapper>
-                                { 
-                                    rightSideUIMode === rightSideUIState.keyAdd? 
-                                    <KeyRegisterForm exchange={exchangeSelect}/>
-                                    :
-                                    rightSideUIMode === rightSideUIState.keyInfo?
-                                    <KeyInfo selectedKeyId={selectedKeyId} label={label} />
-                                    :
-                                    null
-                                }
-                            </SideWrapper>
+                            {
+                                !isPc && !(rightSideUIMode === rightSideUIState.none)?
+                                <></>
+                                :
+                                <KeyListContainer>
+                                    <Suspense fallback={Array(6).fill(0).map((t, i) => <KeyBoxSkeleton key={i}/>)}>
+                                        <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
+                                    </Suspense>
+                                </KeyListContainer>
+                            }
+                            {
+                                !isPc && rightSideUIMode === rightSideUIState.none?
+                                <></>
+                                :
+                                <SideWrapper>
+                                    { 
+                                        rightSideUIMode === rightSideUIState.keyAdd? 
+                                        <KeyRegisterForm exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
+                                        :
+                                        rightSideUIMode === rightSideUIState.keyInfo?
+                                        <KeyInfo selectedKeyId={selectedKeyId} label={label} setRightSideUIMode={setRightSideUIMode} />
+                                        :
+                                        null
+                                    }
+                                </SideWrapper>
+                            }
                         </Main>
                     </>
             </Container>
@@ -64,6 +77,9 @@ const Container = styled.div`
     font-size: 1.3rem;
     margin-bottom: 2rem;
     gap: 1.0rem;
+    @media screen and (max-width: 1278px){
+        padding-top: 7.5rem;
+    }
 `
 const KeyListContainer = styled.div`
     display: flex;
@@ -71,8 +87,14 @@ const KeyListContainer = styled.div`
     justify-content: flex-start;
     align-items: start;
     gap: 15px;
-    width: 50rem;
-    `
+    min-width: 50rem;
+    @media screen and (max-width: 767px){
+        min-width: 35rem;
+    }
+    @media screen and (max-width: 390px){
+        min-width: 27.5rem;
+    }
+`
 const Icons = styled.div`
     display: flex;
     flex-direction: row;
@@ -87,7 +109,8 @@ const Main = styled.div`
     gap: 7rem;
 `
 const SideWrapper = styled.div`
-    width: 35rem;
-`
-const Title = styled.h1`
+    min-width: 35rem;
+    @media screen and (max-width: 390px){
+        min-width: 25rem;
+    }
 `

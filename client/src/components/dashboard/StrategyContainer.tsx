@@ -16,6 +16,7 @@ export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTT
             </Head>
             <AsyncWrapper errorFallback={<Spinner/>} suspenseFallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
                 <StrategyWrapper>
+                <>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>
                     {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
                     {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}
                 </StrategyWrapper>
@@ -30,6 +31,9 @@ const Container = styled.div`
     width: 100%;
     @media screen and (max-width: 1279px){
         min-width: 65.25rem;
+    }
+    @media screen and (max-width: 767px){
+        min-width: 32rem;
     }
 `
 const Head = styled.div`

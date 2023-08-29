@@ -63,13 +63,16 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     position: relative;
-    width: 40rem;
+    min-width: 40rem;
     height: 100%;
     border-radius: 15px;
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
     padding: 1rem  2rem;
     padding-bottom: 0;
     background-color: ${props => props.theme.light.white};
+    @media screen and (max-width: 432px){
+        min-width: 25rem;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -92,10 +95,16 @@ const Contents = styled.div`
 `
 const Title = styled.h2`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const Label = styled.span`
     font-weight: 500;
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 
 const Wrapper = styled.div`

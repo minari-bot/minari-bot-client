@@ -13,18 +13,20 @@ import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
 import Spinner from "../components/error/Spinner";
 import { Helmet } from "react-helmet-async";
+import { useMediaQueries } from "../hooks/useMediaQueries";
 export const rightSideUIState ={
     edit : "edit",
     create : "create",
 }
 export default function AdminStrategy(){
+    const { isPc, isMobile } = useMediaQueries();
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.create);
     return <>
     <Helmet><title>전략 관리</title></Helmet>
     <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
         <Container>
-            <Header/>
+            { isPc && <Header/> }
             <Title>전략 관리</Title>
             <Icons>
                 <ImgButton onClick={() => setExchangeSelect(EXCHANGE.binance)} title={EXCHANGE.binance} isSelect={exchangeSelect === EXCHANGE.binance} img={binanceLogo}/>
@@ -55,6 +57,9 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     gap: 1.0rem;
+    @media screen and (max-width: 1279px){
+        padding-top: 7.5rem;
+    }
 `
 const Title = styled.h1`
     color: ${props => props.theme.light.black};

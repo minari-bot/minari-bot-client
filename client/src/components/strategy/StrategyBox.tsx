@@ -76,12 +76,15 @@ const Container = styled.div`
     position: relative;
     display: grid;
     grid-template-rows: 0.5fr 1fr 0.3fr;
-    width: 40rem;
+    min-width: 40rem;
     height: 17rem;
     border-radius: 15px;
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
     padding: 1rem  2rem;
     background-color: ${props => props.theme.light.white};
+    @media screen and (max-width: 432px){
+        min-width: 25rem;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -113,6 +116,9 @@ const Logos = styled.div`
 `
 const Author = styled.h3`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const Contents = styled.div`
     display: grid;
@@ -139,6 +145,9 @@ const SymbolName = styled.h3`
 ` 
 const Title = styled.h2`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.1rem;
+    }
 `
 const Footer = styled.div`
     display: flex;
@@ -162,14 +171,24 @@ const Info = styled.div`
     gap: 0.5rem;
     padding: 1rem 1.5rem;
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
+    @media screen and (max-width: 432px){
+        padding: 0.5rem 0.75rem;
+        gap: 0.25rem;
+    }
 
 `
 const Label = styled.div`
     font-size: 1.3rem;
     font-weight: bold;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const Value = styled.div`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const SmallValue = styled.span`
     font-weight: 600;
