@@ -72,7 +72,7 @@ export default function StrategyBox({info} : Props){
             </Container>
 }
 
-const Container = styled.div`
+export const Container = styled.div`
     position: relative;
     display: grid;
     grid-template-rows: 0.5fr 1fr 0.3fr;

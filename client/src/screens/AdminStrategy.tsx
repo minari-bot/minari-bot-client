@@ -17,11 +17,12 @@ import { useMediaQueries } from "../hooks/useMediaQueries";
 export const rightSideUIState ={
     edit : "edit",
     create : "create",
+    none : "none",
 }
 export default function AdminStrategy(){
-    const { isPc, isMobile } = useMediaQueries();
+    const { isPc } = useMediaQueries();
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
-    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.create);
+    const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
     return <>
     <Helmet><title>전략 관리</title></Helmet>
     <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
@@ -33,20 +34,34 @@ export default function AdminStrategy(){
                 <ImgButton onClick={() => setExchangeSelect(EXCHANGE.upbit)} title={EXCHANGE.upbit} isSelect={exchangeSelect === EXCHANGE.upbit} img={upbitLogo}/>
             </Icons>
             <Main>
-                <ListContainer>
-                    <Suspense fallback={Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}>
-                        <StrategyContainer exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
-                    </Suspense>
-                </ListContainer>
-                <SideWrapper>
-                    {
-                        rightSideUIMode === rightSideUIState.create? 
-                        <StrategyForm exchange={exchangeSelect}/>
-                        :
-                        <EditForm exchange={exchangeSelect} />
-                    }
+                {
+                    !isPc && !(rightSideUIMode === rightSideUIState.none)?
+                    <></>
+                    :
+                    <ListContainer>
+                        <Suspense fallback={Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}>
+                            <StrategyContainer exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
+                        </Suspense>
+                    </ListContainer>
                     
-                </SideWrapper>
+                }
+                {
+                    !isPc && rightSideUIMode === rightSideUIState.none?
+                    <></>
+                    :
+                    <SideWrapper>
+                        {
+                            rightSideUIMode === rightSideUIState.none?
+                            <></>
+                            :
+                            rightSideUIMode === rightSideUIState.create?
+                            <StrategyForm exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
+                            :
+                            <EditForm exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode} />
+                        }
+                        
+                    </SideWrapper>
+                }
             </Main>
         </Container>
     </AsyncWrapper>

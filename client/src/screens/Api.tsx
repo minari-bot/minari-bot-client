@@ -25,7 +25,7 @@ export default function Api(){
     const [selectedKeyId, setSelectedKeyId] = useState("");
     const [label, setLabel] = useState("");
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
-    const { isPc, isTablet } = useMediaQueries();
+    const { isPc } = useMediaQueries();
 
     return <>
         <Helmet><title>API Keys</title></Helmet>

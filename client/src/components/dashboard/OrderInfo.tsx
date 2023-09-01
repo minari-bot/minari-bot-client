@@ -31,8 +31,10 @@ function OrderInfo({symbol, datetime, side, leverage, price, quoteQty, realizedP
       <Wrapper>
           <span>{priceString}</span>
       </Wrapper>
-      <Wrapper>{quoteQtyString}</Wrapper>
-      <Wrapper><Side $isBuy={side.toUpperCase() === "BUY"}>{sideString}</Side></Wrapper>
+      <Wrapper>
+        <span>{quoteQtyString}</span>
+        <Side $isBuy={side.toUpperCase() === "BUY"}>{sideString}</Side>
+      </Wrapper>
       <Wrapper><Bold>{realizedPnlString}</Bold></Wrapper>
       <DateWrapper>{dateString}</DateWrapper>
     </Container>
@@ -70,8 +72,8 @@ const Container = styled.div`
   background-color: ${props => props.theme.light.white};
   border-radius: 2.5rem;
   font-size: 1.1rem;
-  grid-template-columns: 1fr 1fr .5fr .5fr .75fr .75fr;
-  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr .8fr;
+  gap: .75rem;
   display: grid;
 `
 const SymbolWrapper = styled.div`
@@ -105,7 +107,7 @@ const Wrapper = styled.div`
   justify-content: flex-end;
   align-items: center;
   height: 3rem;
-  min-width: 6rem;
+  min-width: 3.5rem;
   text-align: center;
   white-space: nowrap;
 `

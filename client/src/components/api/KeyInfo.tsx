@@ -46,7 +46,6 @@ export default function KeyInfo({ selectedKeyId, label, setRightSideUIMode } : P
                     }}
                     />}</div>
                 </Info>
-                {/* {!info?.connect && <Error>error reason.</Error>} */}
             </Wrapper>
         </Container>
     </Suspense>
@@ -102,10 +101,6 @@ const Info = styled.div`
     svg{
         font-size: 2rem;
     }
-`
-const Error = styled.div`
-    color: ${props => props.theme.light.red};
-    width: 100%;
 `
 const CloseButton = styled.button`
     cursor: pointer;

@@ -23,7 +23,6 @@ export default function HistoryContainer({exchange} : {exchange : EXCHANGE_BUTTO
           <li>심볼</li>
           <li>거래가</li>
           <li>수량</li>
-          <li>사이드</li>
           <li>실현 수익</li>
           <li>거래 시간</li>
         </Labels>
@@ -70,7 +69,7 @@ const Labels = styled.ul`
   font-size: 1.5rem;
   font-weight: bold;
   display: grid;
-  grid-template-columns: 1.25fr 1fr 0.8fr 0.5fr 0.75fr 0.8fr;
+  grid-template-columns: 1fr 1fr 1fr 0.85fr 0.85fr;
   text-align: center;
   list-style: none;
   padding: 2rem 0;
