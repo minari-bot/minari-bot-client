@@ -15,7 +15,6 @@ interface Props{
 }
 function OrderInfo({symbol, datetime, side, leverage, price, quoteQty, realizedPnl} : Props){
   const dateString = `${datetime.slice(0,10)} ${datetime.slice(11, 16)}`;
-  const mobileDateString = dayjs(datetime).format("YY.MM.DD HH:mm");
   const  { isMobile } = useMediaQueries();
   const priceString = makeCurrencyString(price, symbol, 3);
   const quoteQtyString = makeQuantityString(quoteQty, symbol, 3);
@@ -32,37 +31,39 @@ function OrderInfo({symbol, datetime, side, leverage, price, quoteQty, realizedP
       <Wrapper>
           <span>{priceString}</span>
       </Wrapper>
-      <Wrapper>{quoteQtyString}</Wrapper>
-      <Wrapper><Side $isBuy={side.toUpperCase() === "BUY"}>{sideString}</Side></Wrapper>
+      <Wrapper>
+        <span>{quoteQtyString}</span>
+        <Side $isBuy={side.toUpperCase() === "BUY"}>{sideString}</Side>
+      </Wrapper>
       <Wrapper><Bold>{realizedPnlString}</Bold></Wrapper>
       <DateWrapper>{dateString}</DateWrapper>
     </Container>
   else
     return <MobileContainer>
-        <MobileLabelColumn>
-          <MobileLabel>심볼</MobileLabel>
-          <MobileLabel>거래가</MobileLabel>
-          <MobileLabel>수량</MobileLabel>
-          <MobileLabel>사이드</MobileLabel>
-          <MobileLabel>실현 수익</MobileLabel>
-          <MobileLabel>거래 시간</MobileLabel>
-        </MobileLabelColumn>
-        <MobileValueColumn>
-          <MobileLongValue>
-            <Symbol name="eth"/>
-            <ReverageMag value={leverage}/>
-            <span>{symbol}</span>
-          </MobileLongValue>
-          <MobilePrice>{priceString}</MobilePrice>
-          <MobileLongValue>
-              {quoteQtyString}
-            </MobileLongValue>
-          <MobileLongValue>
+        <MobileDateHeader>
+          <MobileLabel>{dateString}</MobileLabel>
+          <MobileSideWrapper>
             <Side $isBuy={side.toUpperCase() === "BUY"}>{sideString}</Side>
-          </MobileLongValue>
-          <MobileValue>{realizedPnlString}</MobileValue>
-          <MobileLongValue  >{mobileDateString}</MobileLongValue  >
-        </MobileValueColumn>
+            <ReverageMag value={leverage}/>
+          </MobileSideWrapper>
+        </MobileDateHeader>
+        <MobileInfoWrapper>
+          <MobileLabelColumn>
+            <MobileLabel>심볼</MobileLabel>
+            <MobileLabel>거래가</MobileLabel>
+            <MobileLabel>수량</MobileLabel>
+            <MobileLabel>실현 수익</MobileLabel>
+          </MobileLabelColumn>
+          <MobileValueColumn>
+            <MobileLongValue>
+              <Symbol name={symbolString}/>
+              <span>{symbol}</span>
+            </MobileLongValue>
+            <MobileValue>{priceString}</MobileValue>
+            <MobileValue>{quoteQtyString}</MobileValue>
+            <MobileValue>{realizedPnlString}</MobileValue>
+          </MobileValueColumn>
+        </MobileInfoWrapper>
     </MobileContainer>
 }
 const Container = styled.div`
@@ -71,8 +72,8 @@ const Container = styled.div`
   background-color: ${props => props.theme.light.white};
   border-radius: 2.5rem;
   font-size: 1.1rem;
-  grid-template-columns: 1fr 1fr .5fr .5fr .75fr .75fr;
-  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr .8fr;
+  gap: .75rem;
   display: grid;
 `
 const SymbolWrapper = styled.div`
@@ -97,6 +98,7 @@ const Side = styled.div<{$isBuy: boolean}>`
   font-size: 0.85rem;
   font-weight: 700;
   text-align: center;
+  padding: 0.1rem 0;
 `
 const Wrapper = styled.div`
   display: flex;
@@ -105,7 +107,7 @@ const Wrapper = styled.div`
   justify-content: flex-end;
   align-items: center;
   height: 3rem;
-  min-width: 6rem;
+  min-width: 3.5rem;
   text-align: center;
   white-space: nowrap;
 `
@@ -118,14 +120,35 @@ const Bold = styled.div`
   font-weight: bold;
 `
 const MobileContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   padding: 1rem 1.5rem;
   :not(:last-child){
     border-bottom: 1px solid ${props => props.theme.light.borderGray};
   }
-
+`
+const MobileInfoWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  gap: 3rem;
+`
+const MobileDateHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+`
+const MobileSideWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.25rem;
 `
 const MobileLabel = styled.div`
   font-size: 1.2rem;
@@ -140,29 +163,21 @@ const MobileLabelColumn = styled.div`
 `
 const MobileValueColumn = styled(MobileLabelColumn)`
   font-weight: 400;
-  align-items: center;
+  align-items: flex-end;
 `
 const MobileLongValue = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-end;
   align-items: center;
-  min-width: 10rem;
+  gap: 0.25rem;
   font-size: 1.2rem;
-  text-align: center;
   svg{
-    width: 1.5rem;
     height: 1.5rem;
   }
 `
 const MobileValue = styled.div`
   font-size: 1.2rem;
-  width: 5rem;
-  text-align: center;
-  `
-const MobilePrice = styled.div`
-  font-size: 1.2rem;
-  min-width: 12rem;
-  text-align: center;
+  text-align: right;
 `
 export default OrderInfo;

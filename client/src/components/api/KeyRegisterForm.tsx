@@ -13,11 +13,14 @@ import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import LongSumbitButton from "../common/LongSubmitButton";
+import { ReactComponent as ArrowBack } from "../../assets/svg/arrow_back.svg";
+import { rightSideUIState } from "../../screens/Api";
 
 interface Props{
     exchange : string
+    setRightSideUIMode: React.Dispatch<React.SetStateAction<string>>
 }
-export default function KeyRegisterForm({exchange} : Props){
+export default function KeyRegisterForm({exchange, setRightSideUIMode} : Props){
     const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
     const { mutateAsync : checkApiMutateAsync } = useMutation(apiKey.checkApiKey);
     const { register, handleSubmit, formState: { errors } } = useForm<apiKeyFormValue>({
@@ -37,14 +40,21 @@ export default function KeyRegisterForm({exchange} : Props){
             const error = err as CustomErrorClass;
             setToast({state : 'error', text: error.message})
         }
-     }
+    }
+    const onClose = () => {
+        setRightSideUIMode(rightSideUIState.none);
+    }
     return <Container>
-        <Head>
-            {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
-            {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
-            <Title>API Key 등록</Title> 
-            <SlInfo/>
-        </Head>
+        <Header>
+            <TitleWrapper>
+                {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
+                {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
+                <Title>API Key 등록</Title> 
+            </TitleWrapper>
+            <CloseButton onClick={onClose}>
+                <ArrowBack/>
+            </CloseButton>
+        </Header>
         <Form onSubmit={handleSubmit(onSubmit)}>
                 <Label>
                     <label htmlFor="label">
@@ -127,25 +137,32 @@ const Container = styled.div`
     margin-top: 4.5rem;
     width: 100%;
     box-sizing: border-box;
+    @media screen and (max-width: 1278px){
+        margin-top: 0;
+    }
 `
-const Head = styled.div`
+const Header = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.0rem;
     font-size: 1.2rem;
     font-weight: bold;
     border-bottom: 0.5px solid ${props => props.theme.light.borderGray};
-    padding-bottom: 1.0rem;
+    padding: 1rem 0;
     img{
         width: 2rem;
         height: 2rem;
     }
 `
+const TitleWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.0rem;
+`
 const Title = styled.h2`
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
 `
 const Form = styled.form`
     display: flex;
@@ -172,4 +189,12 @@ const Input = styled.input.attrs({ autocomplete: 'off',})`
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
+`
+const CloseButton = styled.button`
+    cursor: pointer;
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    padding-top: 0.3rem;
 `

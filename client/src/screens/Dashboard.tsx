@@ -24,7 +24,7 @@ export default function Dashboard(){
     const [exchangeSelect, setExchangeSelect] = useState<EXCHANGE_BUTTON>(EXCHANGE_BUTTON_ENUM.binance);
     const [daySelect, setDaySelect] = useState<DAY_BUTTON>(DAY_BUTTON_ENUM.week);
     const [modeSelect, setModeSelect] = useState(mobileMode.history);
-    const { isPc, isMobile } = useMediaQueries();
+    const { isPc } = useMediaQueries();
     return <>
         <Helmet><title>대시보드</title></Helmet>
         <Container>
@@ -73,7 +73,7 @@ const Container = styled(motion.div)`
     margin-bottom: 2rem;
     gap: 1.0rem;
     @media screen and (max-width: 1279px){
-        padding-top: 5rem;
+        padding-top: 7.5rem;
     }
 `
 const SubLayout = styled.div`

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Container } from "../StrategyBox"
 
 export function StrategyBoxSkeleton(){
     return <Container>
@@ -44,17 +45,6 @@ export function StrategyBoxSkeleton(){
         </Footer>
     </Container>
 }
-const Container = styled.div`
-    position: relative;
-    display: grid;
-    grid-template-rows: 0.5fr 1fr 0.3fr;
-    width: 40rem;
-    height: 17rem;
-    border-radius: 15px;
-    box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
-    padding: 1rem  2rem;
-    background-color: ${props => props.theme.light.white};
-`
 const Header = styled.div`
     display: flex;
     flex-direction: row;
@@ -89,6 +79,10 @@ const Author = styled.div`
     width: 10rem;
     height: 1.7rem;
     background-color: ${props => props.theme.light.borderGray};
+    @media screen and (max-width: 432px){
+        width: 9rem;
+        height: 1.5rem;
+    }
 `
 const Contents = styled.div`
     display: grid;
@@ -125,6 +119,10 @@ const Title = styled.div`
     width: 9.5rem;
     height: 2rem;
     background-color: ${props => props.theme.light.borderGray};
+    @media screen and (max-width: 432px){
+        width: 8.75rem;
+        height: 1.5rem;
+    }
 `
 const ReverageMag = styled.div`
     width: 2rem;

@@ -25,7 +25,7 @@ export default function OverallStatBox({title, status, value, symbol} : Props){
     </Container>
 }
 
-const Container = styled.div`
+export const Container = styled.div`
     min-width: 13rem;
     max-width: 16rem;
     height: 8rem;
@@ -43,16 +43,14 @@ const Container = styled.div`
         max-width: 14rem;
 
     }
-
 `
-const Header = styled.div`
+export const Header = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 `
 const Title = styled.div`
     font-weight: 400;
-    
 `
 const Value = styled.div`
     font-weight: bold;

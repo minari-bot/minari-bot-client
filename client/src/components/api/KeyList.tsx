@@ -25,7 +25,6 @@ export default function KeyList({exchange, setSelectedKeyId, setRightSideUIMode,
         setLabel(String(e.currentTarget.dataset.label));
     }
     const { data : keyList, refetch} = useKeyList();
-    
     return <>
             <Title>API Keys</Title>
             {
