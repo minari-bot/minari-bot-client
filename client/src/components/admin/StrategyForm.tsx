@@ -13,11 +13,14 @@ import LongSumbitButton from "../common/LongSubmitButton";
 import { useUser } from "../../hooks/useUser";
 import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
 import { StrategyformInfo, admin } from "../../apis/admin";
+import { ReactComponent as ArrowBack } from "../../assets/svg/arrow_back.svg";
+import { rightSideUIState } from "../../screens/AdminStrategy";
 
 interface Props{
-    exchange : string
+    exchange : string,
+    setRightSideUIMode: React.Dispatch<React.SetStateAction<string>>
 }
-export default function StrategyForm({exchange} : Props){
+export default function StrategyForm({exchange, setRightSideUIMode} : Props){
     const {user} = useUser();
     const { mutateAsync : createStrategyMutateAsync } = useMutation(admin.createAlertStrategy);
     const { register, handleSubmit, formState: { errors } } = useForm<StrategyformInfo>({
@@ -36,13 +39,20 @@ export default function StrategyForm({exchange} : Props){
             setToast({state : "error", text: error.message})
         }
      }
+     const onClose = () => {
+        setRightSideUIMode(rightSideUIState.none);
+    }
     return <Container>
-        <Head>
-            {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
-            {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
-            <Title>전략 등록</Title> 
-            <SlInfo/>
-        </Head>
+        <Header>
+            <TitleWrapper>
+                {exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
+                {exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
+                <Title>전략 등록</Title> 
+            </TitleWrapper>
+            <CloseButton onClick={onClose}>
+                <ArrowBack/>
+            </CloseButton>
+        </Header>
         <Form onSubmit={handleSubmit(onSubmit)}>
                 <Label>
                     <label htmlFor="label">
@@ -145,10 +155,10 @@ const Container = styled.div`
     width: 100%;
     box-sizing: border-box;
 `
-const Head = styled.div`
+const Header = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 1.0rem;
     font-size: 1.2rem;
@@ -160,9 +170,15 @@ const Head = styled.div`
         height: 2rem;
     }
 `
+const TitleWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.0rem;
+`
 const Title = styled.h2`
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
+
 `
 const Form = styled.form`
     display: flex;
@@ -189,4 +205,12 @@ const Input = styled.input.attrs({ autocomplete: 'off',})`
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
+`
+const CloseButton = styled.button`
+    cursor: pointer;
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    padding-top: 0.3rem;
 `

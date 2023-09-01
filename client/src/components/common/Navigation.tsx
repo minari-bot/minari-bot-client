@@ -27,10 +27,11 @@ export default function Navigation() {
         await signOutAsync();
     }
     useEffect(() => {
-        setShut(prev => !prev);
+        if(isPc) setShut(false);
+        else setShut(true);
     }, [isPc])
     useEffect(() => {
-        if(!isPc) setShut(prev => !prev);
+        if(!isPc) setShut(true);
     },[pathname])
     return <Container isShut={isShut}>
         <CloseButton isShut={isShut} onClick={shutNavigation}>
@@ -176,7 +177,7 @@ const ListIcon = styled.div<{isShut: boolean}>`
         }
     }
     @media screen and (max-width: 767px){
-        top: -40px;
+        top: -30px;
         left: -10px;
     }
 `;
@@ -192,6 +193,9 @@ const Label = styled.div`
         font-weight: bold;
         width: 100%;
         padding-right: 3.5rem;
+    }
+    @media screen and (max-width: 345px){
+        font-size: 1.75rem;
     }
 `
 const Img = styled.img`

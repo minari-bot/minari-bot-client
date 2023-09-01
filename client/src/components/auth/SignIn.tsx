@@ -27,7 +27,7 @@ function SignIn({signInError, setSignInError} : SignInProps){
      }
     return <Wrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
-            <h1>로그인 🤖</h1>
+            <h1>로그인</h1>
             <Link to={'/auth/signup'}>계정 생성 하기</Link>
             <Text>
                 <label htmlFor="email">이메일</label>
@@ -113,7 +113,7 @@ const Form = styled.form`
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
-    width: 35rem;
+    min-width: 35rem;
     height: 50rem;
     background-color: ${props => props.theme.light.white};
     padding: 2rem 4rem;
@@ -123,6 +123,7 @@ const Form = styled.form`
         color: ${props => props.theme.light.lightBlue};
         font-size: 1.3rem;
         text-align: right;
+        font-weight: 500;
         &:hover{
         color: ${props => props.theme.light.darkBlue};
         }
@@ -132,6 +133,10 @@ const Form = styled.form`
         color: ${props => props.theme.light.black};
         padding-bottom: 2rem;
         text-align: center;
+    }
+    @media screen and (max-width: 432px){
+        min-width: 29.5rem;
+        padding: 1rem 2rem;
     }
 `
 const Input = styled.input`

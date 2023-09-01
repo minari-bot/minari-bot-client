@@ -12,6 +12,7 @@ const Button = styled.button`
     color: ${props => props.theme.light.white};
     padding: 0.8rem 5rem;
     font-size: 1.3rem;
+    font-weight: 500;
     margin-top: 2rem;
     border-radius: 0.5rem;
     width: 100%;

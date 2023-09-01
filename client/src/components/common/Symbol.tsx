@@ -16,6 +16,9 @@ export default function Symbol({name} : {name : string}){
     </Wrapper>
 }
 const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     svg{
         width: 2rem;
         height: 2rem;

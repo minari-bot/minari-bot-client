@@ -1,7 +1,8 @@
 import styled from "styled-components"
 
 export default function ReverageMag({value} : {value : number}){
-    return <Wrapper>{value}x</Wrapper>
+  if(value === 0) return <></>  
+  return <Wrapper>{value}x</Wrapper>
 }
 
 
