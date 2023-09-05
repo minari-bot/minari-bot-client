@@ -17,7 +17,10 @@ export default function StrategyBox({symbol, leverage, strategyName, winRate, pr
                 <SymbolName>{symbol || ""}</SymbolName>
                 <ReverageMag value={leverage || 0}/>
             </SymbolItems>
-            <Title>{strategyName || ""}</Title>
+            <Title>
+                <a target="_blank" rel="noreferrer" href={strategyUrl}><Symbol name="tradingview"/></a>
+                <span>{strategyName || ""}</span>
+            </Title>
         </Column>
         <InfoWrapper>
             <Info>
@@ -36,18 +39,17 @@ export default function StrategyBox({symbol, leverage, strategyName, winRate, pr
     </Container>
 }
 
-const Container = styled.div`
+export const Container = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 35rem;
-    gap: 5rem;
+    min-width: 32rem;
+    gap: 1rem;
     font-size: 1.2rem;
     background-color: ${props => props.theme.light.white};
     border-radius: 1.5rem;
-    padding: 1.5rem 2rem;
+    padding: 1.2rem 1.4rem;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 10px;
-
 `
 const SymbolItems = styled.div`
     display: flex;
@@ -73,6 +75,7 @@ const InfoWrapper = styled.div`
     > div:not(:last-of-type){
         border-right: 1px solid ${props => props.theme.light.borderGray};
     }
+    
 `
 const Info = styled.div`
     display: flex;
@@ -81,17 +84,27 @@ const Info = styled.div`
     align-items: center;
     gap: 0.5rem;
     padding: 0 1rem;
+
 `
 const Label = styled.div`
-    font-weight: bold;
 `
 const Value = styled.div`
-    font-size: 1.4rem;
+    font-weight: bold;
+    font-size: 1.2rem;
 `
 const SymbolName = styled.div`
 
 `
 const Title = styled.h3`
-    font-weight: normal;
+    font-weight: bold;
     font-size: 1.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.8rem;
+    width: 100%;
+    svg{
+        width: 1.8rem;
+        height: 1.8rem;
+    }
 `

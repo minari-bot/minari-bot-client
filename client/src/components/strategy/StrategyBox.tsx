@@ -20,7 +20,7 @@ export default function StrategyBox({info} : Props){
     }
     return keySelectUI?
             <AsyncWrapper suspenseFallback={<StrategyBoxSkeleton/>} errorFallback={<StrategyBoxSkeleton/>}>
-                <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} setKeySelectUI={setKeySelectUI}/>
+                <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} subscribeFieldId={info._id} setKeySelectUI={setKeySelectUI}/>
             </AsyncWrapper>
             :
             <Container>
@@ -72,16 +72,19 @@ export default function StrategyBox({info} : Props){
             </Container>
 }
 
-const Container = styled.div`
+export const Container = styled.div`
     position: relative;
     display: grid;
     grid-template-rows: 0.5fr 1fr 0.3fr;
-    width: 40rem;
+    min-width: 40rem;
     height: 17rem;
     border-radius: 15px;
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
     padding: 1rem  2rem;
     background-color: ${props => props.theme.light.white};
+    @media screen and (max-width: 432px){
+        min-width: 25rem;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -113,6 +116,9 @@ const Logos = styled.div`
 `
 const Author = styled.h3`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const Contents = styled.div`
     display: grid;
@@ -124,7 +130,7 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.75rem;
+    /* gap: 0.75rem; */
 `
 const SymbolInfo = styled.div`
     display: flex;
@@ -138,6 +144,10 @@ const SymbolName = styled.h3`
     font-size:1.2rem;
 ` 
 const Title = styled.h2`
+    font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.1rem;
+    }
 `
 const Footer = styled.div`
     display: flex;
@@ -150,7 +160,7 @@ const InfoWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     > div:not(:last-of-type){
-        border-right: 1px solid ${props => props.theme.light.borderGray};
+        /* border-right: 1px solid ${props => props.theme.light.borderGray}; */
     }
 `
 const Info = styled.div`
@@ -159,14 +169,26 @@ const Info = styled.div`
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    padding: 0 1.5rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
+    @media screen and (max-width: 432px){
+        padding: 0.5rem 0.75rem;
+        gap: 0.25rem;
+    }
+
 `
 const Label = styled.div`
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: bold;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const Value = styled.div`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const SmallValue = styled.span`
     font-weight: 600;

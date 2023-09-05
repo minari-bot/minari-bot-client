@@ -15,7 +15,6 @@ export default function GoogleAuth(){
         await auth.googleSignIn(credentialResponse.credential);
         navigate('/');
     }
-    console.log(process.env.CLIENT_ID);
     return (
         <GoogleLogin
             onSuccess={onSuccess}

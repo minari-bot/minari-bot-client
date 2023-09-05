@@ -9,10 +9,12 @@ import { toastState } from './atoms/toast';
 import Toasts from './components/common/Toasts';
 import { queryClient } from './react-query/queryClient';
 import './Root.css';
+import { Helmet } from 'react-helmet-async';
 function Root() {
   const [ toast, setToast ] = useRecoilState(toastState);
   return <QueryClientProvider client={queryClient}>
-    <div>
+    <>
+      <Helmet><title>MINARI·BOT</title></Helmet>
       <GlobalStyles/>
       <Navigation/>
       <Container>
@@ -23,42 +25,37 @@ function Root() {
       )}
       </Container>
       <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
-    </div>
+    </>
   </QueryClientProvider>
 
 }
 const GlobalStyles = createGlobalStyle`
+  * { 
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
   html{ 
     font-size: 62.5%;
   }
   a {color: ${props => props.theme.light.black}; text-decoration: none; outline: none}
   a:hover, a:active {text-decoration: none; color:${props => props.theme.light.black};}
-
+  
   body {
-  box-sizing: border-box;
+  min-height: 100vh;
+  margin: 0 auto;
   /* overflow-x: hidden; */
   background-color: ${props => props.theme.light.backgroundGray};
   color: ${props => props.theme.light.black};
-  margin: 0;
   font-family: 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   }
-  h1,h2,h3,h4{
-    margin: 0;
-  }
   button {
     background : none;
-    border : 0;
-  }
-  input{
     border: 0;
-    &:focus{
-      outline: 0;
-    }
-  }
-  ul{
-    margin: 0;
+    font-family: 'Noto Sans', sans-serif;
+
   }
 `;
 const Container = styled.div`
@@ -66,7 +63,7 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 10rem;
+    /* padding: 0 10rem; */
 `
 export default Root;
   

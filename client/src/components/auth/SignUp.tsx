@@ -144,8 +144,8 @@ const Form = styled.form`
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
-    width: 350px;
-    height: 500px;
+    min-width: 35rem;
+    height: 50rem;
     background-color: ${props => props.theme.light.white};
     padding: 20px 40px;
     border-radius: 15px;
@@ -156,6 +156,7 @@ const Form = styled.form`
         color: ${props => props.theme.light.darkBlue};
         }
         font-size: 13px;
+        font-weight: 500;
         text-align: right;
     }
     h1{
@@ -163,6 +164,10 @@ const Form = styled.form`
         color: black;
         padding-bottom: 20px;
         text-align: center;
+    }
+    @media screen and (max-width: 432px){
+        min-width: 29.5rem;
+        padding: 1rem 2rem;
     }
 `
 const Input = styled.input`

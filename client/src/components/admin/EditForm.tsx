@@ -16,11 +16,14 @@ import { StrategyformInfo, admin } from "../../apis/admin";
 import { useRecoilState } from "recoil";
 import { selectedStrategy } from "../../atoms/adminStrategy";
 import { useEffect, useMemo } from "react";
+import { rightSideUIState } from "../../screens/AdminStrategy";
+import { ReactComponent as ArrowBack } from "../../assets/svg/arrow_back.svg";
 
 interface Props{
     exchange : string
+    setRightSideUIMode: React.Dispatch<React.SetStateAction<string>>
 }
-export default function EditForm({exchange} : Props){
+export default function EditForm({exchange, setRightSideUIMode} : Props){
     const {user} = useUser();
     const [strategy, setStrategy] = useRecoilState(selectedStrategy)
     const {mutateAsync : mutateEditStrategy} = useMutation(admin.editStrategy);
@@ -42,6 +45,9 @@ export default function EditForm({exchange} : Props){
             setToast({state : "error", text: error.message})
         }
     }
+    const onClose = () => {
+        setRightSideUIMode(rightSideUIState.none);
+    }
     useEffect(() => {
         reset({
             strategyName: strategy.label, exchange : strategy.exchange, symbol: strategy.symbol, strategyUrl: strategy.url, leverage: String(strategy.leverage)   
@@ -49,12 +55,16 @@ export default function EditForm({exchange} : Props){
       }, [strategy, reset]);
     
     return <Container>
-        <Head>
-            {strategy.exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
-            {strategy.exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
-            <Title>전략 수정 : {strategy.label}</Title> 
-            <SlInfo/>
-        </Head>
+        <Header>
+            <TitleWrapper>
+                {strategy.exchange === EXCHANGE.binance && <img src={binanceLogo} alt="binance"/>}
+                {strategy.exchange === EXCHANGE.upbit && <img src={upbitLogo} alt="upbit"/>}
+                <Title>{strategy.label}</Title> 
+            </TitleWrapper>
+            <CloseButton onClick={onClose}>
+                <ArrowBack/>
+            </CloseButton>
+        </Header>
         <Form onSubmit={handleSubmit(onSubmit)}>
                 <Label>
                     <label htmlFor="label">
@@ -157,10 +167,10 @@ const Container = styled.div`
     width: 100%;
     box-sizing: border-box;
 `
-const Head = styled.div`
+const Header = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 1.0rem;
     font-size: 1.2rem;
@@ -172,9 +182,14 @@ const Head = styled.div`
         height: 2rem;
     }
 `
+const TitleWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.0rem;
+`
 const Title = styled.h2`
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
 `
 const Form = styled.form`
     display: flex;
@@ -201,4 +216,12 @@ const Input = styled.input.attrs({ autocomplete: 'off',})`
     border-radius: 5px;
     border: 1px solid ${props => props.theme.light.formGray};
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
+`
+const CloseButton = styled.button`
+    cursor: pointer;
+    svg{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    padding-top: 0.3rem;
 `

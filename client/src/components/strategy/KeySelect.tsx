@@ -13,16 +13,17 @@ import { useEffect } from "react";
 
 interface Props{
     exchange : string,
+    subscribeFieldId: string,
     setKeySelectUI: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function KeySelect({exchange, setKeySelectUI} : Props){
+export default function KeySelect({exchange, subscribeFieldId, setKeySelectUI} : Props){
     const { data } = useKeyList();
     const {user} = useUser();
     const { mutateAsync } = useMutation(strategy.SubscribeStrategy);
-    const setToast = useToast()
-    const onClick = async (id : string, label : string) => {
+    const setToast = useToast();
+    const onClick = async (label : string) => {
         try{
-            await mutateAsync({id, label, user});
+            await mutateAsync({id : subscribeFieldId, label, user});
             setToast({state: 'success', text: MUTATE_SUCCESS_MESSAGE.ADD_SUBSCRIBE});
         } 
         catch(err){
@@ -43,7 +44,7 @@ export default function KeySelect({exchange, setKeySelectUI} : Props){
             <Contents>
             {
                 data.map((info) => info?.exchange?.toLowerCase() === exchange && 
-                <Wrapper key={info._id} onClick={() => onClick(info._id, info.label)}>
+                <Wrapper key={info._id} onClick={() => onClick(info.label)}>
                     <KeyTitle>
                         <Symbol name={exchange?.toLowerCase()}/>
                         <Label>{info.label}</Label>
@@ -62,13 +63,16 @@ const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     position: relative;
-    width: 40rem;
+    min-width: 40rem;
     height: 100%;
     border-radius: 15px;
     box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.02);
     padding: 1rem  2rem;
     padding-bottom: 0;
     background-color: ${props => props.theme.light.white};
+    @media screen and (max-width: 432px){
+        min-width: 25rem;
+    }
 `
 const Header = styled.div`
     display: flex;
@@ -91,10 +95,16 @@ const Contents = styled.div`
 `
 const Title = styled.h2`
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 const Label = styled.span`
     font-weight: 500;
     font-size: 1.4rem;
+    @media screen and (max-width: 432px){
+        font-size: 1.2rem;
+    }
 `
 
 const Wrapper = styled.div`

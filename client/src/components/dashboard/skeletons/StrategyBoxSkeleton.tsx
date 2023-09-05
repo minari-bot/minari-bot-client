@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components"
 import { Skeleton } from "../../common/Skeleton"
+import { Container } from "../StrategyBox"
 
 export const StrategyBoxSkeleton = () => (
     <Container>
@@ -9,7 +10,11 @@ export const StrategyBoxSkeleton = () => (
             <Title/>
             <ReverageMag/>
         </SymbolItems>
-        <Title/>
+        <SymbolItems>
+            <Square/>
+            <Title></Title>
+        </SymbolItems>
+            
     </Column>
     <InfoWrapper>
         <Info>
@@ -28,23 +33,13 @@ export const StrategyBoxSkeleton = () => (
 </Container>
 )
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 35rem;
-    gap: 5rem;
-    font-size: 1.2rem;
-    background-color: ${props => props.theme.light.white};
-    border-radius: 1.5rem;
-    padding: 1.5rem 2rem;
-
-`
 const Symbol = styled(Skeleton)`
     width: 1.8rem;
     height: 1.8rem;
     border-radius: 2rem;
-
+`
+const Square = styled(Symbol)`
+    border-radius: 0;
 `
 const ReverageMag = styled(Skeleton)`
     width: 2rem;
@@ -54,7 +49,8 @@ const SymbolItems = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    width: 100%;
     gap: 1rem;
 
 `

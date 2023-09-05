@@ -9,4 +9,5 @@ export default function BinanceStrategy({setCount} : {setCount : React.Dispatch<
       setCount(length);
     }, [length, setCount]);
     return  <>{data.map((item, i) => <StrategyBox key={item.strategyId + i} symbol={item.symbol} leverage={item.leverage} strategyName={item.strategyName} strategyUrl={item.strategyUrl} winRate={item.winRate} profitPercent={item.profitPercent}/>)}</>
+
 }

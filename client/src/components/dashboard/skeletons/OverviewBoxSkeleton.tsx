@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { Skeleton } from "../../common/Skeleton"
+import { Container, Header } from "../OverviewBox"
 
 export const OverviewBoxSkeleton = () => (
     <Container>
@@ -11,22 +12,6 @@ export const OverviewBoxSkeleton = () => (
         <Trend/>
     </Container>
 )
-const Container = styled.div`
-    width: 16rem;
-    height: 8rem;
-    padding: 1.2rem 2rem;
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    background: ${props => props.theme.light.white};
-    border-radius: 15px;
-    box-shadow: 4px 4px 60px 6px rgba(0, 0, 0, 0.05);
-    gap: 1.0rem;
-`
-const Header = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`
 const Circle = styled(Skeleton)`
     width: 1.5rem;
     height: 1.5rem;
@@ -40,6 +25,10 @@ const Value = styled(Skeleton)`
     width: 4rem;
     height: 1.8rem;
     margin: 0 auto;
+    @media screen and (max-width: 767px){ 
+        width: 3.75rem;
+        height: 1.5rem;
+    }
 `
 const Trend = styled(Skeleton)`
     border-radius: 1.5rem;

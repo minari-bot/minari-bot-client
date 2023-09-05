@@ -2,18 +2,18 @@ name: Deploy-prod-minari-client
 on:
   push:
     branches:
-      - main
+      - main_stage
   pull_request:
     branches:
-      - main
+      - main_stage
       
 jobs:
   deploy:
-    name: Deploy prod app
+    name: Deploy stage app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_CLIENT }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_CLIENT_STAGE }}
