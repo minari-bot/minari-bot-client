@@ -33,9 +33,6 @@ export const APIKEY_ERROR_MESSAGE = {
   CANNOT_DELETE : '삭제할 API Key를 찾을 수 없습니다',
   CANNOT_PERMISSION : '해당 Key의 권한 / IP를 설정을 확인해주세요.'
 }
-export const LOCAL_STORAGE_KEYS = {
-  USER_STORAGE_KEY: 'loggedUser'
-}
 export const MUTATE_SUCCESS_MESSAGE = {
   CREATE_API_KEY : 'API Key가 성공적으로 등록되었습니다',
   DELETE_API_KEY : '해당 API Key가 삭제되었습니다.',

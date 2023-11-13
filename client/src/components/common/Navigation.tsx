@@ -9,9 +9,9 @@ import logoutIcon from '../../assets/svg/logout.svg';
 import settingIcon from '../../assets/svg/settingFill.svg';
 import strategyIcon from '../../assets/svg/strategy.svg';
 import { useEffect, useState } from "react";
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../hooks/useUser";
 import useSignOut from "../auth/hooks/useSignOut";
-import { useMediaQueries } from "../../hooks/useMediaQueries";
+import { useMediaQueries } from "../hooks/useMediaQueries";
 import { ReactComponent as Close } from "../../assets/svg/close.svg";
 
 export default function Navigation() {

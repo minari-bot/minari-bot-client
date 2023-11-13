@@ -1,18 +1,22 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { MUTATE_SUCCESS_MESSAGE, queryKeys } from "../../../react-query/constants";
+import { MUTATE_SUCCESS_MESSAGE } from "../../../react-query/constants";
 import { useToast } from "../../../atoms/toast";
 import { auth } from "../../../apis/auth";
+import { useUser } from "../../hooks/useUser";
 
 export default function useSignOut(){
     const setToast = useToast();
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { mutateAsync } = useMutation(auth.signOut, {
+    const { clearUser } = useUser();
+
+    const { mutateAsync } = useMutation({
+        mutationFn: auth.signOut,
         onSuccess: () => {
-        queryClient.setQueryData([queryKeys.user], null);
-        navigate('/');
-        setToast({state: "success", text: MUTATE_SUCCESS_MESSAGE.SIGN_OUT})
-    }});
+            clearUser();
+            setToast({state: "success", text: MUTATE_SUCCESS_MESSAGE.SIGN_OUT})
+            navigate('/');
+        }
+    });
     return mutateAsync;
 }

@@ -11,6 +11,9 @@ const fallback= {
 	message: "string",
 }
 export function useKeyInfo(id : string){
-    const { data = fallback } = useQuery<apiKeyOverview>([queryKeys.keyInfo, id], () => apiKey.getApiKey(id));
+    const { data = fallback } = useQuery<apiKeyOverview>({
+		queryKey: [queryKeys.keyInfo, id],
+		queryFn: () => apiKey.getApiKey(id),
+	});
     return data;
 }

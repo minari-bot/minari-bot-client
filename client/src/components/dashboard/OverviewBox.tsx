@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import {  makeRoundNumber } from "../../utils/makeString"
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { useMediaQueries } from "../../hooks/useMediaQueries";
+import { useMediaQueries } from "../hooks/useMediaQueries";
 
 export interface Props{
     title : string,

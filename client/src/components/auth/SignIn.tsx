@@ -1,17 +1,18 @@
 import styled from "styled-components"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { SignInFormValue } from "./authType";
 import { AxiosError } from "axios";
 import theme from "../../styles/theme";
 import useSignIn from "./hooks/useSignIn";
 import LongSumbitButton from "../common/LongSubmitButton";
 import GoogleAuth from "./GoogleAuth";
+import { useUser } from "../hooks/useUser";
 
 function SignIn({signInError, setSignInError} : SignInProps){
     const signInMutate = useSignIn();
-    const navigate = useNavigate();
+    const { user } = useUser();
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignInFormValue>({
         defaultValues:{ email: "", password: "" }
     });
@@ -19,12 +20,14 @@ function SignIn({signInError, setSignInError} : SignInProps){
         try{
             await signInMutate(formInfo);
             setSignInError(""); 
-            navigate('/');
         }catch(err){
             const error = err as AxiosError;
             setSignInError(error.message);
         }
      }
+    if(user){
+        return <Navigate to={`/`} />
+    }
     return <Wrapper>
         <Form onSubmit={handleSubmit(onSubmit)}>
             <h1>로그인</h1>

@@ -1,16 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { auth } from "../../../apis/auth";
 import { useNavigate } from "react-router-dom";
-import { queryKeys } from "../../../react-query/constants";
+import { useEffect } from "react";
+import { useUser } from "../../hooks/useUser";
 
 export default function useSignUp(){
-    const queryClient = useQueryClient();
+    const { updateUser } = useUser();
     const navigate = useNavigate();
-    const { mutateAsync } = useMutation(auth.signUp,{
-        onSuccess: (data) => {
-            queryClient.setQueryData([queryKeys.user], data);
-            navigate('/dashboard');
-        }
+    const { mutateAsync, data } = useMutation({
+        mutationFn: auth.signUp
     });
+    useEffect(() => {
+        updateUser(data);
+    }, [data]);
+
     return mutateAsync;
 }

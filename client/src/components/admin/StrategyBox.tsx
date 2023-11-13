@@ -9,7 +9,7 @@ import setting from "../../assets/svg/setting.svg";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { admin } from "../../apis/admin";
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../hooks/useUser";
 import { CustomErrorClass } from "../../global/error";
 import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
@@ -25,9 +25,9 @@ interface Props{
 export default function StrategyBox({info, setRightSideUIMode} : Props){
     const [isHover, setHover] = useState(false);
     const [strategy, setStrategy] = useRecoilState(selectedStrategy)
-    const {mutateAsync : mutateOpenStrategy} = useMutation(admin.openStrategy);
-    const {mutateAsync : mutateCloseStrategy} = useMutation(admin.closeStrategy);
-    const {mutateAsync : mutateDeleteStrategy} = useMutation(admin.deleteStrategy);
+    const {mutateAsync : mutateOpenStrategy} = useMutation({ mutationFn : admin.openStrategy });
+    const {mutateAsync : mutateCloseStrategy} = useMutation({ mutationFn : admin.closeStrategy });
+    const {mutateAsync : mutateDeleteStrategy} = useMutation({ mutationFn : admin.deleteStrategy });
     const setToast = useToast();
     const {user} = useUser();
     const {data, refetch} = useAllAlertStrategy();
@@ -141,7 +141,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 38rem;
+    width: 100%;
     gap: 3rem;
     font-size: 1.2rem;
     background-color: ${props => props.theme.light.white};

@@ -5,7 +5,7 @@ import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useMediaQueries } from "../hooks/useMediaQueries";
+import { useMediaQueries } from "../components/hooks/useMediaQueries";
 
 export default function Auth (){
     const signInRouteMatch = useMatch("/auth/signin");

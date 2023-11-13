@@ -12,6 +12,7 @@ export const overview = {
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
                     case 400: throw new CustomErrorClass("",400)
+                    case 401: throw new CustomErrorClass("", 401)
                     case 403: throw new CustomErrorClass("",403)
                     case 404: throw new CustomErrorClass("",404)
                     case 500: throw new CustomErrorClass("",500)
@@ -27,6 +28,7 @@ export const overview = {
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
                     case 400: throw new CustomErrorClass("", 400)
+                    case 401: throw new CustomErrorClass("", 401)
                     case 403: throw new CustomErrorClass("", 403)
                     case 404: throw new CustomErrorClass("", 404)
                     case 500: throw new CustomErrorClass("", 500)

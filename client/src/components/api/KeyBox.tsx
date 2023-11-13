@@ -1,4 +1,4 @@
-import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useMutation } from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions, useMutation } from "@tanstack/react-query";
 import { apiKey } from "../../apis/apiKey";
 import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
@@ -8,13 +8,13 @@ import { TfiClose } from "react-icons/tfi";
 import { useKeyInfo } from "./hooks/useKeyInfo";
 interface Props{
     keyInfo : apiKeyInfo,
-    refetch : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<apiKeyInfoList, unknown>>,
+    refetch : (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<apiKeyInfoList, Error>>,
     selectedIndex: number | null,
     onClickKey: (e: React.MouseEvent<HTMLDivElement>) => void
     index: number,
 }
 export default function KeyBox({keyInfo, refetch, selectedIndex, onClickKey, index} : Props){
-    const { mutateAsync } = useMutation(apiKey.deleteApiKey);
+    const { mutateAsync } = useMutation({ mutationFn : apiKey.deleteApiKey });
     const setToast = useToast();
     const info = useKeyInfo(keyInfo._id);
     const onDelete = async (id : string) => {

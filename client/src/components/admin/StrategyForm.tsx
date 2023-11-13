@@ -10,7 +10,7 @@ import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import LongSumbitButton from "../common/LongSubmitButton";
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../hooks/useUser";
 import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
 import { StrategyformInfo, admin } from "../../apis/admin";
 import { ReactComponent as ArrowBack } from "../../assets/svg/arrow_back.svg";
@@ -22,7 +22,7 @@ interface Props{
 }
 export default function StrategyForm({exchange, setRightSideUIMode} : Props){
     const {user} = useUser();
-    const { mutateAsync : createStrategyMutateAsync } = useMutation(admin.createAlertStrategy);
+    const { mutateAsync : createStrategyMutateAsync } = useMutation({ mutationFn : admin.createAlertStrategy});
     const { register, handleSubmit, formState: { errors } } = useForm<StrategyformInfo>({
         defaultValues:{ strategyName: "", exchange : exchange.toUpperCase(), symbol: "", strategyUrl: "", leverage: "" }
     });
