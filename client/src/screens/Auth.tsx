@@ -3,9 +3,10 @@ import { useMatch } from "react-router-dom";
 import styled from "styled-components"
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
+import { useToast } from "../atoms/toast";
 
 export default function Auth (){
     const signInRouteMatch = useMatch("/auth/signin");
@@ -13,18 +14,17 @@ export default function Auth (){
     const [signUpError, setSignUpError] = useState("");
     const [signInError, setSignInError] = useState("");
     const { isPc, isTablet } = useMediaQueries();
-
     return <>
         <Helmet><title>로그인</title></Helmet>
         <AnimatePresence>
             {signInRouteMatch && <Wrapper>
                     <Animate
-                        initial={{x : 400}}
-                        animate={{x : 0}}
-                        exit={{x : -400}}
-                        transition={{ type: "spring", duration: 1, }}
+                        // initial={{x : 400}}
+                        // animate={{x : 0}}
+                        // exit={{x : -400}}
+                        // transition={{ type: "spring", duration: 1, }}
                     ><SignIn signInError={signInError} setSignInError={setSignInError}/></Animate>
-                    {
+                    {/* {
                         isPc &&
                         <Cover
                         layoutId="cover"
@@ -35,10 +35,10 @@ export default function Auth (){
                                 {signInError}    
                             </ErrorBox>}    
                         </Cover>
-                    }
+                    } */}
                 </Wrapper>}
             {signUpRouteMatch && <Wrapper>
-                    {
+                    {/* {
                         isPc &&
                         <Cover 
                             layoutId="cover"
@@ -49,7 +49,7 @@ export default function Auth (){
                                     {signUpError}    
                                 </ErrorBox>}
                     </Cover>    
-                    }
+                    } */}
                     <Animate
                         initial={{x : -400}}
                         animate={{x : 0}}

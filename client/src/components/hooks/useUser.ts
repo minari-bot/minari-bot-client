@@ -16,15 +16,18 @@ interface UseUser {
   }
 export function useUser() : UseUser{
     const queryClient = useQueryClient();
-    // @ts-ignore
-    const { data : user, refetch } = useQuery({
+    //@ts-ignore
+    const { data : user, isError, refetch } = useQuery({
         initialData: getStoredUser,
         queryKey: [queryKeys.user],
-        // @ts-ignore
+        //@ts-ignore
         queryFn: () => auth.userInfo(user),
     });
 
-    
+    useEffect(() => {
+        if(isError) clearUser();
+    }, [isError]);
+
     useEffect(()=> {
         if(!user) clearStoredUser();
         else setStoredUser(user);
@@ -36,7 +39,6 @@ export function useUser() : UseUser{
     
     function clearUser() {
         queryClient.setQueryData([queryKeys.user], null);
-        // TODO: setQueryData 이후 sideEffect 작동하는지 확인
     }
     return { user, refetch, updateUser, clearUser };
 }

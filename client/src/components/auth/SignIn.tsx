@@ -1,24 +1,24 @@
 import styled from "styled-components"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { SignInFormValue } from "./authType";
 import { AxiosError } from "axios";
 import theme from "../../styles/theme";
-import useSignIn from "./hooks/useSignIn";
 import LongSumbitButton from "../common/LongSubmitButton";
 import GoogleAuth from "./GoogleAuth";
 import { useUser } from "../hooks/useUser";
+import { useAuth } from "./hooks/useAuth";
 
 function SignIn({signInError, setSignInError} : SignInProps){
-    const signInMutate = useSignIn();
+    const { signIn } = useAuth();
     const { user } = useUser();
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignInFormValue>({
         defaultValues:{ email: "", password: "" }
     });
     const onSubmit : SubmitHandler<SignInFormValue> = async (formInfo) =>{
         try{
-            await signInMutate(formInfo);
+            await signIn(formInfo);
             setSignInError(""); 
         }catch(err){
             const error = err as AxiosError;
@@ -77,22 +77,23 @@ function SignIn({signInError, setSignInError} : SignInProps){
                 {...register("password", 
                     {   required: "비밀번호를 입력해주세요.",
                         minLength: {
-                            message : "최소 8글자, 최대 25글자 입니다.",
-                            value : 8,
+                            message : "최소 6글자, 최대 35글자 입니다.",
+                            value : 6,
                         },
                         maxLength: {
-                            message: "최소 8글자, 최대 25글자 입니다.",    
-                            value : 25,
+                            message: "최소 6글자, 최대 35글자 입니다.",    
+                            value : 35,
                         },
-                        pattern: {
-                            message: "숫자와 영문, 특수문자의 조합으로 작성해주세요.",
-                            value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/
-                        },
+                        // pattern: {
+                        //     message: "숫자와 영문, 특수문자의 조합으로 작성해주세요.",
+                        //     value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/
+                        // },
                         onChange: (e) => { 
                             if(e.target.value.length > 0) trigger("password");
                         }
                     })
                 }id="password" type="password"></Input>
+            <ErrorBox>{signInError}</ErrorBox>
             <LongSumbitButton title="로그인"/>
             <GoogleAuth/>
             <Info>
@@ -170,37 +171,11 @@ const Info = styled.div`
     font-size: 1.3rem;
     padding-top: 1rem;
 `
-const Logo = styled.div`
-    margin-top: 3px;
-`
-const GoogleButton = styled.button`
-    position: relative;
+const ErrorBox = styled.div`
+    color: ${props => props.theme.light.red};
+    font-size: 1.2rem;
+    font-weight: bold;
     width: 100%;
-    /* height: 3.3rem; */
-    margin-top: 1rem;
-    padding: 0.75rem 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: ${props => props.theme.light.white};
-    border-radius: 0.5rem;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 1px, rgba(0, 0, 0, 0.23) 0px 0px 1px;
-    &:active{
-        background-color: #4285F4;
-        span{
-            color: ${props => props.theme.light.white};
-        }
-    }
-    svg{
-        width: 1.5rem;
-        height: 1.5rem;
-    }   
-    span{
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, -10%);
-    }
-
+    padding-top: 1rem;
 `
 export default SignIn;

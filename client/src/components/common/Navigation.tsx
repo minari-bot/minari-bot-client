@@ -10,21 +10,21 @@ import settingIcon from '../../assets/svg/settingFill.svg';
 import strategyIcon from '../../assets/svg/strategy.svg';
 import { useEffect, useState } from "react";
 import { useUser } from "../hooks/useUser";
-import useSignOut from "../auth/hooks/useSignOut";
 import { useMediaQueries } from "../hooks/useMediaQueries";
 import { ReactComponent as Close } from "../../assets/svg/close.svg";
+import { useAuth } from "../auth/hooks/useAuth";
 
 export default function Navigation() {
     const { isPc } = useMediaQueries();
-    const [isShut, setShut] = useState(false);
-    const signOutAsync = useSignOut();
+    const [ isShut, setShut ] = useState(false);
+    const { signOut } = useAuth();
     const { pathname } = useLocation();
-    const {user} = useUser();
+    const { user } = useUser();
     const shutNavigation = () =>{
         setShut(prev => !prev);
     }
     const onClick = async () => {
-        await signOutAsync();
+        await signOut();
     }
     useEffect(() => {
         if(isPc) setShut(false);
@@ -33,6 +33,7 @@ export default function Navigation() {
     useEffect(() => {
         if(!isPc) setShut(true);
     },[pathname])
+
     return <Container isShut={isShut}>
         <CloseButton isShut={isShut} onClick={shutNavigation}>
             <Close/>
@@ -72,10 +73,10 @@ export default function Navigation() {
                     <Label>로그인</Label>
                 </Link>
                 :
-                <a href='/' onClick={onClick}>
+                <button onClick={onClick}>
                         <Img src={logoutIcon}/>
                         <Label>로그아웃</Label>
-                </a>
+                </button>
             }
         </Menu>
     </Container>
@@ -119,7 +120,7 @@ const Menu = styled.div<{isShut : boolean}>`
     align-items: center;
     gap: 6rem;
     padding-top: 5rem;
-    a{
+    a, button{
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -138,7 +139,7 @@ const Menu = styled.div<{isShut : boolean}>`
     @media screen and (max-width: 1024px){
         width: 100%;
         gap: 0;
-        a{
+        a, button{
             width: 100%;
             flex-direction: row;
             justify-content: space-between;
