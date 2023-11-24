@@ -13,6 +13,7 @@ export const histroy = {
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
                     case 400: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_FOUND, 400); //empty
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 403);
                     case 404: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_FOUND, 404);
                     case 500: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 500);
@@ -28,6 +29,7 @@ export const histroy = {
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
                     case 400: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 403);
                     case 404: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_FOUND, 404);
                     case 500: throw new CustomErrorClass(HISTORY_ERROR_MESSAGE.CANNOT_LOAD, 500);

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import mainImg from "../assets/img/mian.page.img.png";
 import { Link } from "react-router-dom";
-import { useMediaQueries } from "../hooks/useMediaQueries";
+import { useMediaQueries } from "../components/hooks/useMediaQueries";
 
 export default function Home(){
   const { isPc, isTablet, isMobile } = useMediaQueries();

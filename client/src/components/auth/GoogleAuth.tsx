@@ -1,27 +1,23 @@
-import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../../apis/auth";
-import { useRecoilState } from "recoil";
-import { toastState } from "../../atoms/toast";
+import { GoogleLogin } from "@react-oauth/google";
+import { useToast } from "../../atoms/toast";
+import useGoogleAuth from "./hooks/useGoogleAuth";
+import styled from "styled-components";
 
 export default function GoogleAuth(){
-    const navigate = useNavigate();
-    const [toast, setToast] = useRecoilState(toastState);
-    const onSuccess = async (credentialResponse: CredentialResponse) => {
-        if(!credentialResponse.credential) {
-            setToast({state: 'error', text:'구글 로그인에 실패했습니다'});
-            return;
-        }
-        await auth.googleSignIn(credentialResponse.credential);
-        navigate('/');
-    }
-    console.log(process.env.CLIENT_ID);
-    return (
+    const setToast = useToast();
+    const googleAuth = useGoogleAuth();
+    return <Wrapper>
         <GoogleLogin
-            onSuccess={onSuccess}
-            onError={() => {
-                setToast({state: 'error', text:'구글 로그인에 실패했습니다'})
-            }}
+            onSuccess={googleAuth}
+            onError={() => { setToast({state: 'error', text:'구글 로그인에 실패했습니다' })}}
             useOneTap
-        />);
+            size='large'
+            logo_alignment="center"
+            width="268px"
+            ux_mode="redirect"
+        />
+    </Wrapper>
 }
+const Wrapper = styled.div`
+    margin-top: 1.25rem;
+`

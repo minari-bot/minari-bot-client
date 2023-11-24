@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { overview } from "../../../apis/overview";
 import { OverviewData } from "../type";
 import { queryKeys } from "../../../react-query/constants";
-import { useUser } from "../../../hooks/useUser";
+import { useUser } from "../../hooks/useUser";
 
 export const fallback : OverviewData = {
     startTransaction: 0,
@@ -19,13 +19,17 @@ export const fallback : OverviewData = {
 }
 export function useBinanceOverview(){
 	const {user} = useUser();
-    const { data = fallback } = useQuery<OverviewData>([queryKeys.overview, queryKeys.binance] , () => overview.getBinanceOverview(user),{
+    const { data = fallback } = useQuery<OverviewData>({
+		queryKey: [queryKeys.overview, queryKeys.binance],
+		queryFn: () => overview.getBinanceOverview(user),
 	});
     return data;
 }
 export function useUpbitOverview(){
 	const {user} = useUser();
-    const { data = fallback } = useQuery<OverviewData>([queryKeys.overview, queryKeys.upbit] , () => overview.getUpbitOverview(user),{
+    const { data = fallback } = useQuery<OverviewData>({
+		queryKey: [queryKeys.overview, queryKeys.upbit],
+		queryFn: () => overview.getUpbitOverview(user),
 	});
     return data;
 }

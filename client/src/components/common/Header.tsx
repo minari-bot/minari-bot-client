@@ -3,14 +3,16 @@ import Today from "./Today"
 import { LuCalendarDays  } from "react-icons/lu";
 import ProfileLogo from "./ProfileLogo";
 import { useState } from "react";
-import { getStoredUser } from "../../hooks/useUser";
+import { getStoredUser } from "../user-storage";
+import { useUser } from "../hooks/useUser";
 
 export default function Header(){
-    const [user, setUser] = useState(getStoredUser())
+    // const [user, setUser] = useState(getStoredUser())
+    const { user } = useUser();
     return <Container>
         <Profile>
             <ProfileLogo img={""}/>
-            <Title>{`Welcome Back, ${user?.name}`}</Title>
+            { user && <Title>{`Welcome Back, ${user?.name}`}</Title> }
         </Profile>
         <Setting>
             <Date>

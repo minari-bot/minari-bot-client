@@ -5,24 +5,22 @@ import { Link } from "react-router-dom";
 import { SignUpFormValue } from "./authType";
 import { AxiosError } from "axios";
 import theme from "../../styles/theme";
-import useSignIn from "./hooks/useSignIn";
-import useSignUp from "./hooks/useSignUp";
 import LongSumbitButton from "../common/LongSubmitButton";
+import { useAuth } from "./hooks/useAuth";
 export default function SignUp({signUpError, setSignUpError} : SignUpProps){
-    const signInAsync = useSignIn();
-    const signUpAsync = useSignUp();
+    const { signIn, signUp } = useAuth();
     const { register, handleSubmit, formState: { errors }, trigger} = useForm<SignUpFormValue>({
         defaultValues:{ email: "", password: "", name:""}
     });
     const onSubmit : SubmitHandler<SignUpFormValue> = async (formInfo) =>{
        try{
             //signUp 및 signIn api 호출
-            await signUpAsync(formInfo);
+            await signUp(formInfo);
             const loginInfo = {
                 email : formInfo.email,
                 password : formInfo.password
             }
-            await signInAsync(loginInfo);
+            await signIn(loginInfo);
             setSignUpError("");
        }
        catch(err){
@@ -110,20 +108,20 @@ export default function SignUp({signUpError, setSignUpError} : SignUpProps){
                 {...register("password", 
                     {   required: "비밀번호를 입력해주세요.",
                         minLength: {
-                            message : "최소 8글자, 최대 25글자 입니다.",
-                            value : 8,
+                            message : "최소 6글자, 최대 35글자 입니다.",
+                            value : 6,
                         },
                         maxLength: {
-                            message: "최소 8글자, 최대 25글자 입니다.",    
-                            value : 25,
+                            message: "최소 6글자, 최대 35글자 입니다.",    
+                            value : 35,
                         },
-                        pattern: {
-                            message: "숫자와 영문, 특수문자의 조합으로 작성해주세요.",
-                            value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/
-                        },
+                        // pattern: {
+                        //     message: "숫자와 영문, 특수문자의 조합으로 작성해주세요.",
+                        //     value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{5,}$/
+                        // },
                         onChange: (e) => { 
                             if(e.target.value.length > 0) trigger("password");
-                        }
+                        },
                     })
                 }id="password" type="password"></Input>
             <LongSumbitButton title="회원가입"/>

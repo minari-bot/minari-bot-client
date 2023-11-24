@@ -2,8 +2,7 @@ import styled from "styled-components";
 import Symbol from "../common/Symbol";
 import { makeCurrencyString, makeQuantityString, makeSymbolWithoutCurrency } from "../../utils/makeString";
 import ReverageMag from "../common/ReverageMag";
-import { useMediaQueries } from "../../hooks/useMediaQueries";
-import dayjs from "dayjs";
+import { useMediaQueries } from "../hooks/useMediaQueries";
 interface Props{
   symbol: string,
   datetime: string,

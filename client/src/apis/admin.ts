@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { CustomErrorClass } from "../global/error";
 import { userInfo } from "../global/type";
 export interface StrategyformInfo{
@@ -15,9 +15,10 @@ export const admin = {
             const res = await axios.get(`/api/alertstrategy`);
             return res.data;
         } catch(err){
-            if(axios.isAxiosError(err))
-                switch(err.response?.status){
+            const error = err as AxiosError;
+                switch(error.response?.status){
                     case 400: throw new CustomErrorClass("", 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass("", 403);
                     case 404: throw new CustomErrorClass("", 404);
                     case 500: throw new CustomErrorClass("", 500);
@@ -30,9 +31,10 @@ export const admin = {
             const res = await axios.post(`/api/subscribe/${id}`);
             return res.data;
         } catch(err){
-            if(axios.isAxiosError(err))
-                switch(err.response?.status){
+            const error = err as AxiosError;
+                switch(error.response?.status){
                     case 400: throw new CustomErrorClass("", 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass("", 403);
                     case 404: throw new CustomErrorClass("", 404);
                     case 500: throw new CustomErrorClass("", 500);
@@ -45,9 +47,10 @@ export const admin = {
             const res = await axios.delete(`/api/subscribe/${id}`);
             return res.data;
         } catch(err){
-            if(axios.isAxiosError(err))
-                switch(err.response?.status){
+            const error = err as AxiosError;
+                switch(error.response?.status){
                     case 400: throw new CustomErrorClass("", 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass("", 403);
                     case 404: throw new CustomErrorClass("", 404);
                     case 500: throw new CustomErrorClass("", 500);
@@ -60,9 +63,10 @@ export const admin = {
             const res = await axios.delete(`/api/alertstrategy/${id}`);
             return res.data;
         } catch(err){
-            if(axios.isAxiosError(err))
-                switch(err.response?.status){
+            const error = err as AxiosError;
+                switch(error.response?.status){
                     case 400: throw new CustomErrorClass("", 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass("", 403);
                     case 404: throw new CustomErrorClass("", 404);
                     case 500: throw new CustomErrorClass("", 500);
@@ -75,9 +79,10 @@ export const admin = {
             const res = await axios.put(`/api/alertstrategy/${id}`, formInfo);
             return res.data;
         } catch(err){
-            if(axios.isAxiosError(err))
-                switch(err.response?.status){
+            const error = err as AxiosError;
+                switch(error.response?.status){
                     case 400: throw new CustomErrorClass("", 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass("", 403);
                     case 404: throw new CustomErrorClass("", 404);
                     case 500: throw new CustomErrorClass("", 500);
@@ -90,9 +95,10 @@ export const admin = {
             const res = await axios.post(`/api/alertstrategy`, formInfo);
             return res.data;
         } catch(err){
-            if(axios.isAxiosError(err))
-                switch(err.response?.status){
+            const error = err as AxiosError;
+                switch(error.response?.status){
                     case 400: throw new CustomErrorClass("", 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass("", 403);
                     case 404: throw new CustomErrorClass("", 404);
                     case 409: throw new CustomErrorClass("중복된 Label 입니다.", 409);
