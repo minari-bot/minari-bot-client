@@ -13,6 +13,7 @@ export const apiKey = {
         } catch(err : unknown){
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_GET, 403);
                     case 500: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_GET, 500);
                 }
@@ -25,6 +26,7 @@ export const apiKey = {
         } catch(err : unknown){
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_GET, 403);
                     case 500: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_GET, 500);
                 }
@@ -38,6 +40,7 @@ export const apiKey = {
             if(axios.isAxiosError(err))
                 switch(err.response?.status){
                     case 400: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.UNVALID_KEY, 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_CREATE, 403);
                     case 409: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.DUPLICATION, 409);
                     case 500: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_CREATE, 500);
@@ -51,6 +54,7 @@ export const apiKey = {
         } catch(err : unknown){
             if(axios.isAxiosError(err))
             switch(err.response?.status){
+                case 401: throw new CustomErrorClass("", 401);
                 case 404: throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_DELETE, 404);
             
             }
@@ -65,6 +69,7 @@ export const apiKey = {
                 switch(err.response?.status){
                     case 400: 
                         throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.UNVALID_KEY, 400);
+                    case 401: throw new CustomErrorClass("", 401);
                     case 403: 
                         throw new CustomErrorClass(APIKEY_ERROR_MESSAGE.CANNOT_CREATE, 403);
                     case 500: 

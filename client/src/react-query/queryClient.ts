@@ -11,8 +11,6 @@ function queryErrorHandler(error: unknown): void {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      useErrorBoundary: true,
-      suspense: true,
     }
   },
   queryCache: new QueryCache({

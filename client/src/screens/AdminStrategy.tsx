@@ -13,7 +13,7 @@ import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
 import Spinner from "../components/error/Spinner";
 import { Helmet } from "react-helmet-async";
-import { useMediaQueries } from "../hooks/useMediaQueries";
+import { useMediaQueries } from "../components/hooks/useMediaQueries";
 export const rightSideUIState ={
     edit : "edit",
     create : "create",
