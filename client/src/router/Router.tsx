@@ -32,17 +32,14 @@ const router = createBrowserRouter([
                     {
                         path: "dashboard",
                         element: <Dashboard/>,
-                        // loader: ProtectedRoute,
                     },
                     {
                         path: "setting/api",
-                        element: <Api/>,
-                        // loader: ProtectedRoute,  
+                        element: <Api/>,  
                     },
                     {
                         path: "strategy",
-                        element: <Strategy/>,
-                        // loader: ProtectedRoute,  
+                        element: <Strategy/>,  
                     },
                 ]
             },

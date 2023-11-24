@@ -13,7 +13,7 @@ import StrategyContainer from "../components/dashboard/StrategyContainer";
 import AsyncWrapper from "../components/error/AsyncWrapper";
 import ErrorPage from "../components/error/ErrorPage";
 import Spinner from "../components/error/Spinner";
-import { useMediaQueries } from "../hooks/useMediaQueries";
+import { useMediaQueries } from "../components/hooks/useMediaQueries";
 import { Helmet } from "react-helmet-async";
 
 const mobileMode = {

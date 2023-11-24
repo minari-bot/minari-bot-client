@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Skeleton } from "../../common/Skeleton"
-import { useMediaQueries } from "../../../hooks/useMediaQueries";
+import { useMediaQueries } from "../../hooks/useMediaQueries";
 
 export const OrderInfoSkeleton = () => {
   const { isMobile } = useMediaQueries();

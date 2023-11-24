@@ -21,8 +21,8 @@ interface Props{
     setRightSideUIMode: React.Dispatch<React.SetStateAction<string>>
 }
 export default function KeyRegisterForm({exchange, setRightSideUIMode} : Props){
-    const { mutateAsync : createApiMutateAsync } = useMutation(apiKey.createApiKey);
-    const { mutateAsync : checkApiMutateAsync } = useMutation(apiKey.checkApiKey);
+    const { mutateAsync : createApiMutateAsync } = useMutation({ mutationFn : apiKey.createApiKey});
+    const { mutateAsync : checkApiMutateAsync } = useMutation({ mutationFn : apiKey.checkApiKey});
     const { register, handleSubmit, formState: { errors } } = useForm<apiKeyFormValue>({
         defaultValues:{ label: "", exchange, apikey: "", secretkey: "" }
     });

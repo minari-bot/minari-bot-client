@@ -8,7 +8,7 @@ import { toastState, useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import KeyCheckDot from "../common/KeyCheckDot";
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../hooks/useUser";
 import { useEffect } from "react";
 
 interface Props{
@@ -19,7 +19,7 @@ interface Props{
 export default function KeySelect({exchange, subscribeFieldId, setKeySelectUI} : Props){
     const { data } = useKeyList();
     const {user} = useUser();
-    const { mutateAsync } = useMutation(strategy.SubscribeStrategy);
+    const { mutateAsync } = useMutation({ mutationFn: strategy.SubscribeStrategy});
     const setToast = useToast();
     const onClick = async (label : string) => {
         try{

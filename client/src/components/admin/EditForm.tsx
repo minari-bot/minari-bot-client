@@ -10,7 +10,7 @@ import { useToast } from "../../atoms/toast";
 import { MUTATE_SUCCESS_MESSAGE } from "../../react-query/constants";
 import { CustomErrorClass } from "../../global/error";
 import LongSumbitButton from "../common/LongSubmitButton";
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../hooks/useUser";
 import { useAllAlertStrategy } from "./hooks/useAllAlertStrategy";
 import { StrategyformInfo, admin } from "../../apis/admin";
 import { useRecoilState } from "recoil";
@@ -26,7 +26,7 @@ interface Props{
 export default function EditForm({exchange, setRightSideUIMode} : Props){
     const {user} = useUser();
     const [strategy, setStrategy] = useRecoilState(selectedStrategy)
-    const {mutateAsync : mutateEditStrategy} = useMutation(admin.editStrategy);
+    const {mutateAsync : mutateEditStrategy} = useMutation({ mutationFn: admin.editStrategy});
     const { register, handleSubmit, formState: { errors }, reset} = useForm<StrategyformInfo>({
         defaultValues: useMemo(() => ({
             strategyName: strategy.label, exchange : strategy.exchange, symbol: strategy.symbol, strategyUrl: strategy.url, leverage: String(strategy.leverage)   

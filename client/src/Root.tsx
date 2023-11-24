@@ -10,8 +10,16 @@ import Toasts from './components/common/Toasts';
 import { queryClient } from './react-query/queryClient';
 import './Root.css';
 import { Helmet } from 'react-helmet-async';
-function Root() {
+const ToastPortal = () => {
   const [ toast, setToast ] = useRecoilState(toastState);
+  return <>
+    {toast.state !== "none" && createPortal(
+        <Toasts />,
+        document.body
+      )}
+  </>
+}
+function Root() {
   return <QueryClientProvider client={queryClient}>
     <>
       <Helmet><title>MINARI·BOT</title></Helmet>
@@ -19,12 +27,9 @@ function Root() {
       <Navigation/>
       <Container>
         <Outlet/>
-        {toast.state !== "none" && createPortal(
-        <Toasts />,
-        document.body
-      )}
+        <ToastPortal/>
       </Container>
-      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+      <ReactQueryDevtools initialIsOpen={false}/>
     </>
   </QueryClientProvider>
 
