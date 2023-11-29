@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={'150196758961-bcupln1qa02s3mtg7o8cpcbbqq619tuc.apps.googleusercontent.com'}>
+    <GoogleOAuthProvider clientId={'150196758961-pjbfamdt41qd709kprcssg4uj2ckcsmn.apps.googleusercontent.com'}>
       <ThemeProvider theme={theme}>
         <RecoilRoot>
             <HelmetProvider>
