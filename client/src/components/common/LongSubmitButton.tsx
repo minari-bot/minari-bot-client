@@ -2,9 +2,10 @@ import styled from "styled-components"
 
 interface Props{
     title : string
+    onClick? : () => void
 }
-export default function LongSumbitButton({title} : Props){
-    return <Button>{title}</Button>
+export default function LongSumbitButton({title, onClick} : Props){
+    return <Button onClick={onClick}>{title}</Button>
 }
 
 const Button = styled.button`

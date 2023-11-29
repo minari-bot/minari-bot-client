@@ -8,9 +8,9 @@ import KeyList from "../components/api/KeyList";
 import { EXCHANGE } from "../global/type";
 import KeyRegisterForm from "../components/api/KeyRegisterForm";
 import KeyInfo from "../components/api/KeyInfo";
-import ErrorPage from "../components/error/ErrorPage";
+import ErrorPage from "../components/error/ErrorComponent";
 import AsyncWrapper from "../components/error/AsyncWrapper";
-import Spinner from "../components/error/Spinner";
+import ErrorComponent from "../components/error/ErrorComponent";
 import KeyBoxSkeleton from "../components/api/skeletons/KeyBoxSkeleton";
 import { Helmet } from "react-helmet-async";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
@@ -26,10 +26,9 @@ export default function Api(){
     const [label, setLabel] = useState("");
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
     const { isPc } = useMediaQueries();
-
+    const keyListSuspenseFallback = <>{Array(6).fill(0).map((t, i) => <KeyBoxSkeleton key={i}/>)}</>
     return <>
         <Helmet><title>API Keys</title></Helmet>
-        <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
             <Container>
                 { isPc && <Header/> }
                     <>
@@ -43,9 +42,9 @@ export default function Api(){
                                 <></>
                                 :
                                 <KeyListContainer>
-                                    <Suspense fallback={Array(6).fill(0).map((t, i) => <KeyBoxSkeleton key={i}/>)}>
+                                    <AsyncWrapper suspenseFallback={keyListSuspenseFallback}>
                                         <KeyList exchange={exchangeSelect} setSelectedKeyId={setSelectedKeyId} setRightSideUIMode={setRightSideUIMode} setLabel={setLabel}/>
-                                    </Suspense>
+                                    </AsyncWrapper>
                                 </KeyListContainer>
                             }
                             {
@@ -67,8 +66,7 @@ export default function Api(){
                         </Main>
                     </>
             </Container>
-        </AsyncWrapper>
-    </>
+        </>
 }
 const Container = styled.div`
     display: flex;

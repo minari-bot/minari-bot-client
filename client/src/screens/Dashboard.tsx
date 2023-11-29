@@ -10,9 +10,6 @@ import OverviewContainer from "../components/dashboard/OverviewContainer";
 import HistoryContainer from "../components/dashboard/HistoryContainer";
 import Header from "../components/common/Header";
 import StrategyContainer from "../components/dashboard/StrategyContainer";
-import AsyncWrapper from "../components/error/AsyncWrapper";
-import ErrorPage from "../components/error/ErrorPage";
-import Spinner from "../components/error/Spinner";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
 import { Helmet } from "react-helmet-async";
 
@@ -29,7 +26,6 @@ export default function Dashboard(){
         <Helmet><title>대시보드</title></Helmet>
         <Container>
                 { isPc && <Header/> }
-                <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
                     <>
                     <h1>대시보드</h1>
                     <SettingHeader>
@@ -60,7 +56,6 @@ export default function Dashboard(){
                         }
                     </SubLayout>
                     </>
-                </AsyncWrapper>
             </Container>
         </>
 }

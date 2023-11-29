@@ -4,7 +4,7 @@ import BinanceHistory from "./binance/History"
 import UpbitHistory from "./upbit/History"
 import { OrderInfoSkeleton } from "./skeletons/OrderInfoSkeleton"
 import AsyncWrapper from "../error/AsyncWrapper"
-import Spinner from "../error/Spinner"
+import ErrorComponent from "../error/ErrorComponent"
 import { useState } from "react"
 import { useMediaQueries } from "../hooks/useMediaQueries"
 
@@ -27,7 +27,7 @@ export default function HistoryContainer({exchange} : {exchange : EXCHANGE_BUTTO
           <li>거래 시간</li>
         </Labels>
         }
-        <AsyncWrapper errorFallback={<Spinner/>} suspenseFallback={<>{Array(8).fill(0).map((item, i) => <OrderInfoSkeleton key={i}/>)}</>}>
+        <AsyncWrapper suspenseFallback={<>{Array(8).fill(0).map((item, i) => <OrderInfoSkeleton key={i}/>)}</>}>
           { exchange === EXCHANGE_BUTTON_ENUM.binance &&  <BinanceHistory setCount={setCount}/>}
           { exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitHistory setCount={setCount}/> }
         </AsyncWrapper>

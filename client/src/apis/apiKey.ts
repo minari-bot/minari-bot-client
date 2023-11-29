@@ -6,7 +6,7 @@ import { userInfo } from "../global/type";
 
 export const apiKey = {
     getAllApiKeys: async (user: userInfo | null) => {
-        if(!user) return null;
+        if(!user) throw new CustomErrorClass("", 403);
         try{
             const res = await axios.get(`/api/apikey`);
             return res.data;

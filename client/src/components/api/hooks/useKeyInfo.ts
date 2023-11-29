@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { queryKeys } from "../../../react-query/constants";
 import { apiKey } from "../../../apis/apiKey";
 import { apiKeyOverview } from "../apiType";
@@ -11,7 +11,7 @@ const fallback= {
 	message: "string",
 }
 export function useKeyInfo(id : string){
-    const { data = fallback } = useQuery<apiKeyOverview>({
+    const { data = fallback } = useSuspenseQuery<apiKeyOverview>({
 		queryKey: [queryKeys.keyInfo, id],
 		queryFn: () => apiKey.getApiKey(id),
 	});

@@ -1,23 +1,18 @@
 import styled from "styled-components";
 import Header from "../components/common/Header";
 import StrategyContainer from "../components/strategy/StrategyContainer";
-import AsyncWrapper from "../components/error/AsyncWrapper";
-import ErrorPage from "../components/error/ErrorPage";
-import Spinner from "../components/error/Spinner";
 import { Helmet } from "react-helmet-async";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
 
 export default function Strategy(){
-    const { isPc, isMobile } = useMediaQueries();
+    const { isPc } = useMediaQueries();
     return <>
         <Helmet><title>전략 구독</title></Helmet>
         <Container>
             { isPc && <Header/> }
             <Center>
                 <Wrapper>
-                    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
-                        <StrategyContainer/>
-                    </AsyncWrapper>
+                    <StrategyContainer/>
                 </Wrapper>
             </Center>
         </Container>

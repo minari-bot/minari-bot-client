@@ -11,7 +11,7 @@ import { queryClient } from './react-query/queryClient';
 import './Root.css';
 import { Helmet } from 'react-helmet-async';
 const ToastPortal = () => {
-  const [ toast, setToast ] = useRecoilState(toastState);
+  const [ toast ] = useRecoilState(toastState);
   return <>
     {toast.state !== "none" && createPortal(
         <Toasts />,

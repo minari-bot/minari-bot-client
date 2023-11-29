@@ -1,7 +1,7 @@
 import StrategyBox from "../StrategyBox";
 import { StrategyBoxSkeleton } from "../skeletons/StrategyBoxSkeleton";
 import { useUpbitStrategy } from "../hooks/useStrategy";
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 
 export default function UpbitStrategy({setCount} : {setCount : React.Dispatch<React.SetStateAction<number>>}){
     const { data, length } = useUpbitStrategy();
