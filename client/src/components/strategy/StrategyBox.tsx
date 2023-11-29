@@ -19,7 +19,7 @@ export default function StrategyBox({info} : Props){
         setKeySelectUI(true);
     }
     return keySelectUI?
-            <AsyncWrapper suspenseFallback={<StrategyBoxSkeleton/>} errorFallback={<StrategyBoxSkeleton/>}>
+            <AsyncWrapper suspenseFallback={<StrategyBoxSkeleton/>}>
                 <KeySelect exchange={info?.exchange?.toLocaleLowerCase()} subscribeFieldId={info._id} setKeySelectUI={setKeySelectUI}/>
             </AsyncWrapper>
             :

@@ -10,7 +10,7 @@ export interface Props{
     symbol : string,
 }
 export default function OverallStatBox({title, status, value, symbol} : Props){
-    const { isPc, isMobile } = useMediaQueries();
+    const { isMobile } = useMediaQueries();
     return <Container>
         <Header>
             <Title>{title || ""}</Title>

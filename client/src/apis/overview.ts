@@ -5,7 +5,7 @@ import { userInfo } from "../global/type";
 export const overview = {
     getBinanceOverview : async (user : userInfo | null) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/overview/BINANCE`);
             return res.data;
         } catch(err){
@@ -21,7 +21,7 @@ export const overview = {
     },
     getUpbitOverview : async (user: userInfo | null) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/overview/UPBIT`);
             return res.data;
         } catch(err){

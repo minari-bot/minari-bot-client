@@ -1,23 +1,21 @@
-import { Component, ReactNode } from "react";
-
-interface Props{
-  children: ReactNode,
-  onReset: (...args: unknown[]) => void,
-  fallback: ReactNode,
-}
-interface State{
-  hasError: boolean,
-  error: Error | null;
-}
+import { Component, ReactElement, ReactNode } from "react";
+import ErrorComponent from "./ErrorComponent"
+// interface Props{
+//   children: ReactNode,
+//   onReset: (...args: unknown[]) => void,
+// }
+// interface State{
+//   hasError: boolean,
+//   error: Error | null;
+// }
 const initialState = { hasError: false, error: null};
-
-export default class ErrorBoundary extends Component<Props, State>  {
-  constructor(props: Props) {
+export default class ErrorBoundary extends Component  {
+  constructor(props) {
     super(props);
     this.state = initialState;
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
   // componentDidMount(): void {
@@ -30,17 +28,14 @@ export default class ErrorBoundary extends Component<Props, State>  {
   // }
   resetQuery = () => {
     const { onReset } = this.props;
-    console.log(onReset);
-    onReset?.();
     this.setState(initialState);
   };
 
   render() {
     const { hasError, error } = this.state;
-    const { children, fallback } = this.props;
-    if (hasError && error) {
-      return fallback
-    }
+    const { children} = this.props;
+    if (hasError && error) 
+      return <ErrorComponent reset={this.resetQuery}/>
 
     return children;
   }

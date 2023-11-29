@@ -10,10 +10,11 @@ import StrategyForm from "../components/admin/StrategyForm";
 import EditForm from "../components/admin/EditForm";
 import { StrategyBoxSkeleton } from "../components/admin/skeletons/StrategyBoxSkeleton";
 import AsyncWrapper from "../components/error/AsyncWrapper";
-import ErrorPage from "../components/error/ErrorPage";
-import Spinner from "../components/error/Spinner";
+import ErrorPage from "../components/error/ErrorComponent";
+import ErrorComponent from "../components/error/ErrorComponent";
 import { Helmet } from "react-helmet-async";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
+import Spinner from "../components/error/Spinner";
 export const rightSideUIState ={
     edit : "edit",
     create : "create",
@@ -23,9 +24,10 @@ export default function AdminStrategy(){
     const { isPc } = useMediaQueries();
     const [exchangeSelect, setExchangeSelect] = useState(EXCHANGE.binance);
     const [rightSideUIMode, setRightSideUIMode] = useState(rightSideUIState.none);
+    const strategyListSuspenseFallback = <>{Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}</>
     return <>
     <Helmet><title>전략 관리</title></Helmet>
-    <AsyncWrapper errorFallback={<ErrorPage/>} suspenseFallback={<Spinner/>}>
+    <AsyncWrapper  suspenseFallback={<Spinner/>}>
         <Container>
             { isPc && <Header/> }
             <Title>전략 관리</Title>
@@ -39,9 +41,9 @@ export default function AdminStrategy(){
                     <></>
                     :
                     <ListContainer>
-                        <Suspense fallback={Array(6).fill(0).map((t, i) => <StrategyBoxSkeleton key={i}/>)}>
+                        <AsyncWrapper suspenseFallback={strategyListSuspenseFallback}>
                             <StrategyContainer exchange={exchangeSelect} setRightSideUIMode={setRightSideUIMode}/>
-                        </Suspense>
+                        </AsyncWrapper>
                     </ListContainer>
                     
                 }

@@ -4,14 +4,13 @@ import { ReactElement, ReactNode, Suspense } from "react";
 
 interface Props{
     children: ReactNode,
-    suspenseFallback: ReactElement,
-    errorFallback: ReactElement,
+    suspenseFallback: ReactNode,
 }
-export default function AsyncWrapper({ children, errorFallback, suspenseFallback }: Props) {
+export default function AsyncWrapper({ children, suspenseFallback }: Props) {
     const { reset } = useQueryErrorResetBoundary();
   
     return (
-      <ErrorBoundary fallback={errorFallback} onReset={reset}>
+      <ErrorBoundary onReset={reset}>
         <Suspense fallback={suspenseFallback}>{children}</Suspense>
       </ErrorBoundary>
     );

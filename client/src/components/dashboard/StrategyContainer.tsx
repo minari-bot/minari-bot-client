@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { EXCHANGE_BUTTON, EXCHANGE_BUTTON_ENUM} from "./type";
 import BinanceStrategy from "./binance/Strategy";
 import UpbitStrategy from "./upbit/Strategy";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { StrategyBoxSkeleton } from "./skeletons/StrategyBoxSkeleton";
 import AsyncWrapper from "../error/AsyncWrapper";
-import Spinner from "../error/Spinner";
+import ErrorComponent from "../error/ErrorComponent";
 
 export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTTON}){
     const [count, setCount] = useState(0);
@@ -14,7 +14,7 @@ export default function StrategyContainer({exchange} : {exchange : EXCHANGE_BUTT
                 <h1>구독 전략</h1>
                 <Count>{count}</Count>
             </Head>
-            <AsyncWrapper errorFallback={<Spinner/>} suspenseFallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
+            <AsyncWrapper suspenseFallback={<>{Array(5).fill(0).map((item, i) => <StrategyBoxSkeleton key={i}/>)}</>}>
                 <StrategyWrapper>
                     {exchange === EXCHANGE_BUTTON_ENUM.binance && <BinanceStrategy setCount={setCount}/>}
                     {exchange === EXCHANGE_BUTTON_ENUM.upbit && <UpbitStrategy setCount={setCount}/>}

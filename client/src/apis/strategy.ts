@@ -4,7 +4,7 @@ import { userInfo } from "../global/type";
 export const strategy = {
     getAllUserSubscribeItem : async (user : userInfo | null) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/subscribe/user/subscribes`);
             return res.data;
         } catch(err){
@@ -20,7 +20,7 @@ export const strategy = {
     },
     getBinanceSubscribeItem : async (user : userInfo | null) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/subscribe/user/subscribes/BINANCE`);
             return res.data;
         } catch(err){
@@ -36,7 +36,7 @@ export const strategy = {
     },
     getUpbitSubscribeItem : async (user : userInfo | null) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/subscribe/user/subscribes/UPBIT`);
             return res.data;
         } catch(err){
@@ -52,7 +52,7 @@ export const strategy = {
     },
     SubscribeStrategy: async({id, label, user} : {id : string, label: string, user: userInfo | null}) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.put(`/api/subscribe/${id}/add`,{label: label});
             return res.data;
         } catch(err){

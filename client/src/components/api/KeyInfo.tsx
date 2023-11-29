@@ -2,11 +2,12 @@ import styled from "styled-components"
 import { SlCheck, SlBan} from "react-icons/sl";
 import theme from "../../styles/theme";
 import { useKeyInfo } from "./hooks/useKeyInfo";
-import { Suspense } from "react";
 import { makeRoundNumber } from "../../utils/makeString";
 import KeyInfoSkeleton from "./skeletons/KeyInfoSkeleton";
 import { ReactComponent as ArrowBack } from "../../assets/svg/arrow_back.svg";
 import { rightSideUIState } from "../../screens/Api";
+import AsyncWrapper from "../error/AsyncWrapper";
+import ErrorComponent from "../error/ErrorComponent";
 
 
 interface Props{
@@ -21,7 +22,7 @@ export default function KeyInfo({ selectedKeyId, label, setRightSideUIMode } : P
         setRightSideUIMode(rightSideUIState.none);
     }
     return(
-    <Suspense fallback={<KeyInfoSkeleton/>}>
+    <AsyncWrapper suspenseFallback={<KeyInfoSkeleton/>}>
         <Container>
             <Header>
                 <Title>{label}</Title>
@@ -48,7 +49,7 @@ export default function KeyInfo({ selectedKeyId, label, setRightSideUIMode } : P
                 </Info>
             </Wrapper>
         </Container>
-    </Suspense>
+    </AsyncWrapper>
 
     )
 }

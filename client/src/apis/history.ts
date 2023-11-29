@@ -6,7 +6,7 @@ import axios from "axios";
 export const histroy = {
     getBinanceOrderHistory : async (user : userInfo | null) => { 
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/history/all/BINANCE`);
             return res.data;    
         } catch(err : unknown){
@@ -22,7 +22,7 @@ export const histroy = {
     },
     getUpbitOrderHistory : async (user : userInfo | null) => {
         try{
-            if(!user) return null;
+            if(!user) throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/history/all/UPBIT`);
             return res.data;
         } catch(err){

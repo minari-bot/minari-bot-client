@@ -11,7 +11,7 @@ export interface StrategyformInfo{
 export const admin = {
     getAllAlertStrategy: async (user : userInfo | null) => {
         try{
-            if(user?.userType !== "ADMIN") return [];
+            if(user?.userType !== "ADMIN") throw new CustomErrorClass("", 403);
             const res = await axios.get(`/api/alertstrategy`);
             return res.data;
         } catch(err){
@@ -27,7 +27,7 @@ export const admin = {
     },
     openStrategy: async ({user, id} : { user: userInfo | null, id : string}) => {
         try{
-            if(user?.userType !== "ADMIN") return null;
+            if(user?.userType !== "ADMIN") throw new CustomErrorClass("", 403);
             const res = await axios.post(`/api/subscribe/${id}`);
             return res.data;
         } catch(err){
@@ -43,7 +43,7 @@ export const admin = {
     },
     closeStrategy: async ({user, id} : { user: userInfo | null, id : string}) => {
         try{
-            if(user?.userType !== "ADMIN") return null;
+            if(user?.userType !== "ADMIN") throw new CustomErrorClass("", 403);
             const res = await axios.delete(`/api/subscribe/${id}`);
             return res.data;
         } catch(err){
@@ -59,7 +59,7 @@ export const admin = {
     },
     deleteStrategy: async ({user, id} : { user: userInfo | null, id : string}) => {
         try{
-            if(user?.userType !== "ADMIN") return null;
+            if(user?.userType !== "ADMIN") throw new CustomErrorClass("", 403);
             const res = await axios.delete(`/api/alertstrategy/${id}`);
             return res.data;
         } catch(err){
@@ -75,7 +75,7 @@ export const admin = {
     },
     editStrategy: async ({user, id, formInfo} : { user: userInfo | null, id : string, formInfo : StrategyformInfo}) => {
         try{
-            if(user?.userType !== "ADMIN") return null;
+            if(user?.userType !== "ADMIN") throw new CustomErrorClass("", 403);
             const res = await axios.put(`/api/alertstrategy/${id}`, formInfo);
             return res.data;
         } catch(err){
@@ -91,7 +91,7 @@ export const admin = {
     },
     createAlertStrategy: async ({user, formInfo} : {user: userInfo | null, formInfo : StrategyformInfo}) => {
         try{
-            if(user?.userType !== "ADMIN") return null;
+            if(user?.userType !== "ADMIN") throw new CustomErrorClass("", 403);
             const res = await axios.post(`/api/alertstrategy`, formInfo);
             return res.data;
         } catch(err){

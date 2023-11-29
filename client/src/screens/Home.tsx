@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
 
 export default function Home(){
-  const { isPc, isTablet, isMobile } = useMediaQueries();
+  const { isPc } = useMediaQueries();
   return (
       <Container>
         <Wrapper>

@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-export default function Spinner(){
+export default function ErrorComponent(){
     return <Wrapper><Ring><div></div><div></div><div></div><div></div></Ring></Wrapper>
 }
 const Wrapper = styled.div`
