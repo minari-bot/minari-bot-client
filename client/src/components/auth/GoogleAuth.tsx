@@ -14,7 +14,6 @@ export default function GoogleAuth(){
             size='large'
             logo_alignment="center"
             width="268px"
-            ux_mode="redirect"
         />
     </Wrapper>
 }
