@@ -3,6 +3,8 @@ import Header from "../components/common/Header";
 import StrategyContainer from "../components/strategy/StrategyContainer";
 import { Helmet } from "react-helmet-async";
 import { useMediaQueries } from "../components/hooks/useMediaQueries";
+import AsyncWrapper from "../components/error/AsyncWrapper";
+import Spinner from "../components/error/Spinner";
 
 export default function Strategy(){
     const { isPc } = useMediaQueries();
@@ -12,7 +14,9 @@ export default function Strategy(){
             { isPc && <Header/> }
             <Center>
                 <Wrapper>
-                    <StrategyContainer/>
+                    <AsyncWrapper suspenseFallback={<Spinner/>}>
+                        <StrategyContainer/>
+                    </AsyncWrapper>
                 </Wrapper>
             </Center>
         </Container>
